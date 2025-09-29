@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gizlilik Politikası - Discord Bot Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #2c2f33 0%, #23272a 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #43b581;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #43b581, #5865f2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .last-updated {
+            color: #b9bbbe;
+            font-size: 0.9rem;
+        }
+        
+        .content {
+            background: rgba(54, 57, 63, 0.8);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(67, 181, 129, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        h2 {
+            color: #43b581;
+            font-size: 1.5rem;
+            margin: 30px 0 15px 0;
+            font-weight: 600;
+        }
+        
+        h2:first-of-type {
+            margin-top: 0;
+        }
+        
+        h3 {
+            color: #5865f2;
+            font-size: 1.2rem;
+            margin: 20px 0 10px 0;
+            font-weight: 500;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: #dcddde;
+        }
+        
+        ul {
+            margin: 15px 0 15px 25px;
+            color: #dcddde;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        strong {
+            color: #ffffff;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(67, 181, 129, 0.3);
+            color: #b9bbbe;
+            font-style: italic;
+        }
+        
+        .alert-box {
+            background: rgba(88, 101, 242, 0.1);
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .success-box {
+            background: rgba(67, 181, 129, 0.1);
+            border: 1px solid rgba(67, 181, 129, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Gizlilik Politikası</h1>
+            <p class="last-updated">Son güncelleme: <span id="lastUpdated"></span></p>
+        </div>
+        
+        <div class="content">
+            <div class="alert-box">
+                <p><span class="icon">ℹ️</span><strong>Bilgi:</strong> Bu gizlilik politikası, Discord Bot Dashboard hizmetimizi kullanırken kişisel verilerinizin nasıl toplandığını, kullanıldığını ve korunduğunu açıklar.</p>
+            </div>
+            
+            <h2>1. Toplanan Veriler</h2>
+            
+            <h3>Discord'dan Alınan Bilgiler:</h3>
+            <ul>
+                <li>Discord kullanıcı ID'niz</li>
+                <li>Kullanıcı adı ve discriminator (#1234)</li>
+                <li>Avatar URL'i</li>
+                <li>E-posta adresi (OAuth izni ile)</li>
+                <li>Sunucu üyelikleri (sadece botun bulunduğu sunucular)</li>
+            </ul>
+            
+            <h3>Kullanım Verileri:</h3>
+            <ul>
+                <li>Bot komutları kullanım geçmişi</li>
+                <li>Sunucu ayarları ve konfigürasyonları</li>
+                <li>Ekonomi sistemi verileri (coin, seviye vb.)</li>
+                <li>Müzik dinleme geçmişi</li>
+                <li>Moderasyon işlemleri kayıtları</li>
+            </ul>
+            
+            <h2>2. Veri Kullanım Amaçları</h2>
+            <p>Toplanan veriler aşağıdaki amaçlar için kullanılır:</p>
+            <ul>
+                <li>Bot hizmetlerinin sağlanması ve işletilmesi</li>
+                <li>Kullanıcı deneyiminin kişiselleştirilmesi</li>
+                <li>Hizmet performansının analiz edilmesi</li>
+                <li>Teknik destek sağlanması</li>
+                <li>Güvenlik ve suiistimal önleme</li>
+                <li>Yasal yükümlülüklerin yerine getirilmesi</li>
+            </ul>
+            
+            <h2>3. Veri Saklama ve Güvenlik</h2>
+            <p><strong>Saklama Süresi:</strong> Verileriniz hizmeti aktif olarak kullandığınız süre boyunca saklanır. Hesabınızı silerseniz, kişisel veriler 30 gün içinde silinir.</p>
+            <p><strong>Güvenlik:</strong> Verilerinizi korumak için modern şifreleme yöntemleri, güvenli veri tabanları ve erişim kontrolleri kullanıyoruz.</p>
+            
+            <h2>4. Veri Paylaşımı</h2>
+            <p>Kişisel verilerinizi <strong>satmıyoruz, kiralamıyoruz veya üçüncü şahıslarla paylaşmıyoruz</strong>. Ancak aşağıdaki durumlarda veri paylaşımı gerekebilir:</p>
+            <ul>
+                <li>Yasal zorunluluklar (mahkeme kararı, yasal süreç)</li>
+                <li>Güvenlik tehditlerinin önlenmesi</li>
+                <li>Hizmet sağlayıcıları (sadece gerekli veriler, gizlilik anlaşması ile)</li>
+            </ul>
+            
+            <h2>5. Kullanıcı Hakları</h2>
+            <p>KVKK (Kişisel Verilerin Korunması Kanunu) kapsamında haklarınız:</p>
+            <ul>
+                <li><strong>Erişim hakkı:</strong> Hangi verilerinizin işlendiğini öğrenme</li>
+                <li><strong>Düzeltme hakkı:</strong> Yanlış verilerin düzeltilmesini isteme</li>
+                <li><strong>Silme hakkı:</strong> Verilerinizin silinmesini isteme</li>
+                <li><strong>İtiraz hakkı:</strong> Veri işlemeye itiraz etme</li>
+                <li><strong>Veri taşınabilirliği:</strong> Verilerinizi başka platformlara aktarma</li>
+            </ul>
+            
+            <h2>6. Çerezler ve Yerel Depolama</h2>
+            <p>Web panelimiz şu amaçlarla çerezler kullanır:</p>
+            <ul>
+                <li>Oturum yönetimi (JWT token)</li>
+                <li>Kullanıcı tercihlerinin hatırlanması</li>
+                <li>Hizmet performansının analizi</li>
+            </ul>
+            <p style="font-style: italic; color: #b9bbbe;">Çerezleri tarayıcı ayarlarından yönetebilirsiniz.</p>
+            
+            <h2>7. Çocukların Gizliliği</h2>
+            <p>Hizmetimiz Discord'un yaş sınırlamasına tabidir (13 yaş). 13 yaşından küçük çocuklardan bilerek kişisel veri toplamıyoruz.</p>
+            
+            <h2>8. Politika Değişiklikleri</h2>
+            <p>Bu gizlilik politikasını güncelleyebiliriz. Önemli değişiklikler Discord sunucumuz ve web paneli üzerinden duyurulacaktır.</p>
+            
+            <h2>9. İletişim ve Veri Koruma Sorumlusu</h2>
+            <p>Gizlilik ile ilgili sorular, talepler veya şikayetler için:</p>
+            <ul>
+                <li>Discord sunucumuz üzerinden ticket açabilirsiniz</li>
+                <li>Bot komutları ile destek talep edebilirsiniz</li>
+                <li>KVKK haklarınızı kullanmak için başvuru formunu doldurun</li>
+            </ul>
+            
+            <div class="success-box">
+                <p><span class="icon">✅</span><strong>Kişisel Veri İşleme İlkelerimiz:</strong></p>
+                <p>Hukuka uygunluk • Doğruluk • Amaçla sınırlılık • Orantılılık • Veri minimizasyonu • Güvenlik • Hesap verebilirlik</p>
+            </div>
+            
+            <div class="alert-box">
+                <p><span class="icon">🔒</span><strong>Discord API Compliance:</strong> Bu bot Discord'un Developer Terms of Service ve Privacy Policy ile uyumlu olarak çalışır.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Bu gizlilik politikası KVKK ve GDPR uyumlu olarak hazırlanmıştır.</p>
+            <p>Discord Bot Dashboard v1.0.0</p>
+        </div>
+    </div>
+    
+    <script>
+        // Set current date
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('tr-TR');
+    </script>
+</body>
+</html>

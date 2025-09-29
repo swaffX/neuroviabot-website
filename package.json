@@ -1,0 +1,16 @@
+{
+  "name": "neuroviabot-api",
+  "version": "1.0.0",
+  "description": "Vercel Edge Functions for NeuroVia Discord Bot OAuth",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Build complete'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["discord", "bot", "oauth", "vercel", "edge-functions"],
+  "author": "NeuroVia",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}

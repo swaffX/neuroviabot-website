@@ -1,0 +1,222 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #2c2f33;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+code {
+  font-family: 'Fira Code', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2c2f33;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5865f2;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4752c4;
+}
+
+/* Loading animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Custom button styles */
+.discord-button {
+  background: linear-gradient(45deg, #5865f2, #7289da);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.discord-button:hover {
+  background: linear-gradient(45deg, #4752c4, #677bc4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
+}
+
+.discord-button:active {
+  transform: translateY(0);
+}
+
+/* Card hover effects */
+.hover-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.hover-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Status indicators */
+.status-online {
+  color: #43b581;
+}
+
+.status-idle {
+  color: #faa61a;
+}
+
+.status-dnd {
+  color: #f04747;
+}
+
+.status-offline {
+  color: #747f8d;
+}
+
+/* Custom MUI overrides */
+.MuiDrawer-paper {
+  background-color: #36393f !important;
+  border-right: 1px solid #42464d !important;
+}
+
+.MuiAppBar-root {
+  background-color: #36393f !important;
+  border-bottom: 1px solid #42464d !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+.MuiCard-root {
+  background-color: #36393f !important;
+  border: 1px solid #42464d !important;
+}
+
+.MuiPaper-root {
+  background-color: #36393f !important;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root {
+  background-color: #40444b;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #5865f2;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #5865f2;
+}
+
+/* Loading skeleton overrides */
+.react-loading-skeleton {
+  background-color: #40444b !important;
+  background-image: linear-gradient(
+    90deg,
+    #40444b 0%,
+    #484c52 50%,
+    #40444b 100%
+  ) !important;
+}
+
+/* Chart customizations */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: #42464d;
+}
+
+.recharts-text {
+  fill: #b9bbbe;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .MuiDrawer-paper {
+    width: 100% !important;
+  }
+  
+  .discord-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Custom utility classes */
+.text-gradient {
+  background: linear-gradient(45deg, #5865f2, #43b581);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass-effect {
+  background: rgba(54, 57, 63, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(66, 70, 77, 0.5);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 20px rgba(88, 101, 242, 0.3);
+}
+
+/* Animation delays for staggered effects */
+.animate-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animate-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animate-delay-300 {
+  animation-delay: 0.3s;
+}
+
+
+

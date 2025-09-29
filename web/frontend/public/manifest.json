@@ -1,0 +1,28 @@
+{
+  "short_name": "Discord Bot Panel",
+  "name": "Discord Bot Dashboard - Modern Bot Management",
+  "description": "Professional Discord bot management panel with real-time statistics, economy system, music controls, and moderation tools.",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "logo192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#5865f2",
+  "background_color": "#2c2f33",
+  "orientation": "portrait-primary",
+  "categories": ["utilities", "productivity", "social"],
+  "lang": "tr-TR",
+  "dir": "ltr",
+  "scope": "/",
+  "related_applications": [],
+  "prefer_related_applications": false
+}

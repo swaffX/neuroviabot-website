@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hizmet Şartları - Discord Bot Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #2c2f33 0%, #23272a 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #5865f2;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #5865f2, #43b581);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .last-updated {
+            color: #b9bbbe;
+            font-size: 0.9rem;
+        }
+        
+        .content {
+            background: rgba(54, 57, 63, 0.8);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        h2 {
+            color: #5865f2;
+            font-size: 1.5rem;
+            margin: 30px 0 15px 0;
+            font-weight: 600;
+        }
+        
+        h2:first-of-type {
+            margin-top: 0;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: #dcddde;
+        }
+        
+        ul {
+            margin: 15px 0 15px 25px;
+            color: #dcddde;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        strong {
+            color: #ffffff;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(67, 181, 129, 0.3);
+            color: #b9bbbe;
+            font-style: italic;
+        }
+        
+        .highlight-box {
+            background: rgba(88, 101, 242, 0.1);
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Hizmet Şartları</h1>
+            <p class="last-updated">Son güncelleme: <span id="lastUpdated"></span></p>
+        </div>
+        
+        <div class="content">
+            <h2>1. Hizmetin Kabulü</h2>
+            <p>Discord Bot Dashboard hizmetini kullanarak, bu Hizmet Şartlarını kabul etmiş olursunuz. Bu şartları kabul etmiyorsanız, hizmeti kullanmayınız.</p>
+            
+            <h2>2. Hizmet Açıklaması</h2>
+            <p>Bu hizmet, Discord botları için yönetim paneli ve çeşitli özellikler sunar:</p>
+            <ul>
+                <li>Müzik sistemi yönetimi</li>
+                <li>Moderasyon araçları</li>
+                <li>Ekonomi sistemi</li>
+                <li>Ticket sistemi</li>
+                <li>Çekiliş ve etkinlik yönetimi</li>
+            </ul>
+            
+            <h2>3. Kullanıcı Sorumlulukları</h2>
+            <p>Hizmeti kullanırken:</p>
+            <ul>
+                <li>Discord Topluluk Kurallarına uygun davranmalısınız</li>
+                <li>Yasadışı faaliyetlerde bulunmamalısınız</li>
+                <li>Diğer kullanıcıların haklarına saygı göstermelisiniz</li>
+                <li>Spam veya zararlı içerik paylaşmamalısınız</li>
+            </ul>
+            
+            <h2>4. Hizmet Kullanılabilirliği</h2>
+            <p>Hizmetimizi kesintisiz sunmaya çalışsak da, teknik nedenlerle geçici kesintiler yaşanabilir. Bu durumlar için sorumluluk kabul etmiyoruz.</p>
+            
+            <h2>5. Veri ve Gizlilik</h2>
+            <p>Kişisel verilerinizin korunması bizim için önemlidir. Veri işleme politikalarımız hakkında detaylı bilgi için <strong>Gizlilik Politikası</strong> sayfamızı inceleyin.</p>
+            
+            <div class="highlight-box">
+                <p><strong>Önemli:</strong> Bu bot Discord API'sini kullanarak çalışır ve Discord'un Developer Terms of Service'ine tabidir.</p>
+            </div>
+            
+            <h2>6. Hizmet Değişiklikleri</h2>
+            <p>Hizmet şartlarımızı ve özelliklerimizi önceden haber vermeksizin değiştirme hakkımızı saklı tutarız. Önemli değişiklikler Discord sunucumuz üzerinden duyurulacaktır.</p>
+            
+            <h2>7. Sorumluluk Reddi</h2>
+            <p>Hizmetimiz "olduğu gibi" sunulmaktadır. Herhangi bir garanti vermiyoruz ve hizmet kullanımından doğabilecek zararlardan sorumlu değiliz.</p>
+            
+            <h2>8. İletişim</h2>
+            <p>Hizmet şartları ile ilgili sorularınız için Discord sunucumuz üzerinden iletişime geçebilirsiniz.</p>
+        </div>
+        
+        <div class="footer">
+            <p>Bu hizmet şartları Türkiye Cumhuriyeti kanunlarına tabidir.</p>
+            <p>Discord Bot Dashboard v1.0.0</p>
+        </div>
+    </div>
+    
+    <script>
+        // Set current date
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('tr-TR');
+    </script>
+</body>
+</html>

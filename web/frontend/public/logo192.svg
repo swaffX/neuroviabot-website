@@ -1,0 +1,9 @@
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="192" height="192" rx="48" fill="#5865f2"/>
+  <rect x="48" y="72" width="96" height="48" rx="12" fill="white"/>
+  <circle cx="72" cy="96" r="8" fill="#5865f2"/>
+  <circle cx="120" cy="96" r="8" fill="#5865f2"/>
+  <path d="M96 132c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" fill="white"/>
+  <rect x="72" y="144" width="48" height="12" rx="6" fill="white"/>
+  <text x="96" y="180" text-anchor="middle" fill="white" font-size="14" font-family="Inter, sans-serif" font-weight="600">BOT</text>
+</svg>
