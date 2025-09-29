@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - NeuroVia</title>
+    <link rel="icon" href="/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #3730a3 50%, #0f172a 100%);
+            color: white;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+            animation: slideInLeft 0.8s ease-out;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .server-info {
+            margin-bottom: 2rem;
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .server-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+        }
+        
+        .server-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #f1f5f9;
+        }
+        
+        .server-stats {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .bot-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #94a3b8;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .nav-icon {
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .button {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+        }
+        
+        .button-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .page-header {
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            animation: gradientShift 3s ease infinite;
+        }
+        
+        .page-description {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .features-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #f1f5f9;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px) rotateY(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #f1f5f9;
+        }
+        
+        .feature-desc {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .info-section {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .info-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #3b82f6;
+        }
+        
+        .info-list {
+            color: #94a3b8;
+            padding-left: 1rem;
+        }
+        
+        .info-list li {
+            margin-bottom: 0.5rem;
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(40px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from { 
+                opacity: 0; 
+                transform: translateX(-100px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0); 
+            }
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                padding: 1rem;
+            }
+            .main-content {
+                padding: 1rem;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="server-info">
+                <div class="server-icon" id="serverIcon">A</div>
+                <div class="server-name" id="serverName">Awesome Gaming Community</div>
+                <div class="server-stats" id="serverStats">1,250 üye</div>
+                <div class="bot-status">
+                    <div class="status-dot"></div>
+                    <span style="color: #22c55e; font-weight: 600;">Bot Aktif</span>
+                </div>
+                <a href="/servers.html" class="button button-secondary" style="width: 100%;">
+                    🏰 Sunuculara Dön
+                </a>
+            </div>
+
+            <nav>
+                <a href="#overview" class="nav-item active" onclick="showSection('overview', this)">
+                    <span class="nav-icon">📊</span>
+                    <span>Genel Bakış</span>
+                </a>
+                <a href="#music" class="nav-item" onclick="showSection('music', this)">
+                    <span class="nav-icon">🎵</span>
+                    <span>Müzik</span>
+                </a>
+                <a href="#moderation" class="nav-item" onclick="showSection('moderation', this)">
+                    <span class="nav-icon">🛡️</span>
+                    <span>Moderasyon</span>
+                </a>
+                <a href="#economy" class="nav-item" onclick="showSection('economy', this)">
+                    <span class="nav-icon">💰</span>
+                    <span>Ekonomi</span>
+                </a>
+                <a href="#settings" class="nav-item" onclick="showSection('settings', this)">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Ayarlar</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="page-header">
+                <h1 class="page-title" id="pageTitle">📊 Genel Bakış</h1>
+                <p class="page-description" id="pageDescription">
+                    <span id="currentServerName">Awesome Gaming Community</span> sunucusu için bot yönetim paneli
+                </p>
+            </div>
+
+            <div id="content-overview" class="content-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-number" id="memberCount">1,250</div>
+                        <div class="stat-label">Üye Sayısı</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🤖</div>
+                        <div class="stat-number" style="color: #22c55e;">Aktif</div>
+                        <div class="stat-label">Bot Durumu</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-number">1,234</div>
+                        <div class="stat-label">Komut Kullanımı</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🎵</div>
+                        <div class="stat-number">-</div>
+                        <div class="stat-label">Müzik Oturumu</div>
+                    </div>
+                </div>
+
+                <div class="features-section">
+                    <h3 class="section-title">🚀 Hızlı İşlemler</h3>
+                    <div class="features-grid">
+                        <div class="feature-card" onclick="showSection('music')">
+                            <div class="feature-icon">🎵</div>
+                            <h4 class="feature-title">Müzik Başlat</h4>
+                            <p class="feature-desc">Müzik çalmaya başla ve şarkı listesi oluştur</p>
+                        </div>
+                        
+                        <div class="feature-card" onclick="showSection('moderation')">
+                            <div class="feature-icon">🛡️</div>
+                            <h4 class="feature-title">Moderasyon</h4>
+                            <p class="feature-desc">Sunucu moderasyonu ve güvenlik ayarları</p>
+                        </div>
+                        
+                        <div class="feature-card" onclick="showSection('economy')">
+                            <div class="feature-icon">💰</div>
+                            <h4 class="feature-title">Ekonomi</h4>
+                            <p class="feature-desc">Sanal para sistemi ve ekonomi oyunları</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-music" class="content-section" style="display: none;">
+                <div class="features-section">
+                    <h3 class="section-title">🎵 Müzik Kontrolü</h3>
+                    <p style="color: #94a3b8; margin-bottom: 2rem;">
+                        Müzik sistemi yakında aktif olacak. Aşağıdaki özellikler geliştirilmekte:
+                    </p>
+                    <div class="info-section">
+                        <h4 class="info-title">🎼 Planlanan Özellikler:</h4>
+                        <ul class="info-list">
+                            <li>YouTube ve Spotify entegrasyonu</li>
+                            <li>Gelişmiş playlist yönetimi</li>
+                            <li>Ses kontrolü ve equalizer</li>
+                            <li>Sıra yönetimi ve karıştırma</li>
+                            <li>Otomatik şarkı önerileri</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-moderation" class="content-section" style="display: none;">
+                <div class="features-section">
+                    <h3 class="section-title">🛡️ Moderasyon Araçları</h3>
+                    <p style="color: #94a3b8; margin-bottom: 2rem;">
+                        Moderasyon sistemi yakında aktif olacak. Gelişmiş güvenlik özellikleri:
+                    </p>
+                    <div class="info-section">
+                        <h4 class="info-title">⚡ Planlanan Özellikler:</h4>
+                        <ul class="info-list">
+                            <li>Otomatik spam koruması</li>
+                            <li>Akıllı ban/kick yönetimi</li>
+                            <li>Çoklu uyarı sistemi</li>
+                            <li>Rol tabanlı izinler</li>
+                            <li>Detaylı moderasyon logları</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-economy" class="content-section" style="display: none;">
+                <div class="features-section">
+                    <h3 class="section-title">💰 Ekonomi Sistemi</h3>
+                    <p style="color: #94a3b8; margin-bottom: 2rem;">
+                        Ekonomi sistemi yakında aktif olacak. Eğlenceli para kazanma yolları:
+                    </p>
+                    <div class="info-section">
+                        <h4 class="info-title">💎 Planlanan Özellikler:</h4>
+                        <ul class="info-list">
+                            <li>Günlük ve haftalık ödüller</li>
+                            <li>Mini oyunlar ve kumar</li>
+                            <li>Özelleştirilebilir mağaza</li>
+                            <li>Liderlik tablosu</li>
+                            <li>Seviye sistemi ve rozet kazanma</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-settings" class="content-section" style="display: none;">
+                <div class="features-section">
+                    <h3 class="section-title">⚙️ Bot Ayarları</h3>
+                    <p style="color: #94a3b8; margin-bottom: 2rem;">
+                        Ayarlar paneli yakında aktif olacak. Özelleştirme seçenekleri:
+                    </p>
+                    <div class="info-section">
+                        <h4 class="info-title">🔧 Planlanan Özellikler:</h4>
+                        <ul class="info-list">
+                            <li>Özel bot prefix ayarları</li>
+                            <li>Karşılama ve veda mesajları</li>
+                            <li>Otomatik rol verme sistemi</li>
+                            <li>Kanal bazlı özellik kontrolü</li>
+                            <li>Dil ve bölge ayarları</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL'den server ID'yi al
+        const urlParams = new URLSearchParams(window.location.search);
+        const serverId = urlParams.get('server') || '1';
+        
+        // Server bilgilerini güncelle
+        const serverData = {
+            '1': { name: 'Awesome Gaming Community', members: '1,250', icon: 'A' },
+            '2': { name: 'Chill Zone', members: '89', icon: 'C' },
+            '3': { name: 'Developer Hub', members: '456', icon: 'D' }
+        };
+        
+        const server = serverData[serverId] || serverData['1'];
+        
+        document.getElementById('serverIcon').textContent = server.icon;
+        document.getElementById('serverName').textContent = server.name;
+        document.getElementById('serverStats').textContent = server.members + ' üye';
+        document.getElementById('currentServerName').textContent = server.name;
+        document.getElementById('memberCount').textContent = server.members;
+
+        function showSection(sectionName, navElement) {
+            // Tüm content section'ları gizle
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Seçilen section'ı göster
+            const targetSection = document.getElementById('content-' + sectionName);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+            
+            // Navigation active state'i güncelle
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            if (navElement) {
+                navElement.classList.add('active');
+            }
+            
+            // Sayfa başlığını güncelle
+            const titles = {
+                'overview': '📊 Genel Bakış',
+                'music': '🎵 Müzik',
+                'moderation': '🛡️ Moderasyon',
+                'economy': '💰 Ekonomi',
+                'settings': '⚙️ Ayarlar'
+            };
+            
+            document.getElementById('pageTitle').textContent = titles[sectionName] || titles['overview'];
+        }
+
+        // Loading animation
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.8s ease';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            // Feature cards click effect
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'translateY(-5px) rotateY(5deg) scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-5px) rotateY(5deg)';
+                    }, 150);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
