@@ -32,9 +32,14 @@ const autoFixer = getAutoFixer();
 console.log('[Backend] Error Detection & Auto-Fixer initialized');
 
 // Socket.IO setup
-const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? [process.env.FRONTEND_URL || 'https://neuroviabot.xyz']
-  : ['http://localhost:3001', 'http://localhost:3000'];
+const allowedOrigins = [
+  'https://neuroviabot.xyz',
+  'http://neuroviabot.xyz',
+  'https://www.neuroviabot.xyz',
+  'http://www.neuroviabot.xyz',
+  'http://localhost:3001',
+  'http://localhost:3000'
+];
 
 const io = new Server(server, {
   cors: {

@@ -1,353 +1,291 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { Guild, GuildMember, User } = require('../models');
-const { logger } = require('../utils/logger');
-const config = require('../config.js');
+// ==========================================
+// 🃏 NeuroViaBot - Blackjack Command
+// ==========================================
+// Krupiyeyi yen, 21'e ulaş!
 
-// Aktif oyunları takip et
-const activeGames = new Map();
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
+const NRCUser = require('../models/NRCUser');
+const { logger } = require('../utils/logger');
+
+const SUITS = ['♠', '♥', '♦', '♣'];
+const VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('blackjack')
-        .setDescription('🃏 Blackjack oyna ve bahis yap')
-        .addIntegerOption(option =>
+        .setDescription('🃏 Blackjack (21) Oyna')
+        .addStringOption(option =>
             option.setName('bahis')
-                .setDescription('Bahis miktarı (minimum 50)')
-                .setMinValue(50)
-                .setMaxValue(10000)
-                .setRequired(true)
-        ),
+                .setDescription('Bahis miktarı (veya \'all\')')
+                .setRequired(true)),
 
     async execute(interaction) {
-        const bet = interaction.options.getInteger('bahis');
+        const betInput = interaction.options.getString('bahis');
         const userId = interaction.user.id;
         const guildId = interaction.guild.id;
-        const gameId = `${guildId}_${userId}`;
 
-        // Zaten oyun oynuyor mu kontrol et
-        if (activeGames.has(gameId)) {
-            const errorEmbed = new EmbedBuilder()
-                .setColor('#ff4500')
-                .setTitle('⏰ Zaten Oynuyorsun!')
-                .setDescription('Mevcut blackjack oyununuzu tamamlayın!')
-                .setTimestamp();
-            return interaction.reply({ embeds: [errorEmbed], flags: 64 });
+        let user = await NRCUser.findOne({ odasi: userId, odaId: guildId });
+        if (!user) {
+            user = await NRCUser.create({ odasi: userId, odaId: guildId, username: interaction.user.username });
         }
 
-        try {
-            await interaction.deferReply();
-
-            // Kullanıcı ve guild bilgilerini al
-            const guild = await Guild.findOne({ where: { id: guildId } });
-            if (!guild) {
-                const errorEmbed = new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setTitle('❌ Hata')
-                    .setDescription('Sunucu ekonomi sistemi bulunamadı!')
-                    .setTimestamp();
-                return interaction.editReply({ embeds: [errorEmbed] });
+        let amount = 0;
+        if (['all', 'hepsi', 'tümü'].includes(betInput.toLowerCase())) {
+            amount = user.balance;
+        } else {
+            amount = parseInt(betInput);
+            if (isNaN(amount) || amount < 20) {
+                return interaction.reply({
+                    content: '❌ Minimum 20 NRC.',
+                    flags: MessageFlags.Ephemeral
+                });
             }
+        }
 
-            const guildMember = await GuildMember.findOne({
-                where: {
-                    userId: userId,
-                    guildId: guildId
-                },
-                include: [
-                    {
-                        model: User,
-                        as: 'user'
-                    }
-                ]
+        if (amount <= 0 || user.balance < amount) {
+            return interaction.reply({
+                content: `❌ Yetersiz bakiye! Mevcut: **${user.balance.toLocaleString()}** NRC`,
+                flags: MessageFlags.Ephemeral
             });
+        }
 
-            if (!guildMember) {
-                const errorEmbed = new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setTitle('❌ Hata')
-                    .setDescription('Ekonomi sistemine kayıtlı değilsin!')
-                    .setTimestamp();
-                return interaction.editReply({ embeds: [errorEmbed] });
-            }
+        user.balance -= amount;
+        user.stats.totalBets += 1;
+        user.stats.gamesPlayed += 1;
+        await user.save();
 
-            const currentBalance = parseInt(guildMember.balance) || 0;
-
-            // Bakiye kontrolü
-            if (currentBalance < bet) {
-                const errorEmbed = new EmbedBuilder()
-                    .setColor('#ff0000')
-                    .setTitle('❌ Yetersiz Bakiye')
-                    .setDescription(`Bu kadar para yok! Mevcut bakiye: **${currentBalance.toLocaleString()}** coin`)
-                    .setTimestamp();
-                return interaction.editReply({ embeds: [errorEmbed] });
-            }
-
-            // Yeni oyun başlat
-            const game = createNewGame(userId, bet);
-            activeGames.set(gameId, game);
-
-            // Oyun durumunu göster
-            const gameEmbed = createGameEmbed(game, interaction.user);
-            const buttons = createGameButtons(game);
-
-            await interaction.editReply({ embeds: [gameEmbed], components: [buttons] });
-
-            // 3 dakika sonra oyunu otomatik sonlandır
-            setTimeout(() => {
-                if (activeGames.has(gameId)) {
-                    activeGames.delete(gameId);
+        // OYUN FONKSİYONLARI
+        const createDeck = () => {
+            const deck = [];
+            for (const suit of SUITS) {
+                for (const value of VALUES) {
+                    deck.push({ suit, value });
                 }
-            }, 3 * 60 * 1000);
+            }
+            return deck;
+        };
 
-        } catch (error) {
-            logger.error('Blackjack komut hatası', error, {
-                user: userId,
-                guild: guildId,
-                bet: bet
-            });
+        const calculateScore = (hand) => {
+            let score = 0;
+            let aces = 0;
 
-            const errorEmbed = new EmbedBuilder()
-                .setColor('#ff0000')
-                .setTitle('❌ Hata')
-                .setDescription('Blackjack oyunu başlatılırken bir hata oluştu!')
-                .setTimestamp();
+            for (const card of hand) {
+                if (['J', 'Q', 'K'].includes(card.value)) {
+                    score += 10;
+                } else if (card.value === 'A') {
+                    aces += 1;
+                    score += 11;
+                } else {
+                    score += parseInt(card.value);
+                }
+            }
 
-            if (interaction.deferred) {
-                await interaction.editReply({ embeds: [errorEmbed] });
+            while (score > 21 && aces > 0) {
+                score -= 10;
+                aces -= 1;
+            }
+            return score;
+        };
+
+        const deck = createDeck();
+        // Basit karıştırma (shuffle)
+        for (let i = deck.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [deck[i], deck[j]] = [deck[j], deck[i]];
+        }
+
+        const playerHand = [deck.pop(), deck.pop()];
+        const dealerHand = [deck.pop(), deck.pop()];
+
+        let gameEnded = false;
+
+        const generateEmbed = (revealDealer = false, result = null) => {
+            const playerScore = calculateScore(playerHand);
+            const dealerScore = calculateScore(dealerHand);
+
+            // Dealer kartlarını gösterimi
+            const dealerCards = revealDealer
+                ? dealerHand.map(c => `[${c.suit} ${c.value}]`).join(' ')
+                : `[${dealerHand[0].suit} ${dealerHand[0].value}] [?]`;
+
+            const dealerScoreDisplay = revealDealer ? dealerScore : '?';
+
+            const playerCards = playerHand.map(c => `[${c.suit} ${c.value}]`).join(' ');
+
+            const embed = new EmbedBuilder()
+                .setTitle('🃏 Blackjack')
+                .addFields(
+                    { name: `Senin Elin (${playerScore})`, value: `\`\`\`${playerCards}\`\`\``, inline: true },
+                    { name: `Krupiye (${dealerScoreDisplay})`, value: `\`\`\`${dealerCards}\`\`\``, inline: true }
+                )
+                .setFooter({ text: `Bahis: ${amount.toLocaleString()} NRC • ${interaction.user.username}` });
+
+            if (result === 'WIN') {
+                embed.setColor('#2ecc71').setDescription(`🎉 **KAZANDIN!**\n**${(amount * 2).toLocaleString()} NRC** kazandın.`);
+            } else if (result === 'LOSE') {
+                embed.setColor('#e74c3c').setDescription(`💀 **KAYBETTİN!**\n**${amount.toLocaleString()} NRC** kaybettin.`);
+            } else if (result === 'PUSH') {
+                embed.setColor('#f1c40f').setDescription(`🤝 **BERABERE!**\nBahsin iade edildi.`);
+            } else if (result === 'BLACKJACK') {
+                embed.setColor('#9b59b6').setDescription(`👑 **BLACKJACK!**\n**${Math.floor(amount * 2.5).toLocaleString()} NRC** kazandın!`);
             } else {
-                await interaction.reply({ embeds: [errorEmbed], flags: 64 });
+                embed.setColor('#3498db').setDescription('Ne yapmak istersin?');
+            }
+
+            return embed;
+        };
+
+        // Kontrol butonları
+        const getButtons = (disabled = false) => {
+            return new ActionRowBuilder().addComponents(
+                new ButtonBuilder().setCustomId('bj_hit').setLabel('Hit (Kart Çek)').setStyle(ButtonStyle.Primary).setDisabled(disabled),
+                new ButtonBuilder().setCustomId('bj_stand').setLabel('Stand (Dur)').setStyle(ButtonStyle.Secondary).setDisabled(disabled),
+                new ButtonBuilder().setCustomId('bj_double').setLabel('Double (İkiye Katla)').setStyle(ButtonStyle.Success).setDisabled(disabled || playerHand.length > 2 || user.balance < amount)
+            );
+        };
+
+        // Otomatik Blackjack kontrolü
+        const pScore = calculateScore(playerHand);
+        if (pScore === 21) {
+            const dScore = calculateScore(dealerHand);
+            if (dScore === 21) {
+                // Berabere
+                user.balance += amount;
+                await user.save();
+                return interaction.reply({ embeds: [generateEmbed(true, 'PUSH')] });
+            } else {
+                // Blackjack
+                const winAmount = Math.floor(amount * 2.5);
+                user.balance += winAmount;
+                user.stats.totalWins += 1;
+                user.stats.totalEarned += (winAmount - amount);
+                await user.save();
+                return interaction.reply({ embeds: [generateEmbed(true, 'BLACKJACK')] });
             }
         }
+
+        await interaction.reply({ embeds: [generateEmbed()], components: [getButtons()] });
+        const msg = await interaction.fetchReply();
+
+        const collector = msg.createMessageComponentCollector({
+            filter: i => i.user.id === userId,
+            time: 60000
+        });
+
+        collector.on('collect', async i => {
+            if (gameEnded) return;
+
+            const action = i.customId;
+
+            if (action === 'bj_hit') {
+                playerHand.push(deck.pop());
+                const score = calculateScore(playerHand);
+
+                if (score > 21) {
+                    gameEnded = true;
+                    user.stats.totalLosses += 1;
+                    user.stats.winStreak = 0;
+                    await user.save();
+                    await i.update({ embeds: [generateEmbed(true, 'LOSE')], components: [] });
+                    collector.stop();
+                } else {
+                    await i.update({ embeds: [generateEmbed()], components: [getButtons()] });
+                }
+
+            } else if (action === 'bj_stand') {
+                gameEnded = true;
+                let dScore = calculateScore(dealerHand);
+
+                // Dealer 17'ye kadar çeker
+                while (dScore < 17) {
+                    dealerHand.push(deck.pop());
+                    dScore = calculateScore(dealerHand);
+                }
+
+                const finalPScore = calculateScore(playerHand);
+                let result = '';
+                let winAmount = 0;
+
+                if (dScore > 21 || finalPScore > dScore) {
+                    result = 'WIN';
+                    winAmount = amount * 2;
+                } else if (dScore > finalPScore) {
+                    result = 'LOSE';
+                } else {
+                    result = 'PUSH';
+                    winAmount = amount;
+                }
+
+                if (result === 'WIN') {
+                    user.balance += winAmount;
+                    user.stats.totalWins += 1;
+                    user.stats.totalEarned += (winAmount - amount);
+                    user.stats.winStreak += 1;
+                    if (user.stats.winStreak > user.stats.maxWinStreak) user.stats.maxWinStreak = user.stats.winStreak;
+                } else if (result === 'PUSH') {
+                    user.balance += amount;
+                } else {
+                    user.stats.totalLosses += 1;
+                    user.stats.winStreak = 0;
+                }
+                await user.save();
+
+                await i.update({ embeds: [generateEmbed(true, result)], components: [] });
+                collector.stop();
+
+            } else if (action === 'bj_double') {
+                // Double Logic
+                if (user.balance < amount) return i.reply({ content: 'Yetersiz bakiye!', flags: MessageFlags.Ephemeral });
+
+                user.balance -= amount; // Ekstra bahis
+                amount *= 2;
+                await user.save();
+
+                playerHand.push(deck.pop());
+
+                gameEnded = true;
+                // Tek karttan sonra otomatik stand
+                let dScore = calculateScore(dealerHand);
+                while (dScore < 17) {
+                    dealerHand.push(deck.pop());
+                    dScore = calculateScore(dealerHand);
+                }
+
+                const finalPScore = calculateScore(playerHand);
+                let result = '';
+                let winAmount = 0;
+
+                if (finalPScore > 21) {
+                    result = 'LOSE';
+                } else if (dScore > 21 || finalPScore > dScore) {
+                    result = 'WIN';
+                    winAmount = amount * 2;
+                } else if (dScore > finalPScore) {
+                    result = 'LOSE';
+                } else {
+                    result = 'PUSH';
+                    winAmount = amount;
+                }
+
+                if (result === 'WIN') {
+                    user.balance += winAmount;
+                    user.stats.totalWins += 1;
+                    user.stats.totalEarned += (winAmount - amount);
+                } else if (result === 'PUSH') {
+                    user.balance += amount;
+                }
+                await user.save();
+
+                await i.update({ embeds: [generateEmbed(true, result)], components: [] });
+                collector.stop();
+            }
+        });
+
+        collector.on('end', async (_, reason) => {
+            if (reason === 'time' && !gameEnded) {
+                // Zaman aşımı - Lose kabul et
+                await msg.edit({ content: '⏱️ Süre doldu!', components: [] });
+            }
+        });
     }
 };
-
-// Oyun logic fonksiyonları
-function createNewGame(userId, bet) {
-    const deck = createDeck();
-    const game = {
-        userId,
-        bet,
-        deck: shuffleDeck(deck),
-        playerCards: [],
-        dealerCards: [],
-        gameOver: false,
-        playerStand: false,
-        result: null
-    };
-
-    // İlk kartları dağıt
-    game.playerCards.push(drawCard(game.deck));
-    game.dealerCards.push(drawCard(game.deck));
-    game.playerCards.push(drawCard(game.deck));
-    game.dealerCards.push(drawCard(game.deck));
-
-    return game;
-}
-
-function createDeck() {
-    const suits = ['♠️', '♥️', '♦️', '♣️'];
-    const values = [
-        { name: 'A', value: [1, 11] },
-        { name: '2', value: [2] },
-        { name: '3', value: [3] },
-        { name: '4', value: [4] },
-        { name: '5', value: [5] },
-        { name: '6', value: [6] },
-        { name: '7', value: [7] },
-        { name: '8', value: [8] },
-        { name: '9', value: [9] },
-        { name: '10', value: [10] },
-        { name: 'J', value: [10] },
-        { name: 'Q', value: [10] },
-        { name: 'K', value: [10] }
-    ];
-
-    const deck = [];
-    suits.forEach(suit => {
-        values.forEach(val => {
-            deck.push({
-                suit,
-                name: val.name,
-                value: val.value
-            });
-        });
-    });
-
-    return deck;
-}
-
-function shuffleDeck(deck) {
-    const shuffled = [...deck];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-}
-
-function drawCard(deck) {
-    return deck.pop();
-}
-
-function calculateHandValue(cards) {
-    let value = 0;
-    let aces = 0;
-
-    cards.forEach(card => {
-        if (card.value.length === 1) {
-            value += card.value[0];
-        } else { // As kartı
-            aces++;
-            value += 11;
-        }
-    });
-
-    // As'ları optimize et
-    while (value > 21 && aces > 0) {
-        value -= 10;
-        aces--;
-    }
-
-    return value;
-}
-
-function createGameEmbed(game, user) {
-    const playerValue = calculateHandValue(game.playerCards);
-    const dealerValue = calculateHandValue(game.dealerCards);
-
-    const embed = new EmbedBuilder()
-        .setColor(config.embedColor)
-        .setTitle('🃏 Blackjack')
-        .setThumbnail(user.displayAvatarURL())
-        .addFields(
-            {
-                name: '🎯 Hedef',
-                value: '21\'e en yakın olmaya çalışın, ama geçmeyin!',
-                inline: false
-            }
-        );
-
-    // Krupiye kartları (oyun bitmemişse ikinci kartı gizli)
-    let dealerCards = '';
-    if (game.gameOver) {
-        dealerCards = game.dealerCards.map(card => `${card.name}${card.suit}`).join(' ');
-        dealerCards += ` **(${dealerValue})**`;
-    } else {
-        dealerCards = `${game.dealerCards[0].name}${game.dealerCards[0].suit} 🂠`;
-        dealerCards += ` **(${game.dealerCards[0].value[0]} + ?)**`;
-    }
-
-    // Oyuncu kartları
-    const playerCards = game.playerCards.map(card => `${card.name}${card.suit}`).join(' ');
-
-    embed.addFields(
-        {
-            name: '🏠 Krupiye',
-            value: dealerCards,
-            inline: true
-        },
-        {
-            name: '👤 Sizin Kartlarınız',
-            value: `${playerCards} **(${playerValue})**`,
-            inline: true
-        },
-        {
-            name: '💰 Bahis',
-            value: `${game.bet.toLocaleString()} coin`,
-            inline: true
-        }
-    );
-
-    // Oyun durumu
-    if (game.gameOver) {
-        let resultColor = '#ff0000';
-        let resultText = '';
-
-        if (game.result === 'win') {
-            resultColor = '#00ff00';
-            if (playerValue === 21 && game.playerCards.length === 2) {
-                resultText = '🎉 BLACKJACK! (2.5x kazanç)';
-            } else {
-                resultText = '🎉 Kazandınız! (2x kazanç)';
-            }
-        } else if (game.result === 'lose') {
-            resultColor = '#ff0000';
-            if (playerValue > 21) {
-                resultText = '💥 Bust! (Kaybettiniz)';
-            } else {
-                resultText = '😢 Kaybettiniz!';
-            }
-        } else if (game.result === 'tie') {
-            resultColor = '#ffff00';
-            resultText = '🤝 Berabere! (Bahis iade)';
-        }
-
-        embed.setColor(resultColor);
-        embed.addFields({
-            name: '🏁 Sonuç',
-            value: resultText,
-            inline: false
-        });
-    } else {
-        // Oyun devam ediyor
-        let status = '';
-        if (playerValue === 21) {
-            status = '🎯 21! Mükemmel!';
-        } else if (playerValue > 21) {
-            status = '💥 Bust! Oyun bitti!';
-        } else {
-            status = '🎲 Kart çek veya dur?';
-        }
-
-        embed.addFields({
-            name: '⏳ Durum',
-            value: status,
-            inline: false
-        });
-    }
-
-    embed.setTimestamp()
-        .setFooter({ 
-            text: 'Blackjack • Hit = Kart çek, Stand = Dur',
-            iconURL: user.displayAvatarURL()
-        });
-
-    return embed;
-}
-
-function createGameButtons(game) {
-    const playerValue = calculateHandValue(game.playerCards);
-    const row = new ActionRowBuilder();
-
-    if (!game.gameOver && playerValue <= 21) {
-        row.addComponents(
-            new ButtonBuilder()
-                .setCustomId('blackjack_hit')
-                .setLabel('🃏 Hit (Kart Çek)')
-                .setStyle(ButtonStyle.Primary)
-                .setDisabled(false),
-            new ButtonBuilder()
-                .setCustomId('blackjack_stand')
-                .setLabel('✋ Stand (Dur)')
-                .setStyle(ButtonStyle.Secondary)
-                .setDisabled(false)
-        );
-    } else {
-        row.addComponents(
-            new ButtonBuilder()
-                .setCustomId('blackjack_new')
-                .setLabel('🔄 Yeni Oyun')
-                .setStyle(ButtonStyle.Success)
-                .setDisabled(false)
-        );
-    }
-
-    return row;
-}
-
-// Export functions for button interactions
-module.exports.activeGames = activeGames;
-module.exports.createGameEmbed = createGameEmbed;
-module.exports.createGameButtons = createGameButtons;
-module.exports.calculateHandValue = calculateHandValue;
-module.exports.drawCard = drawCard;
