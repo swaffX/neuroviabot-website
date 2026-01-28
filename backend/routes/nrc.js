@@ -2,25 +2,36 @@
 // 💎 NRC API Routes
 // ==========================================
 // API endpoints for NRC system
+// UPDATED: Now uses MongoDB instead of simple-db
 
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 
-// Import database (will be injected via main index.js)
+// MongoDB Models
+const ActivityFeed = require('../../bot/src/models/ActivityFeed');
+const Analytics = require('../../bot/src/models/Analytics');
+const Investment = require('../../bot/src/models/Investment');
+const { QuestTemplate, QuestProgress } = require('../../bot/src/models/Quest');
+const NRCUser = require('../../bot/src/models/NRCUser');
+
+// Legacy db reference for backward compatibility during migration
 let db = null;
 
-// Initialize database reference
+// Initialize database reference (legacy - can be removed after full migration)
 function initDB(database) {
     db = database;
+    console.log('[NRC API] Database initialized (MongoDB primary, simple-db fallback)');
 }
 
-// Middleware to check if DB is initialized
+// Middleware to check if MongoDB is connected
 function checkDB(req, res, next) {
-    if (!db) {
-        return res.status(500).json({ error: 'Database not initialized' });
+    if (mongoose.connection.readyState !== 1) {
+        return res.status(500).json({ error: 'Database not connected' });
     }
     next();
 }
+
 
 // ==========================================
 // NFT Collection Routes
@@ -33,7 +44,7 @@ function checkDB(req, res, next) {
 router.get('/collections', checkDB, (req, res) => {
     try {
         const collections = [];
-        
+
         for (const [collectionId, collection] of db.data.nftCollections.entries()) {
             collections.push({
                 id: collectionId,
@@ -47,9 +58,9 @@ router.get('/collections', checkDB, (req, res) => {
         });
     } catch (error) {
         console.error('[NRC API] Error fetching collections:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to fetch collections' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch collections'
         });
     }
 });
@@ -73,9 +84,9 @@ router.get('/collections/:userId', checkDB, (req, res) => {
         });
     } catch (error) {
         console.error('[NRC API] Error fetching user collection:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to fetch user collection' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch user collection'
         });
     }
 });
@@ -155,9 +166,9 @@ router.post('/collections/purchase', checkDB, (req, res) => {
 
     } catch (error) {
         console.error('[NRC API] Error purchasing NFT:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to purchase NFT' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to purchase NFT'
         });
     }
 });
@@ -173,17 +184,17 @@ router.post('/collections/purchase', checkDB, (req, res) => {
 router.get('/marketplace/listings', checkDB, (req, res) => {
     try {
         const { type, minPrice, maxPrice, limit = 50 } = req.query;
-        
+
         const listings = [];
-        
+
         for (const [listingId, listing] of db.data.nftListings.entries()) {
             if (listing.status !== 'active') continue;
-            
+
             // Apply filters
             if (type && listing.itemType !== type) continue;
             if (minPrice && listing.price < parseInt(minPrice)) continue;
             if (maxPrice && listing.price > parseInt(maxPrice)) continue;
-            
+
             listings.push({
                 id: listingId,
                 ...listing
@@ -203,9 +214,9 @@ router.get('/marketplace/listings', checkDB, (req, res) => {
         });
     } catch (error) {
         console.error('[NRC API] Error fetching marketplace listings:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to fetch listings' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch listings'
         });
     }
 });
@@ -255,9 +266,9 @@ router.post('/marketplace/create', checkDB, (req, res) => {
 
     } catch (error) {
         console.error('[NRC API] Error creating marketplace listing:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to create listing' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to create listing'
         });
     }
 });
@@ -388,9 +399,9 @@ router.post('/marketplace/purchase/:listingId', checkDB, (req, res) => {
 
     } catch (error) {
         console.error('[NRC API] Error purchasing listing:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to purchase listing' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to purchase listing'
         });
     }
 });
@@ -423,9 +434,9 @@ router.get('/investments/:userId', checkDB, (req, res) => {
         });
     } catch (error) {
         console.error('[NRC API] Error fetching investments:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to fetch investments' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch investments'
         });
     }
 });
@@ -495,9 +506,9 @@ router.post('/invest/create', checkDB, (req, res) => {
 
     } catch (error) {
         console.error('[NRC API] Error creating investment:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to create investment' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to create investment'
         });
     }
 });
@@ -593,9 +604,9 @@ router.post('/invest/withdraw/:investmentId', checkDB, (req, res) => {
 
     } catch (error) {
         console.error('[NRC API] Error withdrawing investment:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to withdraw investment' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to withdraw investment'
         });
     }
 });
@@ -624,9 +635,9 @@ router.get('/quests/active/:userId', checkDB, (req, res) => {
         });
     } catch (error) {
         console.error('[NRC API] Error fetching quests:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to fetch quests' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch quests'
         });
     }
 });
@@ -656,9 +667,9 @@ router.post('/quests/claim/:questId', checkDB, (req, res) => {
 
     } catch (error) {
         console.error('[NRC API] Error claiming quest:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to claim quest' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to claim quest'
         });
     }
 });
@@ -740,9 +751,9 @@ router.post('/premium/subscribe', checkDB, (req, res) => {
 
     } catch (error) {
         console.error('[NRC API] Error subscribing to premium:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to subscribe to premium' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to subscribe to premium'
         });
     }
 });
@@ -762,9 +773,9 @@ router.get('/balance/:userId', checkDB, (req, res) => {
         });
     } catch (error) {
         console.error('[NRC API] Error fetching balance:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to fetch balance' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch balance'
         });
     }
 });
@@ -777,21 +788,15 @@ router.get('/balance/:userId', checkDB, (req, res) => {
  * GET /api/nrc/activity/live
  * Get recent activities (last 50)
  */
-router.get('/activity/live', checkDB, (req, res) => {
+router.get('/activity/live', checkDB, async (req, res) => {
     try {
         const { limit = 50, type } = req.query;
-        
-        let activities = Array.from(db.data.activityFeed.entries())
-            .map(([id, activity]) => ({ id, ...activity }))
-            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-        // Filter by type if specified
-        if (type && type !== 'all') {
-            activities = activities.filter(a => a.type === type);
-        }
-
-        // Limit results
-        activities = activities.slice(0, parseInt(limit));
+        // Use MongoDB ActivityFeed model
+        const activities = await ActivityFeed.getLiveFeed({
+            limit: parseInt(limit),
+            type: type && type !== 'all' ? type : null
+        });
 
         res.json({
             success: true,
@@ -800,12 +805,13 @@ router.get('/activity/live', checkDB, (req, res) => {
         });
     } catch (error) {
         console.error('[NRC API] Error fetching activities:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to fetch activities' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch activities'
         });
     }
 });
+
 
 /**
  * GET /api/nrc/activity/stats
@@ -814,7 +820,7 @@ router.get('/activity/live', checkDB, (req, res) => {
 router.get('/activity/stats', checkDB, (req, res) => {
     try {
         const activities = Array.from(db.data.activityFeed.values());
-        
+
         // Calculate stats
         const now = Date.now();
         const oneDayAgo = now - (24 * 60 * 60 * 1000);
@@ -847,9 +853,9 @@ router.get('/activity/stats', checkDB, (req, res) => {
         });
     } catch (error) {
         console.error('[NRC API] Error fetching activity stats:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Failed to fetch activity stats' 
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch activity stats'
         });
     }
 });
@@ -865,15 +871,15 @@ router.get('/activity/stats', checkDB, (req, res) => {
 router.get('/discord/avatar/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
-        
+
         // Try to get from bot's client
         const client = global.discordClient;
-        
+
         if (client) {
             try {
                 const user = await client.users.fetch(userId);
                 const avatarURL = user.displayAvatarURL({ format: 'png', size: 128 });
-                
+
                 res.json({
                     success: true,
                     avatar: avatarURL,
@@ -894,11 +900,11 @@ router.get('/discord/avatar/:userId', async (req, res) => {
             username: `User${userId.substring(0, 4)}`,
             discriminator: '0000'
         });
-        
+
     } catch (error) {
         console.error('[NRC API] Error fetching Discord avatar:', error);
-        res.status(500).json({ 
-            success: false, 
+        res.status(500).json({
+            success: false,
             error: 'Failed to fetch avatar',
             fallback: 'https://cdn.discordapp.com/embed/avatars/0.png'
         });
@@ -912,15 +918,15 @@ router.get('/discord/avatar/:userId', async (req, res) => {
 router.get('/discord/server/:serverId', async (req, res) => {
     try {
         const { serverId } = req.params;
-        
+
         // Try to get from bot's client
         const client = global.discordClient;
-        
+
         if (client) {
             try {
                 const guild = await client.guilds.fetch(serverId);
                 const iconURL = guild.iconURL({ format: 'png', size: 64 });
-                
+
                 res.json({
                     success: true,
                     serverName: guild.name,
@@ -940,11 +946,11 @@ router.get('/discord/server/:serverId', async (req, res) => {
             serverIcon: null,
             memberCount: 0
         });
-        
+
     } catch (error) {
         console.error('[NRC API] Error fetching Discord server:', error);
-        res.status(500).json({ 
-            success: false, 
+        res.status(500).json({
+            success: false,
             error: 'Failed to fetch server info'
         });
     }
@@ -974,55 +980,41 @@ let lastPriceUpdate = Date.now();
  * - Marketplace sales (0-8% impact)
  * - Supply circulation (-5% to +5% impact)
  * - Volatility index (±3% random)
+ * UPDATED: Now uses MongoDB ActivityFeed model
  */
-function calculateDynamicPrice() {
-    if (!db) return 1.00;
-
+async function calculateDynamicPrice() {
     try {
         const basePrice = 1.00;
         let priceMultiplier = 1.00;
 
-        // Defensive check: Ensure activityFeed exists
-        if (!db.data || !db.data.activityFeed) {
-            console.warn('[Price Algorithm] activityFeed not initialized yet');
-            return basePrice;
-        }
+        // Get stats from MongoDB ActivityFeed
+        const stats = await ActivityFeed.getStats();
 
         // 1. Trading Volume Impact (0-10%)
-        const activities = Array.from(db.data.activityFeed.values());
-        const last24h = activities.filter(a => {
-            const activityTime = new Date(a.timestamp).getTime();
-            const dayAgo = Date.now() - (24 * 60 * 60 * 1000);
-            return activityTime > dayAgo;
-        });
-
-        const volume24h = last24h.reduce((sum, a) => sum + (a.amount || 0), 0);
-        const volumeImpact = Math.min(volume24h / 1000000, 0.10); // Max 10%
+        const volumeImpact = Math.min((stats.volume24h || 0) / 1000000, 0.10);
         priceMultiplier += volumeImpact;
 
         // 2. Active Users Impact (0-5%)
-        const uniqueUsers = new Set(last24h.map(a => a.userId)).size;
-        const userImpact = Math.min(uniqueUsers / 1000, 0.05); // Max 5%
+        // Get unique users from last 24h activities
+        const activities = await ActivityFeed.getLiveFeed({ limit: 1000 });
+        const uniqueUsers = new Set(activities.map(a => a.userId)).size;
+        const userImpact = Math.min(uniqueUsers / 1000, 0.05);
         priceMultiplier += userImpact;
 
         // 3. Marketplace Sales Impact (0-8%)
-        const marketplaceSales = last24h.filter(a => 
+        const marketplaceSales = activities.filter(a =>
             a.type === 'trade' || a.type === 'marketplace_sale'
         ).length;
-        const salesImpact = Math.min(marketplaceSales / 500, 0.08); // Max 8%
+        const salesImpact = Math.min(marketplaceSales / 500, 0.08);
         priceMultiplier += salesImpact;
 
         // 4. Supply Circulation Impact (-5% to +5%)
-        if (!db.data.users) {
-            console.warn('[Price Algorithm] users not initialized yet');
-            return basePrice;
-        }
-        
-        const totalUsers = db.data.users.size;
-        const totalBalance = Array.from(db.data.users.values())
-            .reduce((sum, u) => sum + (u.balance || 0), 0);
-        
-        const avgBalance = totalUsers > 0 ? totalBalance / totalUsers : 0;
+        // Get total NRC balance from MongoDB
+        const totalNRC = await NRCUser.aggregate([
+            { $group: { _id: null, total: { $sum: '$balance' } } }
+        ]);
+        const totalBalance = totalNRC[0]?.total || 0;
+        const avgBalance = activities.length > 0 ? totalBalance / activities.length : 0;
         const supplyImpact = (avgBalance - 1000) / 20000; // Normalized to ±5%
         const clampedSupplyImpact = Math.max(-0.05, Math.min(0.05, supplyImpact));
         priceMultiplier += clampedSupplyImpact;
@@ -1032,8 +1024,8 @@ function calculateDynamicPrice() {
         priceMultiplier += volatility;
 
         // Calculate final price
-        const newPrice = basePrice * priceMultiplier;
-        
+        const newPrice = 1.00 * priceMultiplier;
+
         // Clamp price between 0.50 and 2.00
         return Math.max(0.50, Math.min(2.00, newPrice));
 
@@ -1042,6 +1034,7 @@ function calculateDynamicPrice() {
         return 1.00;
     }
 }
+
 
 /**
  * Update price history
@@ -1056,26 +1049,26 @@ function updatePriceHistory(price) {
 
     // Add to 24h history
     priceHistory['24h'].push(pricePoint);
-    
+
     // Keep only last 24 hours (288 points for 5min intervals)
     const dayAgo = timestamp - (24 * 60 * 60 * 1000);
     priceHistory['24h'] = priceHistory['24h'].filter(p => p.time > dayAgo);
 
     // Add to 7d history (every 30 minutes)
-    if (priceHistory['7d'].length === 0 || 
+    if (priceHistory['7d'].length === 0 ||
         timestamp - priceHistory['7d'][priceHistory['7d'].length - 1].time > 30 * 60 * 1000) {
         priceHistory['7d'].push(pricePoint);
-        
+
         // Keep only last 7 days
         const weekAgo = timestamp - (7 * 24 * 60 * 60 * 1000);
         priceHistory['7d'] = priceHistory['7d'].filter(p => p.time > weekAgo);
     }
 
     // Add to 30d history (every 2 hours)
-    if (priceHistory['30d'].length === 0 || 
+    if (priceHistory['30d'].length === 0 ||
         timestamp - priceHistory['30d'][priceHistory['30d'].length - 1].time > 2 * 60 * 60 * 1000) {
         priceHistory['30d'].push(pricePoint);
-        
+
         // Keep only last 30 days
         const monthAgo = timestamp - (30 * 24 * 60 * 60 * 1000);
         priceHistory['30d'] = priceHistory['30d'].filter(p => p.time > monthAgo);
@@ -1121,7 +1114,7 @@ router.get('/price/current', checkDB, (req, res) => {
 router.get('/price/history', checkDB, (req, res) => {
     try {
         const { period = '24h' } = req.query;
-        
+
         if (!['24h', '7d', '30d'].includes(period)) {
             return res.status(400).json({
                 success: false,
@@ -1183,7 +1176,7 @@ router.get('/price/stats', checkDB, (req, res) => {
         });
 
         const volume24h = last24h.reduce((sum, a) => sum + (a.amount || 0), 0);
-        const trades24h = last24h.filter(a => 
+        const trades24h = last24h.filter(a =>
             a.type === 'trade' || a.type === 'marketplace_sale'
         ).length;
 
@@ -1233,7 +1226,7 @@ router.get('/price/stats', checkDB, (req, res) => {
             const recentPrices = priceHistory['24h'].slice(-10);
             const avgRecent = recentPrices.reduce((sum, p) => sum + p.price, 0) / recentPrices.length;
             const diff = ((currentPrice - avgRecent) / avgRecent) * 100;
-            
+
             if (diff > 2) trend = 'up';
             else if (diff < -2) trend = 'down';
         }
@@ -1267,85 +1260,85 @@ router.get('/price/stats', checkDB, (req, res) => {
  * Get user profile with extended stats
  */
 router.get('/profile/:userId', checkDB, async (req, res) => {
-  try {
-    const { userId } = req.params;
-    
-    // Check if requesting user is authenticated
-    if (!req.session || !req.session.user) {
-      return res.status(401).json({
-        success: false,
-        error: 'Authentication required'
-      });
-    }
+    try {
+        const { userId } = req.params;
 
-    // Get user data
-    const userData = db.data.users?.get(userId);
-    if (!userData) {
-      return res.status(404).json({
-        success: false,
-        error: 'User not found'
-      });
-    }
-
-    // Get achievements (if available)
-    const achievements = [];
-    if (db.data.userAchievements) {
-      for (const [key, data] of db.data.userAchievements.entries()) {
-        if (key.startsWith(userId)) {
-          achievements.push(data);
+        // Check if requesting user is authenticated
+        if (!req.session || !req.session.user) {
+            return res.status(401).json({
+                success: false,
+                error: 'Authentication required'
+            });
         }
-      }
-    }
 
-    // Get recent activity
-    const recentActivity = [];
-    if (db.data.activityFeed) {
-      const allActivities = Array.from(db.data.activityFeed.values())
-        .filter(a => a.userId === userId)
-        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-        .slice(0, 10);
-      
-      recentActivity.push(...allActivities);
-    }
+        // Get user data
+        const userData = db.data.users?.get(userId);
+        if (!userData) {
+            return res.status(404).json({
+                success: false,
+                error: 'User not found'
+            });
+        }
 
-    // Calculate rank
-    let rank = 0;
-    if (db.data.users) {
-      const allUsers = Array.from(db.data.users.values());
-      const sortedByBalance = allUsers.sort((a, b) => (b.balance || 0) - (a.balance || 0));
-      rank = sortedByBalance.findIndex(u => u.userId === userId) + 1;
-    }
+        // Get achievements (if available)
+        const achievements = [];
+        if (db.data.userAchievements) {
+            for (const [key, data] of db.data.userAchievements.entries()) {
+                if (key.startsWith(userId)) {
+                    achievements.push(data);
+                }
+            }
+        }
 
-    res.json({
-      success: true,
-      profile: {
-        userId: userData.userId,
-        username: userData.username || `User${userId.substring(0, 4)}`,
-        avatar: userData.avatar || null,
-        balance: userData.balance || 0,
-        rank,
-        joinedAt: userData.createdAt || new Date().toISOString(),
-        totalTrades: userData.totalTrades || 0,
-        totalEarned: userData.totalEarned || 0,
-        totalSpent: userData.totalSpent || 0,
-        level: userData.level || 1,
-        achievements,
-        recentActivity,
-        premiumTier: userData.premiumTier || 'free'
-      }
-    });
-  } catch (error) {
-    console.error('[NRC API] Error fetching profile:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to fetch profile'
-    });
-  }
+        // Get recent activity
+        const recentActivity = [];
+        if (db.data.activityFeed) {
+            const allActivities = Array.from(db.data.activityFeed.values())
+                .filter(a => a.userId === userId)
+                .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+                .slice(0, 10);
+
+            recentActivity.push(...allActivities);
+        }
+
+        // Calculate rank
+        let rank = 0;
+        if (db.data.users) {
+            const allUsers = Array.from(db.data.users.values());
+            const sortedByBalance = allUsers.sort((a, b) => (b.balance || 0) - (a.balance || 0));
+            rank = sortedByBalance.findIndex(u => u.userId === userId) + 1;
+        }
+
+        res.json({
+            success: true,
+            profile: {
+                userId: userData.userId,
+                username: userData.username || `User${userId.substring(0, 4)}`,
+                avatar: userData.avatar || null,
+                balance: userData.balance || 0,
+                rank,
+                joinedAt: userData.createdAt || new Date().toISOString(),
+                totalTrades: userData.totalTrades || 0,
+                totalEarned: userData.totalEarned || 0,
+                totalSpent: userData.totalSpent || 0,
+                level: userData.level || 1,
+                achievements,
+                recentActivity,
+                premiumTier: userData.premiumTier || 'free'
+            }
+        });
+    } catch (error) {
+        console.error('[NRC API] Error fetching profile:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch profile'
+        });
+    }
 });
 
 // Export price functions for socket use
-module.exports = { 
-    router, 
+module.exports = {
+    router,
     initDB,
     calculateDynamicPrice,
     updatePriceHistory,

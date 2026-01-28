@@ -1,13 +1,13 @@
-const { getDatabase } = require('../database/simple-db');
+const mongoService = require('../database/mongoService');
 const { logger } = require('../utils/logger');
 
 class AnalyticsHandler {
     constructor(client) {
         this.client = client;
-        this.db = getDatabase();
         this.setupListeners();
-        logger.info('📊 Analytics Handler initialized');
+        logger.info('📊 Analytics Handler initialized (MongoDB mode)');
     }
+
 
     setupListeners() {
         // Message tracking
@@ -19,32 +19,17 @@ class AnalyticsHandler {
         logger.info('📊 Analytics event listeners registered');
     }
 
-    trackMessage(message) {
+    async trackMessage(message) {
         try {
             if (message.author.bot) return;
             if (!message.guild) return;
 
             const guildId = message.guild.id;
-            const analytics = this.getGuildAnalytics(guildId);
-            const today = new Date().toISOString().split('T')[0];
+            const channelId = message.channel.id;
+            const userId = message.author.id;
 
-            // Increment total messages
-            analytics.messages.total = (analytics.messages.total || 0) + 1;
-
-            // Daily messages
-            if (!analytics.messages.daily) analytics.messages.daily = {};
-            analytics.messages.daily[today] = (analytics.messages.daily[today] || 0) + 1;
-
-            // By channel
-            if (!analytics.messages.byChannel) analytics.messages.byChannel = {};
-            analytics.messages.byChannel[message.channel.id] = (analytics.messages.byChannel[message.channel.id] || 0) + 1;
-
-            // By user
-            if (!analytics.messages.byUser) analytics.messages.byUser = {};
-            analytics.messages.byUser[message.author.id] = (analytics.messages.byUser[message.author.id] || 0) + 1;
-
-            // Save to database
-            this.saveGuildAnalytics(guildId, analytics);
+            // Use MongoDB service for analytics tracking
+            await mongoService.incrementMessage(guildId, channelId, userId);
 
             // Broadcast update
             if (this.client.socket && this.client.socket.connected) {
@@ -53,7 +38,6 @@ class AnalyticsHandler {
                     event: 'analytics_updated',
                     data: {
                         type: 'message',
-                        total: analytics.messages.total,
                         timestamp: new Date().toISOString(),
                     },
                 });
@@ -62,6 +46,7 @@ class AnalyticsHandler {
             logger.error('[Analytics] Error tracking message:', error);
         }
     }
+
 
     trackVoiceState(oldState, newState) {
         try {
