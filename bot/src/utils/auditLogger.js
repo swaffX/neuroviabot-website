@@ -18,7 +18,7 @@ class AuditLogger {
         this.io = io;
         logger.info('[AuditLogger] Socket.IO instance set for real-time broadcasting');
     }
-    
+
     /**
      * Set Socket.IO client for emitting to backend
      * @param {Object} socket - Socket.IO client instance
@@ -159,22 +159,20 @@ class AuditLogger {
                 timestamp: new Date().toISOString(),
             };
 
-            // Save to database (guild settings)
+            // Disable local database storage for audit logs to prevent CPU spikes and redundant storage
+            // The backend handles data persistence via Socket.IO events (auditLogStorage.js)
+            /* 
             const settings = this.db.getGuildSettings(guildId) || {};
             if (!settings.auditLogs) {
                 settings.auditLogs = [];
             }
-
-            settings.auditLogs.unshift(auditEntry); // Add to beginning
-
-            // Keep only last 1000 entries per guild
+            settings.auditLogs.unshift(auditEntry);
             if (settings.auditLogs.length > 1000) {
                 settings.auditLogs = settings.auditLogs.slice(0, 1000);
             }
-
             this.db.updateGuildSettings(guildId, settings);
-            // Also write to legacy map for compatibility
-            try { this.db.addAuditLog(guildId, auditEntry); } catch (e) { /* ignore */ }
+            try { this.db.addAuditLog(guildId, auditEntry); } catch (e) { } 
+            */
 
             logger.debug(`[AuditLogger] Logged action: ${action} in guild ${guildId}`);
 
@@ -197,13 +195,13 @@ class AuditLogger {
                 severity: this.getSeverity(action),
                 timestamp: auditEntry.timestamp,
             };
-            
+
             // Try Socket.IO server (if available)
             if (this.io) {
                 this.io.to(`guild_${guildId}`).emit('audit_log_entry', formattedEntry);
                 logger.debug(`[AuditLogger] Broadcasted audit log to guild_${guildId} via io.to`);
             }
-            
+
             // Try Socket.IO client (bot to backend)
             if (this.socketClient && this.socketClient.connected) {
                 this.socketClient.emit('bot_audit_log_entry', {
@@ -237,8 +235,8 @@ class AuditLogger {
             }
 
             if (filters.userId) {
-                logs = logs.filter(log => 
-                    log.executor?.id === filters.userId || 
+                logs = logs.filter(log =>
+                    log.executor?.id === filters.userId ||
                     log.target?.id === filters.userId
                 );
             }
@@ -286,7 +284,7 @@ class AuditLogger {
             const cutoffDate = new Date();
             cutoffDate.setDate(cutoffDate.getDate() - days);
 
-            settings.auditLogs = settings.auditLogs.filter(log => 
+            settings.auditLogs = settings.auditLogs.filter(log =>
                 new Date(log.timestamp) >= cutoffDate
             );
 
@@ -341,7 +339,7 @@ class AuditLogger {
         const dangerActions = ['ROLE_DELETE', 'CHANNEL_DELETE', 'MEMBER_BAN', 'MESSAGE_BULK_DELETE', 'WEBHOOK_DELETE', 'EMOJI_DELETE'];
         const warningActions = ['ROLE_UPDATE', 'CHANNEL_UPDATE', 'MEMBER_KICK', 'SETTINGS_CHANGE', 'MEMBER_UPDATE', 'GUILD_UPDATE', 'WEBHOOK_UPDATE', 'EMOJI_UPDATE'];
         const successActions = ['ROLE_CREATE', 'CHANNEL_CREATE', 'MEMBER_JOIN', 'MEMBER_UNBAN', 'EMOJI_CREATE', 'WEBHOOK_CREATE', 'INVITE_CREATE'];
-        
+
         if (dangerActions.includes(action)) return 'danger';
         if (warningActions.includes(action)) return 'warning';
         if (successActions.includes(action)) return 'success';
