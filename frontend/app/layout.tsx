@@ -100,7 +100,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={poppins.variable}>
+    <html lang="tr" className={poppins.variable}>
       <body className="font-sans antialiased">
         <AuthProvider>
           <LanguageProvider>
