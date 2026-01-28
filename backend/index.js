@@ -304,9 +304,22 @@ io.on('connection', (socket) => {
   });
 
   // Audit log entry from bot
-  socket.on('bot_audit_log_entry', (data) => {
+  socket.on('bot_audit_log_entry', async (data) => {
     const { guildId, entry } = data;
     console.log(`[Socket.IO] 📋 Audit log entry received for guild ${guildId}:`, entry.action);
+
+    // Save to audit log storage
+    try {
+      const { getAuditLogStorage } = require('./utils/auditLogStorage');
+      const auditStorage = getAuditLogStorage();
+      await auditStorage.logAction({
+        guildId,
+        ...entry
+      });
+      console.log(`[Socket.IO] 📋 Audit log saved to storage for guild ${guildId}`);
+    } catch (error) {
+      console.error(`[Socket.IO] Error saving audit log:`, error.message);
+    }
 
     // Broadcast to frontend clients in guild room
     io.to(`guild_${guildId}`).emit('audit_log_entry', entry);
