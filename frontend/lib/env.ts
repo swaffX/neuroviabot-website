@@ -85,7 +85,7 @@ export const env = {
   isTest: process.env.NODE_ENV === 'test',
 
   // API
-  apiUrl: getEnv('NEXT_PUBLIC_API_URL') || 'http://localhost:3000/api',
+  apiUrl: getEnv('NEXT_PUBLIC_API_URL') || 'https://neuroviabot.xyz/api',
   apiTimeout: getEnvNumber('NEXT_PUBLIC_API_TIMEOUT', 30000),
 
   // Discord
