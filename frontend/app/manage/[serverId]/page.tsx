@@ -41,6 +41,7 @@ import { useSocket } from '@/contexts/SocketContext';
 import { useNotification } from '../../../contexts/NotificationContext';
 import { DocumentTextIcon, UsersIcon } from '@heroicons/react/24/outline';
 import ManageNavbar from '@/components/layout/ManageNavbar';
+import { getDiscordGuildIconUrl } from '@/lib/discord';
 
 // Feature Categories - NEW MANAGEMENT CATEGORIES FIRST
 const categories = [
@@ -271,7 +272,7 @@ export default function ServerDashboard() {
   const router = useRouter();
   const serverId = params?.serverId as string;
   const { showNotification } = useNotification();
-  
+
   const [activeCategory, setActiveCategory] = useState('overview');
   const [guild, setGuild] = useState<any>(null);
   const [guilds, setGuilds] = useState<any[]>([]);
@@ -348,7 +349,7 @@ export default function ServerDashboard() {
       ]);
       setInitialLoading(false);
     };
-    
+
     loadInitialData();
   }, [serverId]);
 
@@ -392,7 +393,7 @@ export default function ServerDashboard() {
       const response = await fetch(`${API_URL}/api/guilds/user`, {
         credentials: 'include',
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         const withBot = data.filter((g: any) => g.botPresent);
@@ -409,7 +410,7 @@ export default function ServerDashboard() {
       const response = await fetch(`${API_URL}/api/notifications/notifications`, {
         credentials: 'include',
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setNotifications(data.notifications || []);
@@ -426,7 +427,7 @@ export default function ServerDashboard() {
       const response = await fetch(`${API_URL}/api/guilds/${serverId}`, {
         credentials: 'include',
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setGuild(data);
@@ -440,7 +441,7 @@ export default function ServerDashboard() {
     try {
       // NO setLoading here - only initial load shows loading
       const API_URL = (process.env as any).NEXT_PUBLIC_API_URL || 'https://neuroviabot.xyz';
-      
+
       // Önce bot API'den ayarları al
       try {
         const botResponse = await fetch(`${API_URL}/api/bot/settings/${serverId}`, {
@@ -454,12 +455,12 @@ export default function ServerDashboard() {
       } catch (botError) {
         console.error('Bot API hatası:', botError);
       }
-      
+
       // Fallback: Backend API
       const response = await fetch(`${API_URL}/api/guild-settings/${serverId}/settings`, {
         credentials: 'include',
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setSettings(data);
@@ -473,7 +474,7 @@ export default function ServerDashboard() {
   const toggleFeature = async (category: string, featureId: string, currentValue: boolean) => {
     try {
       const API_URL = (process.env as any).NEXT_PUBLIC_API_URL || 'https://neuroviabot.xyz';
-      
+
       // Önce bot API'ye gönder
       try {
         const botResponse = await fetch(`${API_URL}/api/bot/settings/${serverId}/update`, {
@@ -489,7 +490,7 @@ export default function ServerDashboard() {
             }
           }),
         });
-        
+
         if (botResponse.ok) {
           // Refresh settings to get latest from server
           await fetchGuildSettings();
@@ -498,7 +499,7 @@ export default function ServerDashboard() {
       } catch (botError) {
         console.error('Bot API hatası:', botError);
       }
-      
+
       // Fallback: Backend API
       const categoryMap: any = {
         'welcome': 'welcome',
@@ -508,9 +509,9 @@ export default function ServerDashboard() {
         'automation': 'autorole',
         'general': 'general'
       };
-      
+
       const backendCategory = categoryMap[category] || category;
-      
+
       const response = await fetch(`${API_URL}/api/guild-settings/${serverId}/settings/${backendCategory}`, {
         method: 'PUT',
         headers: {
@@ -521,7 +522,7 @@ export default function ServerDashboard() {
           [featureId]: !currentValue
         }),
       });
-      
+
       if (response.ok) {
         // Refresh settings to get latest from server
         await fetchGuildSettings();
@@ -530,11 +531,11 @@ export default function ServerDashboard() {
       console.error('Failed to toggle feature:', error);
     }
   };
-  
+
   const updateSetting = async (category: string, key: string, value: any) => {
     try {
       const API_URL = (process.env as any).NEXT_PUBLIC_API_URL || 'https://neuroviabot.xyz';
-      
+
       // Önce bot API'ye gönder
       try {
         const botResponse = await fetch(`${API_URL}/api/bot/settings/${serverId}/update`, {
@@ -550,7 +551,7 @@ export default function ServerDashboard() {
             }
           }),
         });
-        
+
         if (botResponse.ok) {
           await fetchGuildSettings();
           return;
@@ -558,7 +559,7 @@ export default function ServerDashboard() {
       } catch (botError) {
         console.error('Bot API hatası:', botError);
       }
-      
+
       // Fallback: Backend API
       const categoryMap: any = {
         'welcome': 'welcome',
@@ -568,9 +569,9 @@ export default function ServerDashboard() {
         'automation': 'autorole',
         'general': 'general'
       };
-      
+
       const backendCategory = categoryMap[category] || category;
-      
+
       const response = await fetch(`${API_URL}/api/guild-settings/${serverId}/settings/${backendCategory}`, {
         method: 'PUT',
         headers: {
@@ -581,7 +582,7 @@ export default function ServerDashboard() {
           [key]: value
         }),
       });
-      
+
       if (response.ok) {
         await fetchGuildSettings();
       }
@@ -608,7 +609,7 @@ export default function ServerDashboard() {
       <div className="min-h-screen bg-gradient-to-b from-[#0F0F14] via-[#1A1B23] to-[#0F0F14] relative overflow-hidden">
         {/* Animated Background */}
         <div className="fixed inset-0 z-0">
-          <motion.div 
+          <motion.div
             className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
             animate={{
               scale: [1, 1.2, 1],
@@ -620,7 +621,7 @@ export default function ServerDashboard() {
               ease: "easeInOut"
             }}
           />
-          <motion.div 
+          <motion.div
             className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
             animate={{
               scale: [1, 1.3, 1],
@@ -681,7 +682,7 @@ export default function ServerDashboard() {
     <div className="min-h-screen bg-gradient-to-b from-[#0F0F14] via-[#1A1B23] to-[#0F0F14] relative">
       {/* Animated Background */}
       <div className="fixed inset-0 z-0">
-        <motion.div 
+        <motion.div
           className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"
           animate={{
             scale: [1, 1.2, 1],
@@ -693,7 +694,7 @@ export default function ServerDashboard() {
             ease: "easeInOut"
           }}
         />
-        <motion.div 
+        <motion.div
           className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"
           animate={{
             scale: [1, 1.3, 1],
@@ -731,19 +732,18 @@ export default function ServerDashboard() {
         )}
 
         {/* Sidebar with smooth animations */}
-        <motion.aside 
+        <motion.aside
           initial={false}
-          animate={{ 
+          animate={{
             x: 0,
-            opacity: 1 
+            opacity: 1
           }}
           transition={{ duration: 0.15, type: "tween", ease: "easeOut" }}
-          className={`fixed left-0 top-16 bottom-0 w-72 bg-gray-900/80 backdrop-blur-xl border-r border-white/10 shadow-2xl z-40 flex flex-col transition-transform duration-200 ease-out ${
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-          }`}
+          className={`fixed left-0 top-16 bottom-0 w-72 bg-gray-900/80 backdrop-blur-xl border-r border-white/10 shadow-2xl z-40 flex flex-col transition-transform duration-200 ease-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+            }`}
         >
           {/* Server Info with gradient */}
-          <motion.div 
+          <motion.div
             initial={false}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.15 }}
@@ -751,7 +751,7 @@ export default function ServerDashboard() {
           >
             <div className="relative">
               <div className="flex items-center gap-4">
-                <motion.div 
+                <motion.div
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ type: "spring", stiffness: 300 }}
                   className="relative"
@@ -760,7 +760,7 @@ export default function ServerDashboard() {
                   <div className="relative w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center border-2 border-white/20 overflow-hidden">
                     {guild?.icon ? (
                       <img
-                        src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128`}
+                        src={getDiscordGuildIconUrl(guild.id, guild.icon, 128)}
                         alt={guild.name}
                         className="w-full h-full object-cover"
                       />
@@ -786,46 +786,45 @@ export default function ServerDashboard() {
           <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-purple-500/50 scrollbar-track-gray-800/30 hover:scrollbar-thumb-purple-500/70">
             {/* Categories with stagger animation */}
             <div className="p-3">
-            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 px-3">Kategoriler</p>
-            {categories.map((category, index) => {
-              const Icon = category.icon;
-              const isActive = activeCategory === category.id;
-              return (
-                <motion.button
-                  key={category.id}
-                  initial={false}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.15 }}
-                  whileHover={{ scale: 1.02, x: 4 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all mb-2 relative group ${
-                    isActive
-                      ? 'bg-gradient-to-r ' + category.color + ' text-white shadow-lg shadow-purple-500/20'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {/* Indicator line */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeIndicator"
-                      className="absolute left-0 top-0 bottom-0 w-1 bg-white rounded-r-full"
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    />
-                  )}
-                  <Icon className="w-5 h-5 flex-shrink-0" />
-                  <span className="font-semibold text-sm flex-1 text-left">{category.name}</span>
-                  {category.premium && (
-                    <motion.div
-                      animate={{ rotate: [0, 10, -10, 0] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      <SparklesIcon className="w-4 h-4 text-yellow-400" />
-                    </motion.div>
-                  )}
-                </motion.button>
-              );
-            })}
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 px-3">Kategoriler</p>
+              {categories.map((category, index) => {
+                const Icon = category.icon;
+                const isActive = activeCategory === category.id;
+                return (
+                  <motion.button
+                    key={category.id}
+                    initial={false}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ duration: 0.15 }}
+                    whileHover={{ scale: 1.02, x: 4 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setActiveCategory(category.id)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all mb-2 relative group ${isActive
+                        ? 'bg-gradient-to-r ' + category.color + ' text-white shadow-lg shadow-purple-500/20'
+                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      }`}
+                  >
+                    {/* Indicator line */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeIndicator"
+                        className="absolute left-0 top-0 bottom-0 w-1 bg-white rounded-r-full"
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      />
+                    )}
+                    <Icon className="w-5 h-5 flex-shrink-0" />
+                    <span className="font-semibold text-sm flex-1 text-left">{category.name}</span>
+                    {category.premium && (
+                      <motion.div
+                        animate={{ rotate: [0, 10, -10, 0] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        <SparklesIcon className="w-4 h-4 text-yellow-400" />
+                      </motion.div>
+                    )}
+                  </motion.button>
+                );
+              })}
             </div>
           </div>
         </motion.aside>
@@ -836,23 +835,23 @@ export default function ServerDashboard() {
             <motion.div
               key={activeCategory}
               initial={{ opacity: 0, x: -20 }}
-              animate={{ 
-                opacity: 1, 
+              animate={{
+                opacity: 1,
                 x: 0,
-                transition: { 
-                  duration: 0.15, 
+                transition: {
+                  duration: 0.15,
                   ease: [0.4, 0, 0.2, 1] // Cubic bezier for smooth easing
                 }
               }}
-              exit={{ 
-                opacity: 0, 
+              exit={{
+                opacity: 0,
                 x: 20,
                 transition: { duration: 0.1 }
               }}
               style={{ willChange: 'transform, opacity' }} // Hardware acceleration
             >
               {/* Category Header - Hero Style */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
@@ -864,7 +863,7 @@ export default function ServerDashboard() {
                     <div className={`absolute inset-0 bg-gradient-to-br ${currentCategory.color} opacity-10`} />
                   )}
                 </div>
-                
+
                 {/* Animated Glow Effect */}
                 {currentCategory && (
                   <motion.div
@@ -887,13 +886,13 @@ export default function ServerDashboard() {
                     {currentCategory && (
                       <>
                         {/* Icon with Animation */}
-                        <motion.div 
+                        <motion.div
                           initial={{ scale: 0, rotate: -180 }}
                           animate={{ scale: 1, rotate: 0 }}
-                          transition={{ 
-                            type: "spring", 
+                          transition={{
+                            type: "spring",
                             stiffness: 200,
-                            delay: 0.1 
+                            delay: 0.1
                           }}
                           className="relative"
                         >
@@ -902,7 +901,7 @@ export default function ServerDashboard() {
                             <currentCategory.icon className="w-12 h-12 text-white" />
                           </div>
                         </motion.div>
-                        
+
                         {/* Text Content */}
                         <div className="flex-1">
                           <motion.div
@@ -915,7 +914,7 @@ export default function ServerDashboard() {
                                 {currentCategory.name}
                               </h1>
                               {currentCategory.premium && (
-                                <motion.span 
+                                <motion.span
                                   initial={{ scale: 0 }}
                                   animate={{ scale: 1 }}
                                   transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
@@ -931,7 +930,7 @@ export default function ServerDashboard() {
                                 </motion.span>
                               )}
                             </div>
-                            <motion.p 
+                            <motion.p
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               transition={{ delay: 0.3 }}
@@ -940,9 +939,9 @@ export default function ServerDashboard() {
                               {currentCategory.description}
                             </motion.p>
                           </motion.div>
-                          
+
                           {/* Stats or Info Cards */}
-                          <motion.div 
+                          <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
@@ -972,136 +971,136 @@ export default function ServerDashboard() {
               <div className="space-y-4">
                 {/* NEW MANAGEMENT COMPONENTS */}
                 {activeCategory === 'overview' && (
-                  <ServerOverview 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <ServerOverview
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {activeCategory === 'members' && (
-                  <MemberManagement 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <MemberManagement
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {activeCategory === 'roles' && (
-                  <RoleEditor 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <RoleEditor
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {activeCategory === 'channels' && (
-                  <ChannelManager 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <ChannelManager
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {activeCategory === 'audit' && (
-                  <AuditLog 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <AuditLog
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {activeCategory === 'server-stats' && (
-                  <ServerStatsSettings 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <ServerStatsSettings
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {activeCategory === 'reaction-roles' && (
-                  <RoleReactionSettings 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <RoleReactionSettings
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {/* EXISTING COMPONENTS */}
                 {/* Bot Commands Component */}
                 {activeCategory === 'commands' && (
-                  <BotCommands 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <BotCommands
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
-                
-                
-                
+
+
+
                 {/* Feature Manager Component */}
                 {activeCategory === 'features' && (
-                  <FeatureManager 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <FeatureManager
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {/* Welcome Settings Component */}
                 {activeCategory === 'welcome' && (
-                  <WelcomeSettings 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <WelcomeSettings
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {/* Moderation Settings Component */}
                 {activeCategory === 'moderation' && (
-                  <ModerationSettings 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <ModerationSettings
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {/* Leveling Settings Component */}
                 {activeCategory === 'leveling' && (
-                  <LevelingSettings 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <LevelingSettings
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {/* Backup Settings Component */}
                 {activeCategory === 'backup' && (
-                  <BackupSettings 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <BackupSettings
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {/* Security Settings Component */}
                 {activeCategory === 'security' && (
-                  <SecuritySettings 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <SecuritySettings
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {/* Analytics Settings Component */}
                 {activeCategory === 'analytics' && (
-                  <AnalyticsSettings 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <AnalyticsSettings
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {/* Automation Settings Component */}
                 {activeCategory === 'automation' && (
-                  <AutomationSettings 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <AutomationSettings
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
 
                 {activeCategory === 'premium' && (
-                  <PremiumSettings 
-                    guildId={serverId} 
-                    userId={user?.id || 'unknown'} 
+                  <PremiumSettings
+                    guildId={serverId}
+                    userId={user?.id || 'unknown'}
                   />
                 )}
-                
+
                 {/* Other Features */}
                 {activeCategory !== 'overview' && activeCategory !== 'members' && activeCategory !== 'channels' && activeCategory !== 'audit' && activeCategory !== 'server-stats' && activeCategory !== 'commands' && activeCategory !== 'features' && activeCategory !== 'welcome' && activeCategory !== 'moderation' && activeCategory !== 'leveling' && activeCategory !== 'music' && activeCategory !== 'games' && activeCategory !== 'backup' && activeCategory !== 'security' && activeCategory !== 'analytics' && activeCategory !== 'automation' && activeCategory !== 'roles' && activeCategory !== 'reaction-roles' && activeCategory !== 'custom' && activeCategory !== 'premium' && currentCategory?.features?.map((feature) => {
                   // Map categories to backend format
@@ -1113,7 +1112,7 @@ export default function ServerDashboard() {
                     'automation': 'autorole',
                     'general': 'general'
                   };
-                  
+
                   const backendCategory = categoryMap[activeCategory] || activeCategory;
                   const isEnabled = settings[backendCategory]?.enabled !== false && settings[backendCategory]?.[feature.id] !== false;
                   const isExpanded = expandedFeature === feature.id;
@@ -1131,7 +1130,7 @@ export default function ServerDashboard() {
                             <h3 className="text-white font-bold text-lg mb-1">{feature.name}</h3>
                             <p className="text-gray-400 text-sm">{feature.description}</p>
                           </div>
-                          
+
                           <div className="flex items-center gap-3">
                             {/* Expand Button */}
                             {isEnabled && (
@@ -1140,9 +1139,8 @@ export default function ServerDashboard() {
                                 className="p-2 rounded-lg hover:bg-white/5 transition-colors"
                               >
                                 <ChevronDownIcon
-                                  className={`w-5 h-5 text-gray-400 transition-transform ${
-                                    isExpanded ? 'rotate-180' : ''
-                                  }`}
+                                  className={`w-5 h-5 text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''
+                                    }`}
                                 />
                               </button>
                             )}
@@ -1150,16 +1148,14 @@ export default function ServerDashboard() {
                             {/* Toggle */}
                             <button
                               onClick={() => toggleFeature(activeCategory, feature.id, isEnabled)}
-                              className={`relative w-14 h-7 rounded-full transition-all ${
-                                isEnabled
+                              className={`relative w-14 h-7 rounded-full transition-all ${isEnabled
                                   ? 'bg-gradient-to-r from-green-500 to-emerald-500'
                                   : 'bg-gray-600'
-                              }`}
+                                }`}
                             >
                               <span
-                                className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full transition-transform ${
-                                  isEnabled ? 'translate-x-7' : ''
-                                }`}
+                                className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full transition-transform ${isEnabled ? 'translate-x-7' : ''
+                                  }`}
                               />
                             </button>
                           </div>
@@ -1202,7 +1198,7 @@ export default function ServerDashboard() {
                                   )}
                                 </div>
                               ))}
-                              
+
                               <button className="mt-4 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold hover:from-blue-700 hover:to-purple-700 transition-all flex items-center gap-2">
                                 <CheckCircleIcon className="w-5 h-5" />
                                 Kaydet

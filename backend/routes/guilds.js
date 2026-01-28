@@ -19,36 +19,41 @@ router.get('/user', requireAuth, async (req, res) => {
   try {
     const accessToken = req.user.accessToken;
     const db = req.app.get('db');
-    
+
     // Fetch user's guilds from Discord API
     const guildsResponse = await fetch('https://discord.com/api/v10/users/@me/guilds', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    
+
     if (!guildsResponse.ok) {
       return res.status(guildsResponse.status).json({ error: 'Failed to fetch guilds' });
     }
-    
+
     const guilds = await guildsResponse.json();
-    
+
     // Filter guilds where user has ADMINISTRATOR permission (0x8)
     const adminGuilds = guilds.filter(guild => {
       const permissions = BigInt(guild.permissions);
       return guild.owner || (permissions & BigInt(0x8)) === BigInt(0x8);
     });
-    
+
     // Get bot guild IDs from database
     const botGuildIds = Array.from(db.data.guilds.keys());
-    
+
     // Bot guild info (reduced logging)
-    
+
+    // Bot API URL
+    const BOT_API_URL = process.env.BOT_API_URL || 'http://localhost:3002';
+    const BOT_API_KEY = process.env.BOT_API_KEY || 'neuroviabot-secret';
+
     // Check bot presence via Discord API for each guild
     const enhancedGuilds = await Promise.all(adminGuilds.map(async (guild) => {
       const botGuild = db.data.guilds.get(guild.id);
       let botPresent = botGuildIds.includes(guild.id);
-      
+      let realMemberCount = null;
+
       // Double-check via Discord API if not found in database
       if (!botPresent) {
         try {
@@ -57,11 +62,11 @@ router.get('/user', requireAuth, async (req, res) => {
               'Authorization': `Bot ${process.env.DISCORD_TOKEN}`,
             },
           });
-          
+
           if (botCheckResponse.ok) {
             botPresent = true;
             // Bot found via Discord API (reduced logging)
-            
+
             // Add to database if not present
             if (!botGuild) {
               const guildData = {
@@ -80,9 +85,28 @@ router.get('/user', requireAuth, async (req, res) => {
           // Discord API check failed (reduced logging)
         }
       }
-      
+
+      // If bot is present, try to get real member count from bot API
+      if (botPresent) {
+        try {
+          const statsResponse = await fetch(`${BOT_API_URL}/api/bot/stats/${guild.id}`, {
+            headers: {
+              'Authorization': `Bearer ${BOT_API_KEY}`,
+            },
+            timeout: 2000, // Short timeout for fast response
+          });
+
+          if (statsResponse.ok) {
+            const statsData = await statsResponse.json();
+            realMemberCount = statsData?.stats?.memberCount || null;
+          }
+        } catch (error) {
+          // Bot API failed, fallback to database
+        }
+      }
+
       // Guild processed (reduced logging)
-      
+
       return {
         id: guild.id,
         name: guild.name,
@@ -90,10 +114,10 @@ router.get('/user', requireAuth, async (req, res) => {
         owner: guild.owner,
         permissions: guild.permissions,
         botPresent: botPresent,
-        memberCount: botGuild?.memberCount || null,
+        memberCount: realMemberCount || botGuild?.memberCount || null,
       };
     }));
-    
+
     res.json(enhancedGuilds);
   } catch (error) {
     console.error('Error fetching user guilds:', error);
@@ -104,19 +128,19 @@ router.get('/user', requireAuth, async (req, res) => {
 // Get guild features - Automatic detection of enabled features
 router.get('/:guildId/features', requireAuth, async (req, res) => {
   const { guildId } = req.params;
-  
+
   try {
     const db = req.app.get('db');
     const guildData = db.data.guilds.get(guildId);
-    
+
     if (!guildData) {
       return res.status(404).json({ error: 'Guild not found' });
     }
-    
+
     // Get settings from database
     const settings = guildData.settings || {};
     const serverStats = guildData.serverStats || {};
-    
+
     // Build features object
     const features = {
       welcome: {
@@ -171,7 +195,7 @@ router.get('/:guildId/features', requireAuth, async (req, res) => {
         features: guildData.premium?.features || []
       }
     };
-    
+
     res.json({ features });
   } catch (error) {
     console.error('Error fetching guild features:', error);
@@ -182,12 +206,12 @@ router.get('/:guildId/features', requireAuth, async (req, res) => {
 // Get guild stats
 router.get('/:guildId/stats', requireAuth, async (req, res) => {
   const { guildId } = req.params;
-  
+
   try {
     // TODO: Fetch from actual Discord bot client
     // const guild = client.guilds.cache.get(guildId);
     // Return real stats when bot is in guild
-    
+
     res.json({
       memberCount: 0,
       onlineMembers: 0,
@@ -203,25 +227,46 @@ router.get('/:guildId/stats', requireAuth, async (req, res) => {
 // Get guild info
 router.get('/:guildId', requireAuth, async (req, res) => {
   const { guildId } = req.params;
-  
+
   try {
     const db = req.app.get('db');
     const guild = db.data.guilds.get(guildId);
-    
+
     if (!guild) {
-      return res.status(404).json({ 
+      return res.status(404).json({
         error: 'Guild not found',
         message: 'Bot is not in this guild'
       });
     }
-    
+
+    // Try to get fresh data from bot API
+    const BOT_API_URL = process.env.BOT_API_URL || 'http://localhost:3002';
+    const BOT_API_KEY = process.env.BOT_API_KEY || 'neuroviabot-secret';
+
+    let freshGuildData = null;
+    try {
+      const botResponse = await fetch(`${BOT_API_URL}/api/bot/stats/guild/${guildId}`, {
+        headers: {
+          'Authorization': `Bearer ${BOT_API_KEY}`,
+        },
+      });
+
+      if (botResponse.ok) {
+        freshGuildData = await botResponse.json();
+      }
+    } catch (error) {
+      // Bot API failed, use database data
+      console.log(`[Guilds] Bot API failed for guild ${guildId}, using cached data`);
+    }
+
+    // Merge fresh data with cached data (fresh takes priority)
     res.json({
-      id: guild.id,
-      name: guild.name,
-      icon: guild.icon,
-      memberCount: guild.memberCount,
-      ownerId: guild.ownerId,
-      description: guild.description,
+      id: guildId,
+      name: freshGuildData?.name || guild.name,
+      icon: freshGuildData?.icon || guild.icon,
+      memberCount: freshGuildData?.memberCount || guild.memberCount,
+      ownerId: freshGuildData?.ownerId || guild.ownerId,
+      description: freshGuildData?.description || guild.description,
     });
   } catch (error) {
     console.error('Error fetching guild:', error);
@@ -232,7 +277,7 @@ router.get('/:guildId', requireAuth, async (req, res) => {
 // Get guild channels
 router.get('/:guildId/channels', requireAuth, async (req, res) => {
   const { guildId } = req.params;
-  
+
   try {
     // Fetch channels from Discord API
     const response = await fetch(`https://discord.com/api/v10/guilds/${guildId}/channels`, {
@@ -240,13 +285,13 @@ router.get('/:guildId/channels', requireAuth, async (req, res) => {
         'Authorization': `Bot ${process.env.DISCORD_TOKEN}`,
       },
     });
-    
+
     if (!response.ok) {
       return res.status(response.status).json({ error: 'Failed to fetch channels' });
     }
-    
+
     const channels = await response.json();
-    
+
     // Filter text channels and sort by position
     const textChannels = channels
       .filter(channel => channel.type === 0 || channel.type === 5) // Text and announcement
@@ -258,7 +303,7 @@ router.get('/:guildId/channels', requireAuth, async (req, res) => {
         position: channel.position,
         parent_id: channel.parent_id,
       }));
-    
+
     res.json(textChannels);
   } catch (error) {
     console.error('Error fetching channels:', error);
@@ -269,7 +314,7 @@ router.get('/:guildId/channels', requireAuth, async (req, res) => {
 // Get guild roles
 router.get('/:guildId/roles', requireAuth, async (req, res) => {
   const { guildId } = req.params;
-  
+
   try {
     // Fetch roles from Discord API
     const response = await fetch(`https://discord.com/api/v10/guilds/${guildId}/roles`, {
@@ -277,13 +322,13 @@ router.get('/:guildId/roles', requireAuth, async (req, res) => {
         'Authorization': `Bot ${process.env.DISCORD_TOKEN}`,
       },
     });
-    
+
     if (!response.ok) {
       return res.status(response.status).json({ error: 'Failed to fetch roles' });
     }
-    
+
     const roles = await response.json();
-    
+
     // Sort by position (highest first)
     const sortedRoles = roles
       .sort((a, b) => b.position - a.position)
@@ -295,7 +340,7 @@ router.get('/:guildId/roles', requireAuth, async (req, res) => {
         permissions: role.permissions,
         mentionable: role.mentionable,
       }));
-    
+
     res.json(sortedRoles);
   } catch (error) {
     console.error('Error fetching roles:', error);
@@ -306,7 +351,7 @@ router.get('/:guildId/roles', requireAuth, async (req, res) => {
 // Get all guild settings
 router.get('/:guildId/settings', requireAuth, async (req, res) => {
   const { guildId } = req.params;
-  
+
   try {
     // Get settings from bot database
     const settings = db.getGuildSettings(guildId);
@@ -321,11 +366,11 @@ router.get('/:guildId/settings', requireAuth, async (req, res) => {
 router.put('/:guildId/settings/:category', requireAuth, async (req, res) => {
   const { guildId, category } = req.params;
   const updates = req.body;
-  
+
   try {
     // Update in bot database
     const settings = db.updateGuildSettingsCategory(guildId, category, updates);
-    
+
     // Emit real-time update via WebSocket
     const io = req.app.get('io');
     if (io) {
@@ -336,7 +381,7 @@ router.put('/:guildId/settings/:category', requireAuth, async (req, res) => {
         timestamp: new Date().toISOString(),
       });
     }
-    
+
     res.json({ [category]: settings[category] });
   } catch (error) {
     console.error('Error updating settings:', error);
@@ -347,15 +392,15 @@ router.put('/:guildId/settings/:category', requireAuth, async (req, res) => {
 // Get specific category settings
 router.get('/:guildId/settings/:category', requireAuth, async (req, res) => {
   const { guildId, category } = req.params;
-  
+
   try {
     const settings = guildSettings.get(guildId) || {};
     const categorySettings = settings[category];
-    
+
     if (!categorySettings) {
       return res.status(404).json({ error: 'Category not found' });
     }
-    
+
     res.json(categorySettings);
   } catch (error) {
     console.error('Error fetching category settings:', error);
@@ -367,11 +412,11 @@ router.get('/:guildId/settings/:category', requireAuth, async (req, res) => {
 router.put('/:guildId/settings', requireAuth, async (req, res) => {
   const { guildId } = req.params;
   const updates = req.body;
-  
+
   try {
     // Update in bot database
     const settings = db.updateGuildSettings(guildId, updates);
-    
+
     // Emit real-time update via WebSocket
     const io = req.app.get('io');
     if (io) {
@@ -381,7 +426,7 @@ router.put('/:guildId/settings', requireAuth, async (req, res) => {
         timestamp: new Date().toISOString(),
       });
     }
-    
+
     res.json(settings);
   } catch (error) {
     console.error('Error updating settings:', error);
@@ -395,11 +440,11 @@ router.put('/:guildId/settings', requireAuth, async (req, res) => {
 router.post('/:guildId/settings', requireAuth, async (req, res) => {
   const { guildId } = req.params;
   const updates = req.body;
-  
+
   try {
     // Update in bot database
     const settings = db.updateGuildSettings(guildId, updates);
-    
+
     // Emit real-time update via WebSocket
     const io = req.app.get('io');
     if (io) {
@@ -409,7 +454,7 @@ router.post('/:guildId/settings', requireAuth, async (req, res) => {
         timestamp: new Date().toISOString(),
       });
     }
-    
+
     res.json(settings);
   } catch (error) {
     console.error('Error updating settings:', error);
@@ -420,14 +465,14 @@ router.post('/:guildId/settings', requireAuth, async (req, res) => {
 // Reset settings to defaults
 router.post('/:guildId/settings/reset', requireAuth, async (req, res) => {
   const { guildId } = req.params;
-  
+
   try {
     // Remove from storage
     guildSettings.delete(guildId);
-    
+
     // TODO: Delete from database
     // await GuildSettings.findOneAndDelete({ guildId });
-    
+
     res.json({ success: true, message: 'Settings reset to defaults' });
   } catch (error) {
     console.error('Error resetting settings:', error);

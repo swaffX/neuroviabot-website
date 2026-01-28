@@ -10,11 +10,11 @@ function setClient(clientInstance) {
 
 const authenticateBotApi = (req, res, next) => {
     const apiKey = req.headers['x-api-key'] || req.headers['authorization']?.replace('Bearer ', '');
-    
+
     if (!apiKey || apiKey !== (process.env.BOT_API_KEY || 'neuroviabot-secret')) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
-    
+
     next();
 };
 
@@ -35,7 +35,7 @@ router.get('/:guildId', authenticateBotApi, async (req, res) => {
         // REAL data from Discord
         const stats = {
             memberCount: guild.memberCount,
-            onlineMembers: guild.members.cache.filter(m => 
+            onlineMembers: guild.members.cache.filter(m =>
                 m.presence?.status && m.presence.status !== 'offline'
             ).size,
             channelCount: guild.channels.cache.size,
@@ -65,6 +65,42 @@ router.get('/:guildId', authenticateBotApi, async (req, res) => {
         logger.debug(`[BotStats] Fetched stats for guild ${guildId}`);
     } catch (error) {
         logger.error('[BotStats] Error fetching stats:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// GET /api/bot/guilds/:guildId - Get guild info (name, icon, memberCount)
+router.get('/guild/:guildId', authenticateBotApi, async (req, res) => {
+    try {
+        const { guildId } = req.params;
+
+        if (!client) {
+            return res.status(503).json({ error: 'Bot not ready' });
+        }
+
+        const guild = client.guilds.cache.get(guildId);
+        if (!guild) {
+            return res.status(404).json({ error: 'Guild not found' });
+        }
+
+        // Return fresh guild info from Discord cache
+        res.json({
+            id: guild.id,
+            name: guild.name,
+            icon: guild.icon,
+            memberCount: guild.memberCount,
+            ownerId: guild.ownerId,
+            description: guild.description,
+            banner: guild.banner,
+            splash: guild.splash,
+            vanityURLCode: guild.vanityURLCode,
+            premiumTier: guild.premiumTier,
+            premiumSubscriptionCount: guild.premiumSubscriptionCount || 0,
+        });
+
+        logger.debug(`[BotStats] Fetched guild info for ${guildId}`);
+    } catch (error) {
+        logger.error('[BotStats] Error fetching guild info:', error);
         res.status(500).json({ error: error.message });
     }
 });

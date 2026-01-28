@@ -11,6 +11,7 @@ import {
   SparklesIcon,
 } from '@heroicons/react/24/outline';
 import LoadingSkeleton from '../LoadingSkeleton';
+import { getDiscordGuildIconUrl } from '@/lib/discord';
 
 interface ServerOverviewProps {
   guildId: string;
@@ -42,7 +43,7 @@ export default function ServerOverview({ guildId, userId }: ServerOverviewProps)
   const fetchGuildInfo = async () => {
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://neuroviabot.xyz';
-      
+
       // Fetch guild basic info
       const guildResponse = await fetch(`${API_URL}/api/guilds/${guildId}`, {
         credentials: 'include',
@@ -134,7 +135,7 @@ export default function ServerOverview({ guildId, userId }: ServerOverviewProps)
           <div className="relative">
             {guildInfo.icon ? (
               <img
-                src={`https://cdn.discordapp.com/icons/${guildId}/${guildInfo.icon}.png?size=128`}
+                src={getDiscordGuildIconUrl(guildId, guildInfo.icon, 128)}
                 alt={guildInfo.name}
                 className="w-24 h-24 rounded-2xl"
               />
@@ -143,7 +144,7 @@ export default function ServerOverview({ guildId, userId }: ServerOverviewProps)
                 <ServerIcon className="w-12 h-12 text-white" />
               </div>
             )}
-            
+
             {/* Boost Badge */}
             {guildInfo.boostLevel > 0 && (
               <div className="absolute -top-2 -right-2 px-2 py-1 rounded-lg bg-gradient-to-r from-pink-500 to-purple-500 flex items-center gap-1">
@@ -159,7 +160,7 @@ export default function ServerOverview({ guildId, userId }: ServerOverviewProps)
             {guildInfo.description && (
               <p className="text-gray-400 mb-4">{guildInfo.description}</p>
             )}
-            
+
             <div className="flex flex-wrap gap-3">
               <div className="px-3 py-1 rounded-lg bg-white/5 border border-white/10">
                 <span className="text-gray-400 text-sm">Oluşturulma: </span>
@@ -167,7 +168,7 @@ export default function ServerOverview({ guildId, userId }: ServerOverviewProps)
                   {new Date(guildInfo.createdAt).toLocaleDateString('tr-TR')}
                 </span>
               </div>
-              
+
               {guildInfo.boostCount > 0 && (
                 <div className="px-3 py-1 rounded-lg bg-pink-500/10 border border-pink-500/30">
                   <span className="text-pink-400 text-sm font-medium">
@@ -194,12 +195,12 @@ export default function ServerOverview({ guildId, userId }: ServerOverviewProps)
               className="relative group"
             >
               <div className={`absolute -inset-0.5 bg-gradient-to-r ${stat.gradient} rounded-xl opacity-0 group-hover:opacity-100 blur transition-all duration-300`} />
-              
+
               <div className="relative bg-gradient-to-br from-gray-900/95 to-gray-900/80 backdrop-blur-xl border border-white/10 rounded-xl p-6">
                 <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${stat.gradient} mb-3`}>
                   <Icon className="w-6 h-6 text-white" />
                 </div>
-                
+
                 <div className="text-3xl font-black text-white mb-1">{stat.value}</div>
                 <div className="text-gray-400 text-sm">{stat.label}</div>
               </div>
@@ -219,7 +220,7 @@ export default function ServerOverview({ guildId, userId }: ServerOverviewProps)
           <ChartBarIcon className="w-6 h-6 text-purple-400" />
           <h3 className="text-xl font-bold text-white">Aktivite Grafiği</h3>
         </div>
-        
+
         <div className="h-64 flex items-center justify-center border-2 border-dashed border-white/10 rounded-xl">
           <div className="text-center">
             <ChartBarIcon className="w-16 h-16 text-gray-600 mx-auto mb-3" />

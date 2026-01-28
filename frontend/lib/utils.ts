@@ -71,7 +71,9 @@ export function getDiscordAvatarUrl(userId: string, avatarHash: string | null): 
     const defaultAvatarNum = parseInt(userId) % 5;
     return `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNum}.png`;
   }
-  return `https://cdn.discordapp.com/avatars/${userId}/${avatarHash}.png?size=128`;
+  // GIF animasyonlu avatarları destekle (a_ ile başlayanlar)
+  const extension = avatarHash.startsWith('a_') ? 'gif' : 'png';
+  return `https://cdn.discordapp.com/avatars/${userId}/${avatarHash}.${extension}?size=128`;
 }
 
 /**
@@ -79,7 +81,9 @@ export function getDiscordAvatarUrl(userId: string, avatarHash: string | null): 
  */
 export function getDiscordGuildIconUrl(guildId: string, iconHash: string | null): string {
   if (!iconHash) return '/images/default-server.png';
-  return `https://cdn.discordapp.com/icons/${guildId}/${iconHash}.png?size=128`;
+  // GIF animasyonlu ikonları destekle (a_ ile başlayanlar)
+  const extension = iconHash.startsWith('a_') ? 'gif' : 'png';
+  return `https://cdn.discordapp.com/icons/${guildId}/${iconHash}.${extension}?size=128`;
 }
 
 /**
