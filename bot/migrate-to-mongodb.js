@@ -90,23 +90,37 @@ async function migrateUsers(data) {
 async function migrateNRCBalances(data) {
     console.log('\n💰 Migrating NRC balances...');
 
-    if (!data.nrcBalances) {
+    const balancesData = data.neuroCoinBalances || data.nrcBalances;
+    if (!balancesData) {
         console.log('⚠️ No NRC balances found, skipping');
         return 0;
     }
 
-    const balances = Object.entries(data.nrcBalances);
+    const balances = Object.entries(balancesData);
     let count = 0;
 
-    for (const [userId, balance] of balances) {
+    for (const [userId, balanceObj] of balances) {
         try {
+            // handle both cases: balance as number or balance as object
+            const wallet = typeof balanceObj === 'object' ? (balanceObj.wallet || 0) : balanceObj;
+            const bank = typeof balanceObj === 'object' ? (balanceObj.bank || 0) : 0;
+
+            // NRCUser also needs an odaId (guildId). 
+            // Since balances were global in simple-db, we might need to find a default guild 
+            // or migrate to a global entry. For NRCUser model, odaId is required.
+            // We'll use 'global' or the user's lastGuild if available.
+            const userInDb = data.users?.[userId];
+            const guildId = userInDb?.lastGuild || 'global';
+
             await NRCUser.findOneAndUpdate(
-                { odasi: userId },
+                { odasi: userId, odaId: guildId },
                 {
                     $set: {
                         odasi: userId,
-                        balance: balance || 0,
-                        bank: data.nrcBankBalances?.[userId] || 0
+                        odaId: guildId,
+                        balance: wallet,
+                        bank: bank,
+                        username: userInDb?.username || 'Unknown'
                     }
                 },
                 { upsert: true }
@@ -120,6 +134,7 @@ async function migrateNRCBalances(data) {
     console.log(`✅ Migrated ${count}/${balances.length} NRC balances`);
     return count;
 }
+
 
 async function migrateActivityFeed(data) {
     console.log('\n📊 Migrating activity feed...');
@@ -242,7 +257,7 @@ async function main() {
         console.log('\n📋 Data Summary:');
         console.log(`   Users: ${Object.keys(data.users || {}).length}`);
         console.log(`   Guilds: ${Object.keys(data.guilds || {}).length}`);
-        console.log(`   NRC Balances: ${Object.keys(data.nrcBalances || {}).length}`);
+        console.log(`   NRC Balances: ${Object.keys(data.neuroCoinBalances || {}).length}`);
         console.log(`   Activities: ${Object.keys(data.activityFeed || {}).length}`);
         console.log(`   Settings: ${Object.keys(data.settings || {}).length}`);
 
@@ -254,6 +269,7 @@ async function main() {
             guilds: await migrateGuilds(data),
             settings: await migrateGuildSettings(data)
         };
+
 
         // Summary
         console.log('\n==========================================');
