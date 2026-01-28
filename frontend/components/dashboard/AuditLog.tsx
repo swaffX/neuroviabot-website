@@ -155,7 +155,7 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
       }
 
       console.log('[AuditLog] New real-time entry:', entry.action);
-      
+
       // Add new entry to the top of the list (avoid duplicates)
       setLogs(prevLogs => {
         const exists = prevLogs.some(log => log.id === entry.id);
@@ -165,7 +165,7 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
 
       // Increment new logs counter
       setNewLogsCount(prev => prev + 1);
-      
+
       // Show notification for important events
       if (entry.severity === 'danger' || entry.severity === 'warning') {
         const notificationType = entry.severity === 'danger' ? 'error' : 'warning';
@@ -181,7 +181,7 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
         console.warn('[AuditLog] Failed to join guild room, will retry on connect');
       }
     });
-    
+
     on('audit_log_entry', handleAuditLogEntry);
 
     return () => {
@@ -233,7 +233,7 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
           page: data.page,
           totalPages: data.totalPages
         });
-        
+
         const newLogs = data.logs || [];
         console.log('[AuditLog] Setting logs, page:', pageNum, 'count:', newLogs.length);
 
@@ -383,7 +383,7 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
               Sunucudaki tüm işlemleri gerçek zamanlı takip edin
             </p>
           </div>
-          
+
           <motion.button
             onClick={() => exportLogs('json')}
             whileHover={{ scale: 1.05 }}
@@ -461,9 +461,9 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
               const ActionIcon = actionIcons[log.type] || actionIcons.default;
               const isExpanded = expandedLogs.has(log.id);
               // Check if details exist and has meaningful content (not just empty objects)
-              const hasDetails = log.details && typeof log.details === 'object' && 
-                (log.details.executor || log.details.target || log.details.changes || log.details.reason || 
-                 Object.keys(log.details).some(key => log.details[key] != null && log.details[key] !== ''));
+              const hasDetails = log.details && typeof log.details === 'object' &&
+                (log.details.executor || log.details.target || log.details.changes || log.details.reason ||
+                  Object.keys(log.details).some(key => log.details[key] != null && log.details[key] !== ''));
 
               return (
                 <motion.div
@@ -507,7 +507,7 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
                             <ActionIcon className={`w-4 h-4 ${config.text}`} />
                             <h3 className="text-white font-bold text-sm">{log.action}</h3>
                           </div>
-                          
+
                           <div className="flex flex-wrap items-center gap-2 text-xs text-gray-400">
                             <span className="flex items-center gap-1">
                               <UserIcon className="w-3 h-3" />
@@ -522,7 +522,7 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
                           <span className={`px-2 py-1 rounded-lg ${config.bg} ${config.text} text-xs font-medium`}>
                             {log.type}
                           </span>
-                          
+
                           <div className="text-right">
                             <ClockIcon className="w-3 h-3 text-gray-500 inline mr-1" />
                             <span className="text-xs text-gray-500" title={new Date(log.timestamp).toLocaleString('tr-TR')}>
@@ -534,11 +534,14 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
 
                       {/* Details Toggle - Always show button if details exist */}
                       {hasDetails && (
-                        <div className="mt-3 border-t border-white/5 pt-3">
+                        <div className="mt-3 border-t border-white/5 pt-3 relative z-10">
                           <button
                             type="button"
-                            onClick={() => toggleExpanded(log.id)}
-                            className="flex items-center gap-2 px-3 py-2 text-xs text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 rounded-lg transition-all font-medium cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleExpanded(log.id);
+                            }}
+                            className="flex items-center gap-2 px-3 py-2 text-xs text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 rounded-lg transition-all font-medium cursor-pointer select-none"
                           >
                             <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
                             <span>{isExpanded ? 'Detayları Gizle' : 'Detayları Göster'}</span>
@@ -552,13 +555,14 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
                                 exit={{ opacity: 0, height: 0 }}
                                 transition={{ duration: 0.2 }}
                                 className="mt-3 overflow-hidden"
+                                onClick={(e) => e.stopPropagation()}
                               >
-                                <div className="p-4 bg-black/30 rounded-lg border border-white/5">
+                                <div className="p-4 bg-black/30 rounded-lg border border-white/5 cursor-text">
                                   <h4 className="text-xs font-semibold text-purple-400 mb-3 flex items-center gap-2">
                                     <DocumentTextIcon className="w-4 h-4" />
                                     Detaylı Bilgiler
                                   </h4>
-                                  
+
                                   {/* Executor Info */}
                                   {log.details.executor && (
                                     <div className="mb-3 p-3 bg-white/5 rounded-lg">
@@ -576,7 +580,7 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
                                       </div>
                                     </div>
                                   )}
-                                  
+
                                   {/* Target Info */}
                                   {log.details.target && (
                                     <div className="mb-3 p-3 bg-white/5 rounded-lg">
@@ -586,7 +590,7 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
                                       <p className="text-xs text-gray-500">Tür: {log.details.target.type}</p>
                                     </div>
                                   )}
-                                  
+
                                   {/* Changes */}
                                   {log.details.changes && Object.keys(log.details.changes).length > 0 && (
                                     <div className="mb-3 p-3 bg-white/5 rounded-lg">
@@ -597,10 +601,10 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
                                             <span className="text-purple-400 font-medium">{key}:</span>
                                             <div className="mt-1 pl-3 space-y-1">
                                               {value.old !== undefined && (
-                                                <p className="text-red-400">Eski: {JSON.stringify(value.old)}</p>
+                                                <p className="text-red-400 break-all">Eski: {typeof value.old === 'object' ? JSON.stringify(value.old) : String(value.old)}</p>
                                               )}
                                               {value.new !== undefined && (
-                                                <p className="text-green-400">Yeni: {JSON.stringify(value.new)}</p>
+                                                <p className="text-green-400 break-all">Yeni: {typeof value.new === 'object' ? JSON.stringify(value.new) : String(value.new)}</p>
                                               )}
                                             </div>
                                           </div>
@@ -608,7 +612,7 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
                                       </div>
                                     </div>
                                   )}
-                                  
+
                                   {/* Reason */}
                                   {log.details.reason && (
                                     <div className="p-3 bg-white/5 rounded-lg">
@@ -616,11 +620,11 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
                                       <p className="text-sm text-gray-300">{log.details.reason}</p>
                                     </div>
                                   )}
-                                  
+
                                   {/* Raw JSON Toggle */}
                                   <details className="mt-3">
                                     <summary className="text-xs text-gray-500 cursor-pointer hover:text-gray-400">Ham JSON Verisi</summary>
-                                    <pre className="mt-2 p-2 bg-black/20 rounded text-xs text-gray-400 overflow-x-auto">
+                                    <pre className="mt-2 p-2 bg-black/20 rounded text-xs text-gray-400 overflow-x-auto whitespace-pre-wrap">
                                       {JSON.stringify(log.details, null, 2)}
                                     </pre>
                                   </details>
@@ -637,29 +641,68 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
             })}
           </div>
 
-          {/* Load More Button */}
-          {hasMore && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex justify-center mt-8"
-            >
+          {/* Pagination Controls */}
+          <div className="flex flex-col items-center gap-4 mt-8 pb-8">
+            <div className="flex items-center gap-2">
               <button
-                onClick={loadMore}
-                disabled={loadingMore}
-                className="px-6 py-3 bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-xl border border-white/10 hover:border-white/20 text-white rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-105"
+                onClick={() => {
+                  const prevPage = Math.max(1, page - 1);
+                  setPage(prevPage);
+                  fetchLogs(prevPage);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                disabled={page === 1 || loadingMore}
+                className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/10 transition-colors"
               >
-                {loadingMore ? (
-                  <div className="flex items-center gap-2">
-                    <ArrowPathIcon className="w-5 h-5 animate-spin" />
-                    Yükleniyor...
-                  </div>
-                ) : (
-                  `Daha Fazla Yükle (${page}/${totalPages})`
-                )}
+                Önceki
               </button>
-            </motion.div>
-          )}
+
+              <span className="text-sm text-gray-400">
+                Sayfa {page} / {Math.max(1, totalPages)}
+              </span>
+
+              <button
+                onClick={() => {
+                  const nextPage = page + 1;
+                  setPage(nextPage);
+                  fetchLogs(nextPage);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                disabled={page >= totalPages || loadingMore}
+                className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/10 transition-colors"
+              >
+                Sonraki
+              </button>
+            </div>
+
+            {/* Sync Old Logs Button */}
+            <div className="text-center">
+              <p className="text-xs text-gray-500 mb-2">Aradığınızı bulamadınız mı?</p>
+              <button
+                onClick={async () => {
+                  setLoadingMore(true);
+                  try {
+                    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://neuroviabot.xyz';
+                    await fetch(`${API_URL}/api/audit/${guildId}/sync`, {
+                      method: 'POST',
+                      credentials: 'include'
+                    });
+                    // Refresh current page
+                    await fetchLogs(page);
+                    showNotification('Eski kayıtlar senkronize edildi', 'success');
+                  } catch (error) {
+                    showNotification('Senkronizasyon başarısız', 'error');
+                  } finally {
+                    setLoadingMore(false);
+                  }
+                }}
+                disabled={loadingMore}
+                className="text-xs text-purple-400 hover:text-purple-300 underline disabled:opacity-50 cursor-pointer"
+              >
+                {loadingMore ? 'Senkronize ediliyor...' : 'Discord\'dan daha eski kayıtları getirmeyi dene'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
