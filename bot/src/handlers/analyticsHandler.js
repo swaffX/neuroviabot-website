@@ -12,10 +12,10 @@ class AnalyticsHandler {
     setupListeners() {
         // Message tracking
         this.client.on('messageCreate', (message) => this.trackMessage(message));
-        
+
         // Voice state tracking
         this.client.on('voiceStateUpdate', (oldState, newState) => this.trackVoiceState(oldState, newState));
-        
+
         logger.info('📊 Analytics event listeners registered');
     }
 
@@ -66,7 +66,7 @@ class AnalyticsHandler {
     trackVoiceState(oldState, newState) {
         try {
             if (!newState.guild) return;
-            
+
             const guildId = newState.guild.id;
             const userId = newState.member.id;
             const analytics = this.getGuildAnalytics(guildId);
@@ -93,12 +93,12 @@ class AnalyticsHandler {
                     const duration = Math.floor((Date.now() - sessionStart) / 1000 / 60); // minutes
 
                     analytics.voice.totalMinutes = (analytics.voice.totalMinutes || 0) + duration;
-                    
+
                     if (!analytics.voice.byUser) analytics.voice.byUser = {};
                     analytics.voice.byUser[userId] = (analytics.voice.byUser[userId] || 0) + duration;
 
                     delete analytics.voice.sessions[userId];
-                    
+
                     logger.debug(`[Analytics] ${newState.member.user.username} left voice (${duration}m) in ${guildId}`);
                 }
             }
@@ -200,9 +200,16 @@ class AnalyticsHandler {
 
     saveGuildAnalytics(guildId, analytics) {
         try {
+            // OPTIMIZATION: Update in memory ONLY to prevent high CPU usage from frequent disk writes.
+            // The SimpleDB class has a built-in interval (5 mins) that will save this data to disk automatically.
             const settings = this.db.getGuildSettings(guildId) || {};
             settings.analytics = analytics;
-            this.db.setGuildSettings(guildId, settings);
+
+            // Manually update the map in memory without triggering synchronous file write
+            // Accessing internal data structure of SimpleDB to bypass immediate save
+            if (this.db.data && this.db.data.settings) {
+                this.db.data.settings.set(guildId, settings);
+            }
         } catch (error) {
             logger.error('[Analytics] Error saving analytics:', error);
         }
@@ -211,7 +218,7 @@ class AnalyticsHandler {
     getTopChannels(guildId, limit = 5) {
         const analytics = this.getGuildAnalytics(guildId);
         const channels = analytics.messages.byChannel || {};
-        
+
         return Object.entries(channels)
             .sort(([, a], [, b]) => b - a)
             .slice(0, limit)
@@ -228,7 +235,7 @@ class AnalyticsHandler {
     getTopUsers(guildId, limit = 5) {
         const analytics = this.getGuildAnalytics(guildId);
         const users = analytics.messages.byUser || {};
-        
+
         return Object.entries(users)
             .sort(([, a], [, b]) => b - a)
             .slice(0, limit)
