@@ -1,2 +1,0 @@
-Bu bir test dosyasıdır.
-GitHub push testi için oluşturuldu.
