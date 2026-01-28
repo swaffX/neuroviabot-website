@@ -19,7 +19,7 @@ const poppins = Poppins({
 
 // Enhanced SEO metadata
 export const metadata: Metadata = {
-  metadataBase: new URL('https://neurovia.bot'),
+  metadataBase: new URL('https://neuroviabot.xyz'),
   title: {
     default: 'NeuroVia - Discord Bot Yönetim Paneli',
     template: '%s | NeuroVia',
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
-    url: 'https://neurovia.bot',
+    url: 'https://neuroviabot.xyz',
     siteName: 'NeuroVia',
     title: 'NeuroVia - Discord Bot Yönetim Paneli',
     description: 'Gelişmiş yapay zeka destekli Discord bot yönetim paneli',
