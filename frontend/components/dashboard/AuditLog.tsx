@@ -120,7 +120,7 @@ function getAvatarUrl(userId: string, avatar?: string | null) {
 export default function AuditLog({ guildId, userId }: AuditLogProps) {
   const [logs, setLogs] = useState<AuditEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState({ type: '', severity: '', search: '' });
+  const [filter, setFilter] = useState({ type: '', severity: '', search: '', timeRange: '' });
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [hasMore, setHasMore] = useState(false);
@@ -211,9 +211,20 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
       const params = new URLSearchParams({
         page: pageNum.toString(),
         limit: '50',
-        ...(filter.type && { type: filter.type }),
-        ...(filter.severity && { severity: filter.severity }),
       });
+
+      if (filter.type) params.append('type', filter.type);
+      if (filter.severity) params.append('severity', filter.severity);
+      if (filter.search) params.append('search', filter.search);
+
+      if (filter.timeRange && filter.timeRange !== 'all') {
+        const now = new Date();
+        const days = parseInt(filter.timeRange);
+        if (!isNaN(days)) {
+          const startDate = new Date(now.setDate(now.getDate() - days));
+          params.append('startDate', startDate.toISOString());
+        }
+      }
 
       const url = `${API_URL}/api/audit/${guildId}?${params}`;
       console.log('[AuditLog] Fetching from URL:', url);
@@ -222,7 +233,7 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
         credentials: 'include',
       });
 
-      console.log('[AuditLog] Response status:', response.status, response.statusText);
+      console.log('[AuditLog] Response status:', response.status);
 
       if (response.ok) {
         const data = await response.json();
@@ -432,6 +443,20 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
             <option value="warning" className="bg-gray-900">Uyarı</option>
             <option value="danger" className="bg-gray-900">Tehlikeli</option>
           </select>
+
+          <div className="relative">
+            <ClockIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+            <select
+              value={filter.timeRange}
+              onChange={(e) => setFilter({ ...filter, timeRange: e.target.value })}
+              className="pl-10 pr-4 py-2.5 bg-white/5 backdrop-blur-xl border border-white/10 focus:border-purple-500/50 rounded-xl text-white focus:outline-none transition-colors appearance-none"
+            >
+              <option value="" className="bg-gray-900">Tüm Zamanlar</option>
+              <option value="7" className="bg-gray-900">Son 7 Gün</option>
+              <option value="14" className="bg-gray-900">Son 14 Gün</option>
+              <option value="30" className="bg-gray-900">Son 30 Gün</option>
+            </select>
+          </div>
         </div>
       </div>
 
