@@ -82,7 +82,14 @@ class SimpleDatabase {
 
     // Save data to disk
     saveData() {
+        const now = Date.now();
+        // Sadece 30 saniyede bir diske yaz (Shared with bot so this reduces load)
+        if (this.lastSave && (now - this.lastSave < 30000)) {
+            return;
+        }
+
         try {
+            this.lastSave = now;
             // Create backup
             if (fs.existsSync(this.dbPath)) {
                 fs.copyFileSync(this.dbPath, this.backupPath);
@@ -96,11 +103,13 @@ class SimpleDatabase {
 
             // Write to file
             fs.writeFileSync(this.dbPath, JSON.stringify(jsonData, null, 2), 'utf8');
+            console.log('[Backend DB] Database saved to disk (Throttled)');
 
         } catch (error) {
             console.error('[Backend DB] Database save error:', error.message);
         }
     }
+
 
     // Guild operations
     getOrCreateGuild(guildId, guildData = {}) {
