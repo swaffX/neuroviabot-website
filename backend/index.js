@@ -56,7 +56,7 @@ app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    
+
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -107,11 +107,11 @@ passport.deserializeUser((obj, done) => {
 });
 
 passport.use(new DiscordStrategy({
-    clientID: process.env.DISCORD_CLIENT_ID || '773539215098249246',
-    clientSecret: process.env.DISCORD_CLIENT_SECRET,
-    callbackURL: process.env.DISCORD_CALLBACK_URL || 'https://neuroviabot.xyz/api/auth/callback',
-    scope: ['identify', 'email', 'guilds'],
-  },
+  clientID: process.env.DISCORD_CLIENT_ID || '773539215098249246',
+  clientSecret: process.env.DISCORD_CLIENT_SECRET,
+  callbackURL: process.env.DISCORD_CALLBACK_URL || 'https://neuroviabot.xyz/api/auth/callback',
+  scope: ['identify', 'email', 'guilds'],
+},
   (accessToken, refreshToken, profile, done) => {
     profile.accessToken = accessToken;
     profile.refreshToken = refreshToken;
@@ -146,7 +146,7 @@ const developerMarketplaceRoutes = require('./routes/developer-marketplace');
 const serverStatsRoutes = require('./routes/server-stats');
 
 // Set up Audit Logger with Socket.IO
-const { getAuditLogger } = require('../src/utils/auditLogger');
+const { getAuditLogger } = require('../bot/src/utils/auditLogger');
 const auditLogger = getAuditLogger();
 auditLogger.setIO(io);
 console.log('[Backend] Audit Logger configured with Socket.IO');
@@ -226,10 +226,10 @@ io.on('connection', (socket) => {
         }
         return;
       }
-      
+
       socket.join(`guild_${guildId}`);
       console.log(`[Socket.IO] ✅ Client ${socket.id} joined guild ${guildId}`);
-      
+
       // Send acknowledgment
       if (typeof ack === 'function') {
         ack({ success: true, guildId });
@@ -248,7 +248,7 @@ io.on('connection', (socket) => {
       if (!guildId || guildId === 'unknown') {
         return;
       }
-      
+
       socket.leave(`guild_${guildId}`);
       console.log(`[Socket.IO] Client ${socket.id} left guild ${guildId}`);
     } catch (error) {
@@ -260,7 +260,7 @@ io.on('connection', (socket) => {
   socket.on('settings_update', (data) => {
     const { guildId, settings } = data;
     console.log(`[Socket.IO] Settings update for guild ${guildId}:`, settings);
-    
+
     // Broadcast to all clients in this guild room (including bot)
     io.to(`guild_${guildId}`).emit('settings_changed', {
       guildId,
@@ -273,7 +273,7 @@ io.on('connection', (socket) => {
   socket.on('executeCommand', (data) => {
     const { command, guildId, userId, subcommand, params } = data;
     console.log(`[Socket.IO] Web command execution: ${command}${subcommand ? ` ${subcommand}` : ''} for guild ${guildId}`);
-    
+
     // HTTP API üzerinden komut çalıştırma
     // Bu işlem artık doğrudan HTTP endpoint'leri üzerinden yapılacak
   });
@@ -283,7 +283,7 @@ io.on('connection', (socket) => {
     const { guildId, event, data: eventData } = data;
     console.log(`[Socket.IO] Broadcasting to guild ${guildId}: ${event}`);
     console.log(`[Socket.IO] Event data:`, JSON.stringify(eventData, null, 2));
-    
+
     io.to(`guild_${guildId}`).emit(event, eventData);
     console.log(`[Socket.IO] Event broadcasted to guild room guild_${guildId}`);
   });
@@ -293,16 +293,16 @@ io.on('connection', (socket) => {
     const { event, data: eventData } = data;
     console.log(`[Socket.IO] Broadcasting globally: ${event}`);
     console.log(`[Socket.IO] Global event data:`, JSON.stringify(eventData, null, 2));
-    
+
     io.emit(event, eventData);
     console.log(`[Socket.IO] Global event broadcasted to all clients`);
   });
-  
+
   // Audit log entry from bot
   socket.on('bot_audit_log_entry', (data) => {
     const { guildId, entry } = data;
     console.log(`[Socket.IO] 📋 Audit log entry received for guild ${guildId}:`, entry.action);
-    
+
     // Broadcast to frontend clients in guild room
     io.to(`guild_${guildId}`).emit('audit_log_entry', entry);
     console.log(`[Socket.IO] 📋 Audit log broadcasted to guild_${guildId}`);
@@ -329,10 +329,10 @@ server.listen(PORT, async () => {
   console.log(`[Backend] Server running on http://localhost:${PORT}`);
   console.log(`[Backend] Socket.IO enabled`);
   console.log(`[Backend] Environment: ${process.env.NODE_ENV || 'development'}`);
-  
+
   // Connect to MongoDB Atlas
   await connectDB();
-  
+
   // Log MongoDB connection status
   if (isMongoConnected()) {
     const stats = getConnectionStats();

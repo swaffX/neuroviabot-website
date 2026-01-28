@@ -18,7 +18,7 @@ function initNrcEvents(io) {
 
     // Start price update interval (every 30 seconds)
     startPriceUpdateInterval(io);
-    
+
     console.log('[NRC Socket] NRC event listeners initialized');
 }
 
@@ -29,10 +29,10 @@ function initNrcEvents(io) {
  */
 function startPriceUpdateInterval(io) {
     const nrcRoutes = require('../routes/nrc');
-    
+
     // Update price immediately
     updateAndBroadcastPrice(io, nrcRoutes);
-    
+
     // Then update every 30 seconds
     setInterval(() => {
         updateAndBroadcastPrice(io, nrcRoutes);
@@ -51,17 +51,17 @@ function updateAndBroadcastPrice(io, nrcRoutes) {
         // Calculate new price
         const newPrice = nrcRoutes.calculateDynamicPrice();
         const oldPrice = nrcRoutes.getCurrentPrice();
-        
+
         // Update current price
         nrcRoutes.setCurrentPrice(newPrice);
-        
+
         // Update price history
         nrcRoutes.updatePriceHistory(newPrice);
-        
+
         // Calculate change
         const change = newPrice - oldPrice;
         const changePercent = oldPrice > 0 ? (change / oldPrice) * 100 : 0;
-        
+
         // Broadcast to all connected clients
         io.emit('nrc_price_updated', {
             price: parseFloat(newPrice.toFixed(4)),
@@ -69,7 +69,7 @@ function updateAndBroadcastPrice(io, nrcRoutes) {
             changePercent: parseFloat(changePercent.toFixed(2)),
             timestamp: new Date().toISOString()
         });
-        
+
         console.log(`[NRC Price] Updated: $${newPrice.toFixed(4)} (${changePercent >= 0 ? '+' : ''}${changePercent.toFixed(2)}%)`);
     } catch (error) {
         console.error('[NRC Price] Error updating price:', error);
@@ -82,7 +82,7 @@ function updateAndBroadcastPrice(io, nrcRoutes) {
  * @param {object} activity - Activity data
  */
 function emitActivity(io, activity) {
-    const { getDatabase } = require('../../src/database/simple-db');
+    const { getDatabase } = require('../database/simple-db');
     const db = getDatabase();
 
     // Generate activity ID
