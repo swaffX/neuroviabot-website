@@ -241,11 +241,9 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
           setLogs(newLogs);
           console.log('[AuditLog] Initial logs set:', newLogs.length, 'entries');
         } else {
-          setLogs(prev => {
-            const combined = [...prev, ...newLogs];
-            console.log('[AuditLog] Appended logs, new total:', combined.length);
-            return combined;
-          });
+          // Pagination mode: Always replace logs
+          setLogs(newLogs);
+          console.log('[AuditLog] Page logs set:', newLogs.length, 'entries');
         }
 
         setTotalPages(data.totalPages || 1);
