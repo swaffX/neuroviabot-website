@@ -9,10 +9,10 @@ const path = require('path');
 class SimpleDatabase {
     constructor() {
         // Use shared data directory with bot
-        this.dataDir = path.join(__dirname, '..', '..', 'data');
+        this.dataDir = path.join(__dirname, '..', '..', 'bot', 'data');
         this.dbPath = path.join(this.dataDir, 'database.json');
         this.backupPath = path.join(this.dataDir, 'database-backup.json');
-        
+
         this.data = {
             users: new Map(),
             guilds: new Map(),
@@ -24,10 +24,10 @@ class SimpleDatabase {
             customCommands: new Map(),
             settings: new Map()
         };
-        
+
         this.ensureDirectory();
         this.loadData();
-        
+
         // Auto-save every 5 minutes
         setInterval(() => this.saveData(), 5 * 60 * 1000);
     }
@@ -44,14 +44,14 @@ class SimpleDatabase {
             if (fs.existsSync(this.dbPath)) {
                 const rawData = fs.readFileSync(this.dbPath, 'utf8');
                 const jsonData = JSON.parse(rawData);
-                
+
                 // Convert JSON objects to Maps
                 for (const [key, value] of Object.entries(jsonData)) {
                     if (this.data.hasOwnProperty(key)) {
                         this.data[key] = new Map(Object.entries(value || {}));
                     }
                 }
-                
+
                 console.log('[Backend DB] Database loaded from JSON file');
             } else {
                 console.log('[Backend DB] Creating new database');
@@ -59,19 +59,19 @@ class SimpleDatabase {
             }
         } catch (error) {
             console.error('[Backend DB] Database load error:', error.message);
-            
+
             // Try to restore from backup
             if (fs.existsSync(this.backupPath)) {
                 try {
                     const backupData = fs.readFileSync(this.backupPath, 'utf8');
                     const jsonBackup = JSON.parse(backupData);
-                    
+
                     for (const [key, value] of Object.entries(jsonBackup)) {
                         if (this.data.hasOwnProperty(key)) {
                             this.data[key] = new Map(Object.entries(value || {}));
                         }
                     }
-                    
+
                     console.warn('[Backend DB] Database restored from backup');
                 } catch (backupError) {
                     console.error('[Backend DB] Backup restore error:', backupError.message);
@@ -87,16 +87,16 @@ class SimpleDatabase {
             if (fs.existsSync(this.dbPath)) {
                 fs.copyFileSync(this.dbPath, this.backupPath);
             }
-            
+
             // Convert Maps to JSON objects
             const jsonData = {};
             for (const [key, mapValue] of Object.entries(this.data)) {
                 jsonData[key] = Object.fromEntries(mapValue);
             }
-            
+
             // Write to file
             fs.writeFileSync(this.dbPath, JSON.stringify(jsonData, null, 2), 'utf8');
-            
+
         } catch (error) {
             console.error('[Backend DB] Database save error:', error.message);
         }
@@ -105,7 +105,7 @@ class SimpleDatabase {
     // Guild operations
     getOrCreateGuild(guildId, guildData = {}) {
         let guild = this.data.guilds.get(guildId);
-        
+
         if (!guild) {
             guild = {
                 id: guildId,
@@ -117,19 +117,19 @@ class SimpleDatabase {
                 joinedAt: guildData.joinedAt || new Date().toISOString(),
                 ...guildData
             };
-            
+
             this.data.guilds.set(guildId, guild);
             this.saveData();
             console.log(`[Backend DB] Guild created: ${guild.name} (${guildId})`);
         }
-        
+
         return guild;
     }
 
     // Guild settings operations
     getGuildSettings(guildId) {
         let settings = this.data.settings.get(guildId);
-        
+
         if (!settings) {
             // Default settings matching bot format
             settings = {
@@ -193,20 +193,20 @@ class SimpleDatabase {
                 messageLogChannel: null,
                 serverLogChannel: null,
             };
-            
+
             this.data.settings.set(guildId, settings);
             this.saveData();
             console.log(`[Backend DB] Default settings created for guild: ${guildId}`);
         }
-        
+
         return settings;
     }
 
     updateGuildSettings(guildId, updates) {
         console.log(`[Backend DB] Updating settings for guild ${guildId}`);
-        
+
         const current = this.getGuildSettings(guildId);
-        
+
         // Deep merge nested objects (welcome, leave, moderation, leveling, etc.)
         const updated = {
             guildId,
@@ -227,23 +227,23 @@ class SimpleDatabase {
             messageLogChannel: updates.messageLogChannel ?? current.messageLogChannel,
             serverLogChannel: updates.serverLogChannel ?? current.serverLogChannel,
         };
-        
+
         this.data.settings.set(guildId, updated);
         this.saveData();
-        
+
         console.log(`[Backend DB] Settings saved for guild ${guildId}`);
         return updated;
     }
 
     updateGuildSettingsCategory(guildId, category, updates) {
         console.log(`[Backend DB] Updating ${category} settings for guild ${guildId}:`, updates);
-        
+
         const current = this.getGuildSettings(guildId);
         current[category] = { ...current[category], ...updates };
-        
+
         this.data.settings.set(guildId, current);
         this.saveData();
-        
+
         console.log(`[Backend DB] Category ${category} saved for guild ${guildId}`);
         return current;
     }
