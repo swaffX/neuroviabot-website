@@ -1,0 +1,1845 @@
+{
+  "users": {
+    "1062871360981979207": {
+      "id": "1062871360981979207",
+      "username": "sereinty",
+      "discriminator": "0",
+      "globalName": "Sereinty is the best",
+      "avatar": "20df5eb19582a90c6c03cf0d4e037b6f",
+      "createdAt": "2025-10-06T12:52:26.022Z",
+      "lastSeen": "2025-10-06T12:52:26.022Z"
+    },
+    "749876258346631179": {
+      "id": "749876258346631179",
+      "username": "kogasa_tattara",
+      "discriminator": "0",
+      "globalName": "Kogasa_tatara",
+      "avatar": "e237bdb8bf8f3716903a5348bff486d1",
+      "createdAt": "2025-10-06T12:53:06.118Z",
+      "lastSeen": "2025-10-09T12:03:59.420Z"
+    },
+    "1212940413795827763": {
+      "id": "1212940413795827763",
+      "username": "Payphone",
+      "discriminator": "8092",
+      "globalName": null,
+      "avatar": "f4b7180bb467b035d6e2e6f458e93b7c",
+      "createdAt": "2025-10-06T13:33:54.911Z",
+      "lastSeen": "2025-10-06T13:33:54.911Z"
+    },
+    "461265486655520788": {
+      "id": "461265486655520788",
+      "username": "ToddBot",
+      "discriminator": "6559",
+      "globalName": null,
+      "avatar": "cca38be63b4d5c1920ed30e0762ce2aa",
+      "createdAt": "2025-10-06T13:33:55.933Z",
+      "lastSeen": "2025-10-06T13:33:55.933Z"
+    },
+    "708096305477451846": {
+      "id": "708096305477451846",
+      "username": "Reaction Roles",
+      "discriminator": "5521",
+      "globalName": null,
+      "avatar": "a_4f4d1df78b2192302217ac891dc0a313",
+      "createdAt": "2025-10-06T13:33:56.197Z",
+      "lastSeen": "2025-10-06T13:33:56.197Z"
+    },
+    "810918366045798451": {
+      "id": "810918366045798451",
+      "username": "Message Scheduler",
+      "discriminator": "2229",
+      "globalName": null,
+      "avatar": "2e0fd5a14b0407cf6eed3039dc562953",
+      "createdAt": "2025-10-06T13:34:01.255Z",
+      "lastSeen": "2025-10-06T13:34:01.255Z"
+    },
+    "996534605828083824": {
+      "id": "996534605828083824",
+      "username": "WOMBOT",
+      "discriminator": "2547",
+      "globalName": null,
+      "avatar": "624e5578ab94d8430ff034080d5f2ee6",
+      "createdAt": "2025-10-06T13:34:01.616Z",
+      "lastSeen": "2025-10-06T13:34:01.616Z"
+    },
+    "975823949017534494": {
+      "id": "975823949017534494",
+      "username": "Blox Fruits Stock",
+      "discriminator": "6176",
+      "globalName": null,
+      "avatar": "0ca4b743738f9942560c0c08520ab68b",
+      "createdAt": "2025-10-06T13:34:05.524Z",
+      "lastSeen": "2025-10-06T13:34:05.524Z"
+    },
+    "780570413767983122": {
+      "id": "780570413767983122",
+      "username": "MediaForge",
+      "discriminator": "5871",
+      "globalName": null,
+      "avatar": "c297985eafcdaea502b5ffa10a2c26e1",
+      "createdAt": "2025-10-06T13:34:06.637Z",
+      "lastSeen": "2025-10-06T13:34:06.637Z"
+    },
+    "940658205950885908": {
+      "id": "940658205950885908",
+      "username": "VOISCORD",
+      "discriminator": "6516",
+      "globalName": null,
+      "avatar": "b43351440a32234e1adc2d78f95a9acf",
+      "createdAt": "2025-10-06T13:34:07.059Z",
+      "lastSeen": "2025-10-06T13:34:07.059Z"
+    },
+    "564426594144354315": {
+      "id": "564426594144354315",
+      "username": "Suggester",
+      "discriminator": "8366",
+      "globalName": null,
+      "avatar": "a1acd0a626fafddb066bc15888b7d27f",
+      "createdAt": "2025-10-06T13:34:11.911Z",
+      "lastSeen": "2025-10-06T13:34:11.911Z"
+    },
+    "704521096837464076": {
+      "id": "704521096837464076",
+      "username": "Collab.Land",
+      "discriminator": "6372",
+      "globalName": null,
+      "avatar": "13b81dbee1bed440daf514bbd220fd40",
+      "createdAt": "2025-10-06T13:34:12.112Z",
+      "lastSeen": "2025-10-06T13:34:12.112Z"
+    },
+    "679643572814741522": {
+      "id": "679643572814741522",
+      "username": "Chip 2",
+      "discriminator": "0492",
+      "globalName": null,
+      "avatar": "7e3063974ff709e5849f15e23cef245c",
+      "createdAt": "2025-10-06T13:34:12.414Z",
+      "lastSeen": "2025-10-06T13:34:12.414Z"
+    },
+    "700145482957324289": {
+      "id": "700145482957324289",
+      "username": "Pulse",
+      "discriminator": "4005",
+      "globalName": null,
+      "avatar": "f21b7b046f892a8b6d6503f591c1c53e",
+      "createdAt": "2025-10-06T13:34:17.248Z",
+      "lastSeen": "2025-10-06T13:34:17.248Z"
+    },
+    "321046928391667712": {
+      "id": "321046928391667712",
+      "username": "April",
+      "discriminator": "4100",
+      "globalName": null,
+      "avatar": "43655644b57c8958f267cd0d087fc9cc",
+      "createdAt": "2025-10-06T13:34:17.506Z",
+      "lastSeen": "2025-10-06T13:34:17.506Z"
+    },
+    "631216892606152714": {
+      "id": "631216892606152714",
+      "username": "Virtual Farmer",
+      "discriminator": "6004",
+      "globalName": null,
+      "avatar": "a72fd6fcbac4d59da31ebfd88518caa0",
+      "createdAt": "2025-10-06T13:36:09.462Z",
+      "lastSeen": "2025-10-06T13:36:09.462Z"
+    },
+    "787789079227006976": {
+      "id": "787789079227006976",
+      "username": "ClearChat Bot",
+      "discriminator": "3193",
+      "globalName": null,
+      "avatar": "89b32306687d67ee8fdb5c67d638eaaa",
+      "createdAt": "2025-10-06T13:36:09.689Z",
+      "lastSeen": "2025-10-06T13:36:09.689Z"
+    },
+    "726560538145849374": {
+      "id": "726560538145849374",
+      "username": "Counting",
+      "discriminator": "1881",
+      "globalName": null,
+      "avatar": "f73e9e0dedd0e436fd26bf4de4c0d657",
+      "createdAt": "2025-10-06T13:36:10.687Z",
+      "lastSeen": "2025-10-06T13:36:10.687Z"
+    },
+    "278550142356029441": {
+      "id": "278550142356029441",
+      "username": "Booty Bot",
+      "discriminator": "5826",
+      "globalName": null,
+      "avatar": "25285e143bf2e8a3583a3925ca0557b2",
+      "createdAt": "2025-10-06T13:36:15.812Z",
+      "lastSeen": "2025-10-06T13:36:15.812Z"
+    },
+    "695664615534755850": {
+      "id": "695664615534755850",
+      "username": "Tebex",
+      "discriminator": "8323",
+      "globalName": null,
+      "avatar": "48e7c2c12aa45e1185fc547dfc99f9c6",
+      "createdAt": "2025-10-06T13:36:16.056Z",
+      "lastSeen": "2025-10-06T13:36:16.056Z"
+    },
+    "628063585481916417": {
+      "id": "628063585481916417",
+      "username": "UwU",
+      "discriminator": "2447",
+      "globalName": null,
+      "avatar": "15b50b9888e3967cb9f833bd7b584dc3",
+      "createdAt": "2025-10-06T13:36:19.881Z",
+      "lastSeen": "2025-10-06T13:36:19.881Z"
+    },
+    "903690362114158632": {
+      "id": "903690362114158632",
+      "username": "R.O.T.I",
+      "discriminator": "4309",
+      "globalName": null,
+      "avatar": "7a445665ba9718d0df60d317067c4b0e",
+      "createdAt": "2025-10-06T13:36:21.785Z",
+      "lastSeen": "2025-10-06T13:36:21.785Z"
+    },
+    "724047481561809007": {
+      "id": "724047481561809007",
+      "username": "Scathach",
+      "discriminator": "1444",
+      "globalName": null,
+      "avatar": "70d298c7968cf4b4e61052338d7c490e",
+      "createdAt": "2025-10-06T13:36:23.123Z",
+      "lastSeen": "2025-10-06T13:36:23.123Z"
+    },
+    "1016794326115823708": {
+      "id": "1016794326115823708",
+      "username": "Sasa",
+      "discriminator": "6584",
+      "globalName": null,
+      "avatar": "07cb2ab9f94a8f479bca60697dfa94a8",
+      "createdAt": "2025-10-06T13:36:23.890Z",
+      "lastSeen": "2025-10-06T13:36:23.890Z"
+    },
+    "704802632660943089": {
+      "id": "704802632660943089",
+      "username": "Quark Logger",
+      "discriminator": "8645",
+      "globalName": null,
+      "avatar": "ee4d700fa59baad50204f29cbe01eb27",
+      "createdAt": "2025-10-06T13:36:25.578Z",
+      "lastSeen": "2025-10-06T13:36:25.578Z"
+    },
+    "820242484448854048": {
+      "id": "820242484448854048",
+      "username": "Demon Slayer Bot",
+      "discriminator": "7074",
+      "globalName": null,
+      "avatar": "83de74e63e9039a59f587ecd7bc83adb",
+      "createdAt": "2025-10-06T13:36:30.172Z",
+      "lastSeen": "2025-10-06T13:36:30.172Z"
+    },
+    "544462904037081138": {
+      "id": "544462904037081138",
+      "username": "HKTRPG",
+      "discriminator": "4989",
+      "globalName": null,
+      "avatar": "826b76664e4c68ff4d29076c48a02bed",
+      "createdAt": "2025-10-06T13:36:31.157Z",
+      "lastSeen": "2025-10-06T13:36:31.157Z"
+    },
+    "617037497574359050": {
+      "id": "617037497574359050",
+      "username": "tip.cc",
+      "discriminator": "7731",
+      "globalName": null,
+      "avatar": "a_9867e32bb8659beeca69eba2fc785111",
+      "createdAt": "2025-10-06T13:36:36.176Z",
+      "lastSeen": "2025-10-06T13:36:36.176Z"
+    },
+    "1061145299927695400": {
+      "id": "1061145299927695400",
+      "username": "Empireballs",
+      "discriminator": "1336",
+      "globalName": null,
+      "avatar": "d17a17c6bc183c56ce31f5026d8412ba",
+      "createdAt": "2025-10-06T13:36:36.445Z",
+      "lastSeen": "2025-10-06T13:36:36.445Z"
+    },
+    "709700718335885362": {
+      "id": "709700718335885362",
+      "username": "Kelime Oyunu",
+      "discriminator": "7141",
+      "globalName": null,
+      "avatar": "c148f4ce8df346531c3e7c73785a2fef",
+      "createdAt": "2025-10-06T13:36:40.446Z",
+      "lastSeen": "2025-10-06T13:36:40.446Z"
+    },
+    "717761456787030047": {
+      "id": "717761456787030047",
+      "username": "Brawl Bot",
+      "discriminator": "8659",
+      "globalName": null,
+      "avatar": "3ae570ac2413b69938214e07f1bdcd1b",
+      "createdAt": "2025-10-06T13:36:41.578Z",
+      "lastSeen": "2025-10-06T13:36:41.578Z"
+    },
+    "617667726445379595": {
+      "id": "617667726445379595",
+      "username": "kag",
+      "discriminator": "3308",
+      "globalName": null,
+      "avatar": "a14fcf074029bf51c67c498e962e903f",
+      "createdAt": "2025-10-06T13:36:41.783Z",
+      "lastSeen": "2025-10-06T13:36:41.783Z"
+    },
+    "315875588906680330": {
+      "id": "315875588906680330",
+      "username": "swaffval",
+      "discriminator": "0",
+      "globalName": "swaff",
+      "avatar": "a_2fd7c85e6a354177682c4d01dc7629ab",
+      "createdAt": "2025-10-06T14:36:49.949Z",
+      "lastSeen": "2025-10-09T10:19:59.536Z"
+    },
+    "607187112378236929": {
+      "id": "607187112378236929",
+      "username": "jakejigglyballs",
+      "discriminator": "0",
+      "globalName": "amftl",
+      "avatar": "29f8f3e4b69711cb0254af3d12c00849",
+      "createdAt": "2025-10-06T15:00:13.424Z",
+      "lastSeen": "2025-10-09T10:42:17.140Z"
+    }
+  },
+  "guilds": {
+    "1001909659273285723": {
+      "id": "1001909659273285723",
+      "name": "doggy land!",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 308,
+      "ownerId": "957786702599053363",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "STAGE_CHANNEL_VIEWERS_50",
+        "TIERLESS_BOOSTING",
+        "NEWS",
+        "AUDIO_BITRATE_128_KBPS",
+        "SOUNDBOARD",
+        "VIDEO_BITRATE_ENHANCED",
+        "TIERLESS_BOOSTING_SYSTEM_MESSAGE",
+        "VIDEO_QUALITY_720_60FPS",
+        "GUILD_ONBOARDING",
+        "GUILD_ONBOARDING_EVER_ENABLED",
+        "CHANNEL_ICON_EMOJIS_GENERATED",
+        "GUILD_SERVER_GUIDE",
+        "INVITE_SPLASH",
+        "COMMUNITY",
+        "AUTO_MODERATION",
+        "WELCOME_SCREEN_ENABLED",
+        "GUILD_ONBOARDING_HAS_PROMPTS",
+        "ANIMATED_ICON"
+      ],
+      "boostLevel": 1,
+      "boostCount": 3,
+      "icon": "a8ebd808f719742864023b82f45612f4",
+      "active": true
+    },
+    "888113779672514590": {
+      "id": "888113779672514590",
+      "name": "Diviertete",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 10,
+      "ownerId": "822234504345157643",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "cfae8d90ecae83fbf1e6b15902bcdd83",
+      "active": true
+    },
+    "881194025980420107": {
+      "id": "881194025980420107",
+      "name": "Clan \"一人で\"",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 5,
+      "ownerId": "413081778031427584",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": null,
+      "active": true
+    },
+    "796838179994861642": {
+      "id": "796838179994861642",
+      "name": "para asmr.",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 6,
+      "ownerId": "704902280633253939",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "5a8168e9333ea8857cfffbca369fe3d5",
+      "active": true
+    },
+    "562946251822334010": {
+      "id": "562946251822334010",
+      "name": "| BEARS |",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 10,
+      "ownerId": "416572075776671744",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "2ad99319d3ba3ae08ec952a1998089de",
+      "active": true
+    },
+    "782968398790656062": {
+      "id": "782968398790656062",
+      "name": "Boss King",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 11,
+      "ownerId": "761522374130270248",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": null,
+      "active": true
+    },
+    "749628705873068145": {
+      "id": "749628705873068145",
+      "name": "deneme",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 5,
+      "ownerId": "413081778031427584",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": null,
+      "active": true
+    },
+    "706103591181615105": {
+      "id": "706103591181615105",
+      "name": "901 Bot List",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 584,
+      "ownerId": "759300123845984266",
+      "region": "tr",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "COMMUNITY",
+        "NEWS"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "b68cb9de167b1f8c239981789134c7ac",
+      "active": true
+    },
+    "826825694205444107": {
+      "id": "826825694205444107",
+      "name": "てきとうにつくったサーバー！",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 10855,
+      "ownerId": "707704842356916275",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "PIN_PERMISSION_MIGRATION_COMPLETE",
+        "TEXT_IN_VOICE_ENABLED",
+        "AGE_VERIFICATION_LARGE_GUILD",
+        "INVITES_DISABLED",
+        "MEMBER_VERIFICATION_MANUAL_APPROVAL",
+        "AUTO_MODERATION",
+        "COMMUNITY",
+        "MEMBER_VERIFICATION_GATE_ENABLED",
+        "ACTIVITY_FEED_DISABLED_BY_USER",
+        "ENABLED_MODERATION_EXPERIENCE_FOR_NON_COMMUNITY",
+        "NEWS"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "e6b87ba28faad450d9f5f8ef05a02498",
+      "active": true
+    },
+    "883159938170503240": {
+      "id": "883159938170503240",
+      "name": "dxddy's server",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 8,
+      "ownerId": "883144125376004106",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": null,
+      "active": true
+    },
+    "909718363763261440": {
+      "id": "909718363763261440",
+      "name": "Bulgarija - Yougoslavija",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 3,
+      "ownerId": "540276200451604481",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "48860858337c7aa68b131472c3cc03e0",
+      "active": true
+    },
+    "819290828886769674": {
+      "id": "819290828886769674",
+      "name": "boş",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 3,
+      "ownerId": "413081778031427584",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": null,
+      "active": true
+    },
+    "838776767064965150": {
+      "id": "838776767064965150",
+      "name": "Pelusitas <3",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 15,
+      "ownerId": "822947842439249940",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "0ad54f1a404c7d029cf45bbf5c3d3068",
+      "active": true
+    },
+    "724331346515984484": {
+      "id": "724331346515984484",
+      "name": "memotelo04 kullanıcısının sunucusu",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 2,
+      "ownerId": "713461684534116443",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": null,
+      "active": true
+    },
+    "597501221284347904": {
+      "id": "597501221284347904",
+      "name": "Ahmetin mekanı",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 85,
+      "ownerId": "751905121650344056",
+      "region": "tr",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "NEWS",
+        "WELCOME_SCREEN_ENABLED",
+        "COMMUNITY"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "a7429db9b79dbcc359df3f798a430cd9",
+      "active": true
+    },
+    "805742184305000459": {
+      "id": "805742184305000459",
+      "name": "kokichis death 🎲😭",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 9,
+      "ownerId": "755037534454677514",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "b74edb0950fe1a79f56fc26156e1c475",
+      "active": true
+    },
+    "880995754511065108": {
+      "id": "880995754511065108",
+      "name": "sushi en vente",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 12,
+      "ownerId": "872328886824886372",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "NEWS",
+        "THREADS_ENABLED",
+        "NEW_THREAD_PERMISSIONS",
+        "COMMUNITY"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "0530b75f38a2f76832fb58f9ffb74581",
+      "active": true
+    },
+    "727234201530662973": {
+      "id": "727234201530662973",
+      "name": "Free Nudes",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 12662,
+      "ownerId": "679744888199184425",
+      "region": "en-GB",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "COMMUNITY",
+        "THREADS_ENABLED",
+        "NEWS",
+        "ENABLED_DISCOVERABLE_BEFORE",
+        "CHANNEL_ICON_EMOJIS_GENERATED",
+        "COMMUNITY_EXP_LARGE_GATED",
+        "NEW_THREAD_PERMISSIONS",
+        "DISCOVERABLE_DISABLED",
+        "WELCOME_SCREEN_ENABLED",
+        "AGE_VERIFICATION_LARGE_GUILD",
+        "TIERLESS_BOOSTING_SYSTEM_MESSAGE"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "a9724ff30c1fb75d53d32524f55fcfc5",
+      "active": true
+    },
+    "609629773366427658": {
+      "id": "609629773366427658",
+      "name": "MekatronX BotList 2.3K",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 1959,
+      "ownerId": "698149042387157032",
+      "region": "tr",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "AGE_VERIFICATION_LARGE_GUILD",
+        "NEW_THREAD_PERMISSIONS",
+        "COMMUNITY",
+        "NEWS",
+        "THREADS_ENABLED"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "2f0fdc3878b6eb7220f99453042413b0",
+      "active": true
+    },
+    "1335418623119986780": {
+      "id": "1335418623119986780",
+      "name": "Cfa",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 27,
+      "ownerId": "1118200806492086393",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "NEWS",
+        "COMMUNITY"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "c842cdaa1ea23f3007d5bb824f8fbe29",
+      "active": true
+    },
+    "802112703065751554": {
+      "id": "802112703065751554",
+      "name": "Anime Mekanı",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 9,
+      "ownerId": "791536348179726377",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "7e4f37acb2ea2cf6f0e6f63535e28540",
+      "active": true
+    },
+    "795475776258441268": {
+      "id": "795475776258441268",
+      "name": "Sus club",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 8,
+      "ownerId": "749004517869355019",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "COMMUNITY",
+        "NEWS",
+        "WELCOME_SCREEN_ENABLED"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "c2bd90abc586fcbe9fd93b33a6dc9559",
+      "active": true
+    },
+    "804336257350107167": {
+      "id": "804336257350107167",
+      "name": "ϟ𝔾𝕦𝕖𝕣𝕣𝕖𝕚𝕣𝕠𝕤 ℙ𝕣𝕠ϟ",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 6,
+      "ownerId": "764309339464794133",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "PREVIEW_ENABLED",
+        "COMMUNITY",
+        "WELCOME_SCREEN_ENABLED",
+        "MEMBER_VERIFICATION_GATE_ENABLED",
+        "NEWS"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "12413eea33e2c64d85983bcb0268901b",
+      "active": true
+    },
+    "831519062365569043": {
+      "id": "831519062365569043",
+      "name": "Game Rewards",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 6286,
+      "ownerId": "698381028112465930",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "COMMUNITY",
+        "NEWS",
+        "COMMUNITY_EXP_LARGE_GATED",
+        "AGE_VERIFICATION_LARGE_GUILD"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "7f6a4f2924bff9d39dca9ec1cb90ef68",
+      "active": true
+    },
+    "823351688567324724": {
+      "id": "823351688567324724",
+      "name": "chunchunmarU",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 147,
+      "ownerId": "807373326271774741",
+      "region": "es-ES",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "COMMUNITY",
+        "NEWS"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "2fb89b4e35a66062b3bc850dbd146f62",
+      "active": true
+    },
+    "545480767992758283": {
+      "id": "545480767992758283",
+      "name": "Gyaki Team",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 78,
+      "ownerId": "512641927309688842",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "CHANNEL_ICON_EMOJIS_GENERATED",
+        "TEXT_IN_VOICE_ENABLED"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "14caca988e6a074866b238809b8b5760",
+      "active": true
+    },
+    "778046614962962433": {
+      "id": "778046614962962433",
+      "name": "𝓕𝓵𝓸𝔀𝓮𝓻𝓼",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 42,
+      "ownerId": "704902280633253939",
+      "region": "es-ES",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "COMMUNITY",
+        "SOUNDBOARD",
+        "CHANNEL_ICON_EMOJIS_GENERATED",
+        "THREADS_ENABLED",
+        "NEW_THREAD_PERMISSIONS",
+        "WELCOME_SCREEN_ENABLED",
+        "NEWS"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "e0a464ccceedc10e1ee9fc09e52f66de",
+      "active": true
+    },
+    "536529418252976128": {
+      "id": "536529418252976128",
+      "name": "Retirement Home Moira",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 33,
+      "ownerId": "536528720589226004",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "0fef9edc8c386a376ee093eabdb589b3",
+      "active": true
+    },
+    "499682285197590530": {
+      "id": "499682285197590530",
+      "name": "Jado sayz hi",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 171,
+      "ownerId": "399257930328965141",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "2f85e2b62d833295d169933f4d15d402",
+      "active": true
+    },
+    "803071456887046174": {
+      "id": "803071456887046174",
+      "name": "juegos",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 7,
+      "ownerId": "775190928976510976",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "ea85fd20c972caee00f2888ef2ace11c",
+      "active": true
+    },
+    "1008329625287528538": {
+      "id": "1008329625287528538",
+      "name": "bucet Roblox",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 32,
+      "ownerId": "993524399552602164",
+      "region": "pt-BR",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "EXPOSED_TO_ACTIVITIES_WTP_EXPERIMENT"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "bc2dd251b450a0035d5cbb60f483a78c",
+      "active": true
+    },
+    "1069725546600210583": {
+      "id": "1069725546600210583",
+      "name": "swaff & schizoid",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 713,
+      "ownerId": "333319658973429762",
+      "region": "tr",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "AUTO_MODERATION",
+        "NEWS",
+        "COMMUNITY",
+        "TIERLESS_BOOSTING_SYSTEM_MESSAGE",
+        "SOUNDBOARD"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "6eb0562f5584a0e6a698e44beb8ec485",
+      "active": true
+    },
+    "828989247259279391": {
+      "id": "828989247259279391",
+      "name": "Jakšina Banda",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 28,
+      "ownerId": "787396075610439732",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "50b26d0641726ac374ab9bacb2a08f9d",
+      "active": true
+    },
+    "787761031526350868": {
+      "id": "787761031526350868",
+      "name": "Amonguers",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 6,
+      "ownerId": "755599934421598258",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "35e25ec1e063e2092fefa690e264c8df",
+      "active": true
+    },
+    "719498292198768690": {
+      "id": "719498292198768690",
+      "name": "S U C C",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 10,
+      "ownerId": "301033082788642816",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "EXPOSED_TO_ACTIVITIES_WTP_EXPERIMENT"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "b0ab8ce5e83bd5c2e4d9e26a82687dc4",
+      "active": true
+    },
+    "771087345071030302": {
+      "id": "771087345071030302",
+      "name": "https://discord.gg/RMs592Z2",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 52,
+      "ownerId": "802315343283879976",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": null,
+      "active": true
+    },
+    "936231504047124490": {
+      "id": "936231504047124490",
+      "name": "naruke",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 3,
+      "ownerId": "315875588906680330",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "SOUNDBOARD",
+        "EXPOSED_TO_ACTIVITIES_WTP_EXPERIMENT",
+        "CHANNEL_ICON_EMOJIS_GENERATED"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "d90cfca86ca5bbbd451b7b3a6cd44077",
+      "active": true
+    },
+    "965629126683791430": {
+      "id": "965629126683791430",
+      "name": "Gamegod Lounge",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 19,
+      "ownerId": "690222240738181170",
+      "region": "tr",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "NEWS",
+        "COMMUNITY",
+        "CHANNEL_ICON_EMOJIS_GENERATED"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "d6ce41dad084d225131f4a9dcae2b665",
+      "active": true
+    },
+    "622666460233465867": {
+      "id": "622666460233465867",
+      "name": "Troulax ve Roninleri",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 277,
+      "ownerId": "615661042437062814",
+      "region": "tr",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "NEW_THREAD_PERMISSIONS",
+        "NEWS",
+        "COMMUNITY",
+        "THREADS_ENABLED"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "9169598c8bff28580fbbc7c70a7ac41a",
+      "active": true
+    },
+    "715973439692865636": {
+      "id": "715973439692865636",
+      "name": "Youtube Yardımlaşma Platformu",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 246,
+      "ownerId": "446363968685080579",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "ENABLED_MODERATION_EXPERIENCE_FOR_NON_COMMUNITY"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "53650d86f9b193165be074e31bd44145",
+      "active": true
+    },
+    "830713662121181224": {
+      "id": "830713662121181224",
+      "name": "Adamya's server",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 22,
+      "ownerId": "733946024967798814",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "CHANNEL_ICON_EMOJIS_GENERATED"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "10f904a564e851763b835e087b647893",
+      "active": true
+    },
+    "784593057517273089": {
+      "id": "784593057517273089",
+      "name": "Cäfë Fënī§",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 8,
+      "ownerId": "695850369313669201",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "3563cc437afd727cde4455871b74c9fd",
+      "active": true
+    },
+    "790793534386864149": {
+      "id": "790793534386864149",
+      "name": "𝒟ℯ𝒶𝒹 𝒻𝓊𝒸𝓀ℯ𝓇𝓈",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 20,
+      "ownerId": "801659735145185281",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "COMMUNITY",
+        "NEWS"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "04e71643ba369a1866ef76a74c506e15",
+      "active": true
+    },
+    "818899106906374184": {
+      "id": "818899106906374184",
+      "name": "𝔸𝕜𝕒𝕥𝕤𝕦𝕜𝕚",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 14,
+      "ownerId": "770690660839849995",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "b820fd05058bb2bbc1a9ab115b7f2eeb",
+      "active": true
+    },
+    "1056538362418319460": {
+      "id": "1056538362418319460",
+      "name": "Road To 20K",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 11046,
+      "ownerId": "1004348010865643530",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "AGE_VERIFICATION_LARGE_GUILD"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": null,
+      "active": true
+    },
+    "803393600859013160": {
+      "id": "803393600859013160",
+      "name": "~Mhmd~'s server",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 14,
+      "ownerId": "803393309664870460",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "EXPOSED_TO_ACTIVITIES_WTP_EXPERIMENT"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "5a0e07bd3479701928cd1a2a3dbe9cd9",
+      "active": true
+    },
+    "751835664852713503": {
+      "id": "751835664852713503",
+      "name": "Draw Bot List",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 1260,
+      "ownerId": "600283964091006987",
+      "region": "tr",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "AGE_VERIFICATION_LARGE_GUILD",
+        "CHANNEL_ICON_EMOJIS_GENERATED",
+        "NEWS",
+        "COMMUNITY",
+        "THREADS_ENABLED",
+        "NEW_THREAD_PERMISSIONS"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "86cb7cf8ab3546106b6a327f1bf89b9c",
+      "active": true
+    },
+    "1032328363127361578": {
+      "id": "1032328363127361578",
+      "name": "NARUTO & BORUTO GENERATION",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 29,
+      "ownerId": "877004921680068668",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "da845a02b1d888c61e4712bb737a275f",
+      "active": true
+    },
+    "720675475826933770": {
+      "id": "720675475826933770",
+      "name": "Bots Arena ' s Verfication Server",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 40,
+      "ownerId": "704287854192361543",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "9f1401aa96f710650bc64316d53b4007",
+      "active": true
+    },
+    "656616983164354560": {
+      "id": "656616983164354560",
+      "name": "AMACINIZ NE",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 1699,
+      "ownerId": "755024423291060235",
+      "region": "tr",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "ENABLED_DISCOVERABLE_BEFORE",
+        "NEWS",
+        "CHANNEL_ICON_EMOJIS_GENERATED",
+        "AGE_VERIFICATION_LARGE_GUILD",
+        "COMMUNITY"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": null,
+      "active": true
+    },
+    "1060248257760088074": {
+      "id": "1060248257760088074",
+      "name": "send nukes",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 5892,
+      "ownerId": "1064474866096558100",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "AGE_VERIFICATION_LARGE_GUILD"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "c3593d40e21ec87429092c3cf5cc6bb8",
+      "active": true
+    },
+    "1147960850691408012": {
+      "id": "1147960850691408012",
+      "name": "the god's rp",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 35,
+      "ownerId": "877004921680068668",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "CHANNEL_ICON_EMOJIS_GENERATED"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "509757d41d7b5ea3209614308b284950",
+      "active": true
+    },
+    "854496771840671764": {
+      "id": "854496771840671764",
+      "name": "The Leaf Village",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 16,
+      "ownerId": "814266759301038080",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "COMMUNITY",
+        "NEWS"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "be51865018e968200b5e3700ac00d5a0",
+      "active": true
+    },
+    "780558625864941589": {
+      "id": "780558625864941589",
+      "name": "viva la Sorux",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 15,
+      "ownerId": "569616733636263937",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "TEXT_IN_VOICE_ENABLED"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "85e7af5d952b7ab1a7bff56b895a5320",
+      "active": true
+    },
+    "766841547458347058": {
+      "id": "766841547458347058",
+      "name": "mystical💫",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 19,
+      "ownerId": "702002327921360986",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "COMMUNITY",
+        "NEWS",
+        "CHANNEL_ICON_EMOJIS_GENERATED"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "dfe5cfb696ae6bb522d83b2be039a1f0",
+      "active": true
+    },
+    "718627746716319744": {
+      "id": "718627746716319744",
+      "name": "Mazi Meclisi",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 60,
+      "ownerId": "459830751517605888",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "AUTO_MODERATION"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "f68aa9b3edadeae3aabb5e5c64104a76",
+      "active": true
+    },
+    "779875496292909057": {
+      "id": "779875496292909057",
+      "name": "Akatsuki Clan",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 6,
+      "ownerId": "779875081266135041",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "0a2f077077ef864423166253ccaf90b0",
+      "active": true
+    },
+    "722024165741166612": {
+      "id": "722024165741166612",
+      "name": "31 çekenler",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 221,
+      "ownerId": "941726577312538714",
+      "region": "tr",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "PREVIEW_ENABLED",
+        "COMMUNITY",
+        "TEXT_IN_VOICE_ENABLED",
+        "NEWS",
+        "WELCOME_SCREEN_ENABLED",
+        "MEMBER_VERIFICATION_GATE_ENABLED"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "8ab08ac8a1b00d1b139f9ab1b5373b7f",
+      "active": true
+    },
+    "941469658119286784": {
+      "id": "941469658119286784",
+      "name": "PHANTOM",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 7,
+      "ownerId": "798708320000409661",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "fe28a57b4084b2fac931b43f2bb5d241",
+      "active": true
+    },
+    "782411685465161769": {
+      "id": "782411685465161769",
+      "name": "FaZe Clan",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 4,
+      "ownerId": "702718232519245974",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "46e2aec049f82ebc840ed34e11b00557",
+      "active": true
+    },
+    "727619889573134457": {
+      "id": "727619889573134457",
+      "name": "Love & Sex +18",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 5203,
+      "ownerId": "1200114394005241947",
+      "region": "tr",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "NEWS",
+        "NEW_THREAD_PERMISSIONS",
+        "TIERLESS_BOOSTING",
+        "COMMUNITY",
+        "THREADS_ENABLED",
+        "TIERLESS_BOOSTING_SYSTEM_MESSAGE",
+        "AGE_VERIFICATION_LARGE_GUILD",
+        "CHANNEL_ICON_EMOJIS_GENERATED",
+        "AUTO_MODERATION"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "5c2378c372e36ece8636b33241e32e94",
+      "active": true
+    },
+    "864245049613352990": {
+      "id": "864245049613352990",
+      "name": "villa de la hoja 😝",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 4,
+      "ownerId": "861330155921735730",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "04494bc41dd63978b6a8158a8d72334f",
+      "active": true
+    },
+    "770003522183757885": {
+      "id": "770003522183757885",
+      "name": "Wolf+ Support & Code Bot List",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 261,
+      "ownerId": "724554962658656277",
+      "region": "tr",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "COMMUNITY",
+        "WELCOME_SCREEN_ENABLED",
+        "NEWS"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "9b2e21374b905c635174106aee2bd7cf",
+      "active": true
+    },
+    "768231840200654888": {
+      "id": "768231840200654888",
+      "name": "Hello Master",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 8,
+      "ownerId": "552776705438253068",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "f5601b481be77fd1f52eb4bd81029c93",
+      "active": true
+    },
+    "768948528424419338": {
+      "id": "768948528424419338",
+      "name": "Morins Twitch",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 323,
+      "ownerId": "291282346919854080",
+      "region": "tr",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "AUTO_MODERATION"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "799cdbd32cd85d5637880f5c222484a3",
+      "active": true
+    },
+    "735903380139933838": {
+      "id": "735903380139933838",
+      "name": "fibercode",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 19565,
+      "ownerId": "750283022737342545",
+      "region": "tr",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "WELCOME_SCREEN_ENABLED",
+        "SOUNDBOARD",
+        "COMMUNITY",
+        "ENABLED_DISCOVERABLE_BEFORE",
+        "CHANNEL_ICON_EMOJIS_GENERATED",
+        "MEMBER_VERIFICATION_GATE_ENABLED",
+        "TEXT_IN_VOICE_ENABLED",
+        "DISCOVERABLE",
+        "COMMUNITY_EXP_LARGE_GATED",
+        "PREVIEW_ENABLED",
+        "GUILD_WEB_PAGE_VANITY_URL",
+        "AGE_VERIFICATION_LARGE_GUILD",
+        "NEWS",
+        "AUTO_MODERATION",
+        "THREADS_ENABLED",
+        "TIERLESS_BOOSTING_SYSTEM_MESSAGE"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": null,
+      "active": true
+    },
+    "700701341105782850": {
+      "id": "700701341105782850",
+      "name": "Costin's Official Discord Server",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 11358,
+      "ownerId": "940629136538501160",
+      "region": "ro",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "COMMUNITY",
+        "AGE_VERIFICATION_LARGE_GUILD",
+        "TIERLESS_BOOSTING_SYSTEM_MESSAGE",
+        "CHANNEL_ICON_EMOJIS_GENERATED",
+        "NEWS"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "8c32986af11a369ab60121e01db52cbc",
+      "active": true
+    },
+    "783786095035809792": {
+      "id": "783786095035809792",
+      "name": "Akatsuki",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 10,
+      "ownerId": "783772120790073414",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "0b95d780259d8d1e911f884015dede83",
+      "active": true
+    },
+    "776854315830083614": {
+      "id": "776854315830083614",
+      "name": "Élite Official Discord",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 130,
+      "ownerId": "400358815645827074",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "cfb31473134375bd54fccd2f5c106219",
+      "active": true
+    },
+    "877536981360476201": {
+      "id": "877536981360476201",
+      "name": "🌧~|Yandero Simulator",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 2,
+      "ownerId": "867039938795929630",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "d9c50730eab4bd2dc210fed0a58d6288",
+      "active": true
+    },
+    "891645112113844224": {
+      "id": "891645112113844224",
+      "name": "itachi uchiha",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 10,
+      "ownerId": "891643706313162753",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": null,
+      "active": true
+    },
+    "1409465509988007948": {
+      "id": "1409465509988007948",
+      "name": "Neurovia Studios",
+      "createdAt": "2025-10-06T12:33:22.749Z",
+      "memberCount": 3,
+      "ownerId": "315875588906680330",
+      "region": "en-US",
+      "joinedAt": "2025-10-06T12:33:22.749Z",
+      "features": [
+        "TIERLESS_BOOSTING"
+      ],
+      "boostLevel": 0,
+      "boostCount": 0,
+      "icon": "45a1c1ada460daf3d006ec723ebf2b18",
+      "active": true
+    },
+    "[object Object]": {
+      "id": {
+        "levelingEnabled": true,
+        "xpPerMessage": 15,
+        "xpCooldown": 60000,
+        "levelUpChannelId": "1421991529207038142"
+      },
+      "name": "Unknown Guild",
+      "createdAt": "2025-10-06T16:34:32.085Z"
+    }
+  },
+  "guildMembers": {
+    "1001909659273285723-1062871360981979207": {
+      "userId": "1062871360981979207",
+      "guildId": "1001909659273285723",
+      "nickname": null,
+      "joinedAt": "2025-10-06T12:52:26.022Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T12:52:26.022Z"
+    },
+    "1001909659273285723-749876258346631179": {
+      "userId": "749876258346631179",
+      "guildId": "1001909659273285723",
+      "nickname": null,
+      "joinedAt": "2025-10-06T12:53:06.119Z",
+      "leftAt": null,
+      "lastActive": "2025-10-09T12:03:59.420Z"
+    },
+    "826825694205444107-1212940413795827763": {
+      "userId": "1212940413795827763",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:33:54.226Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:33:54.911Z"
+    },
+    "826825694205444107-461265486655520788": {
+      "userId": "461265486655520788",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:33:55.103Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:33:55.933Z"
+    },
+    "826825694205444107-708096305477451846": {
+      "userId": "708096305477451846",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:33:55.639Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:33:56.197Z"
+    },
+    "826825694205444107-810918366045798451": {
+      "userId": "810918366045798451",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:33:56.326Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:34:01.256Z"
+    },
+    "826825694205444107-996534605828083824": {
+      "userId": "996534605828083824",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:33:57.955Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:34:01.616Z"
+    },
+    "826825694205444107-975823949017534494": {
+      "userId": "975823949017534494",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:33:59.152Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:34:05.524Z"
+    },
+    "826825694205444107-780570413767983122": {
+      "userId": "780570413767983122",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:33:59.670Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:34:06.637Z"
+    },
+    "826825694205444107-940658205950885908": {
+      "userId": "940658205950885908",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:33:59.651Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:34:07.059Z"
+    },
+    "826825694205444107-564426594144354315": {
+      "userId": "564426594144354315",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:34:00.772Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:34:11.911Z"
+    },
+    "826825694205444107-704521096837464076": {
+      "userId": "704521096837464076",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:34:01.605Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:34:12.112Z"
+    },
+    "826825694205444107-679643572814741522": {
+      "userId": "679643572814741522",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:34:02.647Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:34:12.414Z"
+    },
+    "826825694205444107-700145482957324289": {
+      "userId": "700145482957324289",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:34:03.597Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:34:17.248Z"
+    },
+    "826825694205444107-321046928391667712": {
+      "userId": "321046928391667712",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:34:04.110Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:34:17.506Z"
+    },
+    "826825694205444107-631216892606152714": {
+      "userId": "631216892606152714",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:08.639Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:09.462Z"
+    },
+    "826825694205444107-787789079227006976": {
+      "userId": "787789079227006976",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:07.562Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:09.689Z"
+    },
+    "826825694205444107-726560538145849374": {
+      "userId": "726560538145849374",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:10.140Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:10.687Z"
+    },
+    "826825694205444107-278550142356029441": {
+      "userId": "278550142356029441",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:13.272Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:15.812Z"
+    },
+    "826825694205444107-695664615534755850": {
+      "userId": "695664615534755850",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:14.526Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:16.056Z"
+    },
+    "826825694205444107-628063585481916417": {
+      "userId": "628063585481916417",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:19.264Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:19.881Z"
+    },
+    "826825694205444107-903690362114158632": {
+      "userId": "903690362114158632",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:21.199Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:21.785Z"
+    },
+    "826825694205444107-724047481561809007": {
+      "userId": "724047481561809007",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:22.451Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:23.123Z"
+    },
+    "826825694205444107-1016794326115823708": {
+      "userId": "1016794326115823708",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:23.321Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:23.890Z"
+    },
+    "826825694205444107-704802632660943089": {
+      "userId": "704802632660943089",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:24.698Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:25.578Z"
+    },
+    "826825694205444107-820242484448854048": {
+      "userId": "820242484448854048",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:25.751Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:30.172Z"
+    },
+    "826825694205444107-544462904037081138": {
+      "userId": "544462904037081138",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:26.986Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:31.157Z"
+    },
+    "826825694205444107-617037497574359050": {
+      "userId": "617037497574359050",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:28.050Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:36.176Z"
+    },
+    "826825694205444107-1061145299927695400": {
+      "userId": "1061145299927695400",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:29.545Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:36.445Z"
+    },
+    "826825694205444107-709700718335885362": {
+      "userId": "709700718335885362",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:30.446Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:40.446Z"
+    },
+    "826825694205444107-717761456787030047": {
+      "userId": "717761456787030047",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:32.274Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:41.578Z"
+    },
+    "826825694205444107-617667726445379595": {
+      "userId": "617667726445379595",
+      "guildId": "826825694205444107",
+      "nickname": null,
+      "joinedAt": "2025-10-06T13:36:33.321Z",
+      "leftAt": null,
+      "lastActive": "2025-10-06T13:36:41.783Z"
+    },
+    "1409465509988007948-315875588906680330": {
+      "userId": "315875588906680330",
+      "guildId": "1409465509988007948",
+      "nickname": null,
+      "joinedAt": "2025-10-06T14:36:49.949Z",
+      "leftAt": null,
+      "lastActive": "2025-10-09T10:19:59.536Z"
+    },
+    "1001909659273285723-607187112378236929": {
+      "userId": "607187112378236929",
+      "guildId": "1001909659273285723",
+      "nickname": "Sage",
+      "joinedAt": "2025-10-06T15:00:13.424Z",
+      "leftAt": null,
+      "lastActive": "2025-10-09T10:42:17.140Z"
+    }
+  },
+  "userEconomy": {},
+  "neuroCoinBalances": {},
+  "neuroCoinTransactions": {},
+  "marketplaceListings": {},
+  "userInventory": {},
+  "achievements": {},
+  "dailyStreaks": {},
+  "questProgress": {},
+  "serverMarketConfig": {},
+  "activityRewards": {},
+  "userProfiles": {},
+  "userStats": {},
+  "userPremium": {},
+  "guildPremium": {},
+  "auditLogs": {},
+  "guildTreasury": {},
+  "stakingPositions": {},
+  "stakingPools": {},
+  "loans": {},
+  "nftCollections": {},
+  "userCollections": {},
+  "nftListings": {},
+  "investments": {},
+  "questTemplates": {},
+  "gameStats": {},
+  "tournamentHistory": {},
+  "tradeHistory": {},
+  "activityFeed": {},
+  "warnings": {},
+  "tickets": {},
+  "giveaways": {},
+  "customCommands": {},
+  "settings": {},
+  "cmsContent": {},
+  "automodSettings": {},
+  "automodViolations": {},
+  "reactionRoles": {},
+  "tempBans": {}
+}
