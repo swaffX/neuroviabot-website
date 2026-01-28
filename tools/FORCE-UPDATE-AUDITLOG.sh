@@ -3,7 +3,7 @@
 echo "🔧 FORCE UPDATE AuditLog.tsx - Infinite Loop Fix"
 echo "================================================"
 
-cd /root/neuroviabot/bot/neuroviabot-frontend
+cd /root/neuroviabot-website/frontend
 
 echo ""
 echo "1️⃣ Mevcut AuditLog.tsx'i yedekle..."

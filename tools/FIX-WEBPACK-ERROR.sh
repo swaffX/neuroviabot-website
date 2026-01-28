@@ -3,7 +3,7 @@
 echo "🔧 WEBPACK ERROR FIX - Node Modules Temizleme"
 echo "=============================================="
 
-cd /root/neuroviabot/bot/neuroviabot-frontend
+cd /root/neuroviabot-website/frontend
 
 echo ""
 echo "1️⃣ PM2'yi durduruyor..."

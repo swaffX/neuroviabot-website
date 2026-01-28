@@ -9,7 +9,7 @@ pm2 status
 
 echo ""
 echo "1️⃣ Bot'u kontrol et ve yeniden başlat..."
-cd /root/neuroviabot/bot
+cd /root/neuroviabot-website/bot
 
 # Bot çalışıyor mu?
 BOT_STATUS=$(pm2 list | grep neuroviabot | grep -v backend | grep -v frontend | grep -v webhook)
@@ -22,7 +22,7 @@ echo "✅ Bot yeniden başlatıldı"
 
 echo ""
 echo "2️⃣ Frontend dizinine git..."
-cd /root/neuroviabot/bot/neuroviabot-frontend
+cd /root/neuroviabot-website/frontend
 
 echo ""
 echo "3️⃣ Git'ten son değişiklikleri çek..."

@@ -3,7 +3,7 @@
 echo "🔧 FINAL FIX - Tüm Hataları Düzelt"
 echo "===================================="
 
-cd /root/neuroviabot/bot/neuroviabot-frontend
+cd /root/neuroviabot-website/frontend
 
 echo ""
 echo "1️⃣ next.config.js düzeltiliyor (swcMinify kaldırılıyor)..."

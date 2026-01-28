@@ -13,7 +13,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-cd /root/neuroviabot/bot/neuroviabot-frontend
+cd /root/neuroviabot-website/frontend
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "📁 1. DOSYA KONTROLÜ"

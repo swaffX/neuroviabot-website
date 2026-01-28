@@ -3,7 +3,7 @@
 echo "🧪 FRONTEND TEST & STATUS CHECK"
 echo "================================"
 
-cd /root/neuroviabot/bot/neuroviabot-frontend
+cd /root/neuroviabot-website/frontend
 
 echo ""
 echo "1️⃣ PM2 Durumu:"

@@ -8,7 +8,7 @@ echo "🚀 Audit Log Fix deployment başlatılıyor..."
 echo ""
 
 # Ana dizine git
-cd /root/neuroviabot/bot/neuroviabot-discord
+cd /root/neuroviabot-website/bot/neuroviabot-discord
 
 # Git pull
 echo "📥 Git pull yapılıyor..."
@@ -24,7 +24,7 @@ echo "✅ Git pull başarılı"
 echo ""
 
 # Frontend dizinine git
-cd /root/neuroviabot/bot/neuroviabot-frontend
+cd /root/neuroviabot-website/frontend
 
 # PM2'den frontend'i durdur
 echo "⏹️  Frontend durduruluyor..."

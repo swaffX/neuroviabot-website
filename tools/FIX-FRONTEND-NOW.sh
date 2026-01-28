@@ -11,7 +11,7 @@ echo "⏹️  Hatalı process durduruluyor..."
 pm2 delete neuroviabot-frontend
 
 # 2. Klasöre git
-cd /root/neuroviabot/bot/neuroviabot-frontend
+cd /root/neuroviabot-website/frontend
 
 # 3. Dosyaları kontrol et
 echo ""

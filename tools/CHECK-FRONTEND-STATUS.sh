@@ -13,7 +13,7 @@ pm2 list | grep neuroviabot-frontend
 
 echo ""
 echo "📂 Frontend klasörü:"
-cd /root/neuroviabot/bot/neuroviabot-frontend
+cd /root/neuroviabot-website/frontend
 pwd
 
 echo ""

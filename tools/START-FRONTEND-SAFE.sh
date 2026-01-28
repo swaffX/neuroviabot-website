@@ -6,7 +6,7 @@
 
 echo "🎨 Frontend güvenli başlatma..."
 
-cd /root/neuroviabot/bot/neuroviabot-frontend
+cd /root/neuroviabot-website/frontend
 
 # Dosyaların varlığını kontrol et
 if [ ! -f "package.json" ]; then

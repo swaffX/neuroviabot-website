@@ -3,7 +3,7 @@
 echo "🔧 AuditLog.tsx Tam Düzeltme Scripti"
 echo "====================================="
 
-cd /root/neuroviabot/bot/neuroviabot-frontend
+cd /root/neuroviabot-website/frontend
 
 echo "📝 AuditLog.tsx dosyasını yeniden oluşturuyor..."
 
