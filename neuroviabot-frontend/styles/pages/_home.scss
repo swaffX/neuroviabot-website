@@ -1,0 +1,353 @@
+// ==========================================
+// 🎨 NeuroViaBot - Home Page Styles
+// ==========================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use 'sass:map';
+
+.home {
+  &-hero {
+    position: relative;
+    min-height: 100vh;
+    @include flex-column-center;
+    padding: map.get($spacing, '6xl') map.get($spacing, 'lg');
+    overflow: hidden;
+    
+    // Animated gradient background
+    &::before {
+      content: '';
+      @include absolute-fill;
+      background: 
+        radial-gradient(ellipse at 20% 30%, rgba(88, 101, 242, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 70%, rgba(124, 58, 237, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 50%, rgba(236, 72, 153, 0.08) 0%, transparent 70%);
+      animation: gradient-shift 20s ease-in-out infinite alternate;
+      z-index: -2;
+    }
+    
+    // Mesh gradient overlay
+    &::after {
+      content: '';
+      @include absolute-fill;
+      background: 
+        repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(88, 101, 242, 0.02) 40px, rgba(88, 101, 242, 0.02) 80px),
+        repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(124, 58, 237, 0.02) 40px, rgba(124, 58, 237, 0.02) 80px);
+      z-index: -1;
+    }
+    
+    &-badge {
+      @include flex-center;
+      gap: map.get($spacing, 'sm');
+      padding: map.get($spacing, 'sm') map.get($spacing, 'lg');
+      background: linear-gradient(135deg, rgba(88, 101, 242, 0.15) 0%, rgba(124, 58, 237, 0.1) 100%);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(88, 101, 242, 0.3);
+      border-radius: map.get($radius, 'full');
+      font-size: map.get($font-sizes, 'sm');
+      font-weight: map.get($font-weights, 'semibold');
+      color: $color-text-primary;
+      margin-bottom: map.get($spacing, 'xl');
+      box-shadow: 0 4px 20px rgba(88, 101, 242, 0.15);
+      position: relative;
+      
+      // Animated border glow
+      &::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border-radius: map.get($radius, 'full');
+        padding: 1px;
+        background: linear-gradient(90deg, $color-primary, $color-accent-purple, $color-primary);
+        background-size: 200% 100%;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        animation: border-flow 3s linear infinite;
+        opacity: 0.3;
+      }
+      
+      .pulse-dot {
+        width: 8px;
+        height: 8px;
+        background: $color-primary;
+        border-radius: map.get($radius, 'full');
+        box-shadow: 0 0 12px rgba($color-primary, 0.8);
+        animation: glow-pulse 2s ease-in-out infinite;
+      }
+    }
+    
+    &-title {
+      font-size: map.get($font-sizes, '7xl');
+      font-weight: map.get($font-weights, 'black');
+      line-height: map.get($line-heights, 'tight');
+      text-align: center;
+      margin-bottom: map.get($spacing, 'lg');
+      animation: fade-in-up 0.8s ease-out 0.2s backwards;
+      
+      @include respond-below('lg') {
+        font-size: map.get($font-sizes, '6xl');
+      }
+      
+      @include respond-below('md') {
+        font-size: map.get($font-sizes, '4xl');
+      }
+      
+      .gradient-text {
+        @include text-gradient($gradient-cyber);
+        animation: gradient-shift 8s ease infinite;
+        background-size: 200% 200%;
+      }
+    }
+    
+    &-description {
+      font-size: map.get($font-sizes, 'xl');
+      color: $color-text-secondary;
+      text-align: center;
+      max-width: 600px;
+      line-height: map.get($line-heights, 'relaxed');
+      margin-bottom: map.get($spacing, '2xl');
+      animation: fade-in-up 0.8s ease-out 0.4s backwards;
+      
+      @include respond-below('md') {
+        font-size: map.get($font-sizes, 'lg');
+      }
+    }
+    
+    &-actions {
+      @include flex-center;
+      gap: map.get($spacing, 'lg');
+      flex-wrap: wrap;
+      animation: fade-in-up 0.8s ease-out 0.6s backwards;
+      
+      @include respond-below('sm') {
+        flex-direction: column;
+        width: 100%;
+        
+        .btn {
+          width: 100%;
+        }
+      }
+    }
+    
+    &-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: map.get($spacing, 'xl');
+      margin-top: map.get($spacing, '4xl');
+      animation: fade-in-up 0.8s ease-out 0.8s backwards;
+      
+      @include respond-below('sm') {
+        grid-template-columns: 1fr;
+        gap: map.get($spacing, 'lg');
+      }
+    }
+    
+    &-stat {
+      text-align: center;
+      
+      &-value {
+        font-size: map.get($font-sizes, '4xl');
+        font-weight: map.get($font-weights, 'bold');
+        @include text-gradient($gradient-cyber);
+        margin-bottom: map.get($spacing, 'xs');
+      }
+      
+      &-label {
+        font-size: map.get($font-sizes, 'sm');
+        color: $color-text-tertiary;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: map.get($font-weights, 'semibold');
+      }
+    }
+  }
+  
+  &-features {
+    padding: map.get($spacing, '6xl') map.get($spacing, 'lg');
+    background: $color-bg-secondary;
+    
+    @include respond-below('md') {
+      padding: map.get($spacing, '4xl') map.get($spacing, 'lg');
+    }
+    
+    &-header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto map.get($spacing, '4xl');
+    }
+    
+    &-title {
+      font-size: map.get($font-sizes, '5xl');
+      font-weight: map.get($font-weights, 'black');
+      margin-bottom: map.get($spacing, 'lg');
+      
+      @include respond-below('md') {
+        font-size: map.get($font-sizes, '3xl');
+      }
+    }
+    
+    &-description {
+      font-size: map.get($font-sizes, 'xl');
+      color: $color-text-secondary;
+      line-height: map.get($line-heights, 'relaxed');
+    }
+    
+    &-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: map.get($spacing, '2xl');
+      max-width: map.get($container-max-widths, 'xl');
+      margin: 0 auto;
+      
+      @include respond-below('sm') {
+        grid-template-columns: 1fr;
+        gap: map.get($spacing, 'lg');
+      }
+    }
+  }
+  
+  &-cta {
+    padding: map.get($spacing, '6xl') map.get($spacing, 'lg');
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    
+    @include respond-below('md') {
+      padding: map.get($spacing, '4xl') map.get($spacing, 'lg');
+    }
+    
+    &::before {
+      content: '';
+      @include absolute-fill;
+      background: $gradient-cyber;
+      opacity: 0.05;
+      animation: gradient-shift 10s ease infinite;
+      background-size: 200% 200%;
+    }
+    
+    &-title {
+      font-size: map.get($font-sizes, '5xl');
+      font-weight: map.get($font-weights, 'black');
+      margin-bottom: map.get($spacing, 'lg');
+      
+      @include respond-below('md') {
+        font-size: map.get($font-sizes, '3xl');
+      }
+    }
+    
+    &-description {
+      font-size: map.get($font-sizes, 'xl');
+      color: $color-text-secondary;
+      margin-bottom: map.get($spacing, '2xl');
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}
+
+// Feature card specific styles
+.feature {
+  &-card {
+    position: relative;
+    padding: map.get($spacing, '2xl');
+    background: rgba($color-bg-tertiary, 0.6);
+    backdrop-filter: blur($glass-blur);
+    border: 1px solid rgba($color-border-primary, 0.8);
+    border-radius: map.get($radius, 'xl');
+    transition: all map.get($transition-speeds, 'medium') map.get($transition-easings, 'smooth');
+    overflow: hidden;
+    
+    // Gradient overlay on hover
+    &::before {
+      content: '';
+      @include absolute-fill;
+      background: $gradient-cyber;
+      opacity: 0;
+      transition: opacity map.get($transition-speeds, 'medium') map.get($transition-easings, 'smooth');
+      z-index: 0;
+    }
+    
+    // Inner glow effect
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: map.get($radius, 'xl');
+      padding: 1px;
+      background: $gradient-cyber;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity map.get($transition-speeds, 'medium') map.get($transition-easings, 'smooth');
+    }
+    
+    // Content positioning
+    > * {
+      position: relative;
+      z-index: 1;
+    }
+    
+    &:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba($color-primary, 0.5);
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba($color-primary, 0.2);
+      background: rgba($color-bg-tertiary, 0.8);
+      
+      &::before {
+        opacity: 0.08;
+      }
+      
+      &::after {
+        opacity: 0.6;
+      }
+      
+      .feature-icon {
+        transform: scale(1.15) rotate(5deg);
+        box-shadow: 0 8px 24px rgba($color-primary, 0.4);
+      }
+    }
+  }
+  
+  &-icon {
+    @include flex-center;
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, rgba($color-primary, 0.2) 0%, rgba($color-accent-purple, 0.1) 100%);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba($color-primary, 0.2);
+    border-radius: map.get($radius, 'xl');
+    color: $color-primary;
+    margin-bottom: map.get($spacing, 'lg');
+    transition: all map.get($transition-speeds, 'medium') map.get($transition-easings, 'bounce');
+    position: relative;
+    
+    // Subtle inner glow
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border-radius: calc(#{map.get($radius, 'xl')} - 2px);
+      background: linear-gradient(135deg, rgba($color-primary, 0.05) 0%, transparent 100%);
+    }
+  }
+  
+  &-title {
+    font-size: map.get($font-sizes, 'xl');
+    font-weight: map.get($font-weights, 'bold');
+    margin-bottom: map.get($spacing, 'sm');
+    color: $color-text-primary;
+  }
+  
+  &-description {
+    font-size: map.get($font-sizes, 'base');
+    color: $color-text-secondary;
+    line-height: map.get($line-heights, 'relaxed');
+  }
+}
+
+

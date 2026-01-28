@@ -1,0 +1,2 @@
+# This file ensures the audit-logs directory is tracked by git
+# Audit log JSON files will be stored here

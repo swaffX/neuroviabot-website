@@ -1,0 +1,54 @@
+{
+  "name": "neuroviabot",
+  "version": "2.0.0",
+  "description": "Advanced Discord Bot with Moderation, Economy and more features",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"No tests available\" && exit 0",
+    "lint": "eslint src/ --ext .js",
+    "lint:fix": "eslint src/ --ext .js --fix"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "moderation",
+    "economy",
+    "neuroviabot",
+    "discord.js"
+  ],
+  "author": "NeuroVia Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.7.0",
+    "chokidar": "^4.0.3",
+    "cron": "^4.3.3",
+    "discord-player": "^7.1.0",
+    "discord.js": "^14.15.0",
+    "dotenv": "^16.4.0",
+    "express": "^4.19.0",
+    "moment": "^2.30.0",
+    "node-fetch": "^3.3.2",
+    "sequelize": "^6.35.1",
+    "socket.io-client": "^4.7.0",
+    "sqlite3": "^5.1.6",
+    "winston": "^3.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.55.0",
+    "nodemon": "^3.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swaffX/neuroviabot-website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/swaffX/neuroviabot-website/issues"
+  },
+  "homepage": "https://github.com/swaffX/neuroviabot-website#readme"
+}

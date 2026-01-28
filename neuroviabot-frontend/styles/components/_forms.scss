@@ -1,0 +1,249 @@
+// ==========================================
+// 🎨 NeuroViaBot - Form Components
+// ==========================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use 'sass:map';
+
+// Input Wrapper
+.input {
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: map.get($spacing, 'sm');
+    margin-bottom: map.get($spacing, 'lg');
+  }
+  
+  &-label {
+    font-size: map.get($font-sizes, 'sm');
+    font-weight: map.get($font-weights, 'semibold');
+    color: $color-text-primary;
+    margin-bottom: map.get($spacing, 'xs');
+  }
+  
+  &-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  &-icon {
+    position: absolute;
+    left: map.get($spacing, 'md');
+    @include flex-center;
+    color: $color-text-tertiary;
+    pointer-events: none;
+    z-index: 1;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  
+  &-base {
+    @include input-base;
+  }
+  
+  &-with-icon {
+    padding-left: calc(map.get($spacing, '2xl') + map.get($spacing, 'sm'));
+  }
+  
+  &-error {
+    border-color: $color-accent-red;
+    
+    &:focus {
+      border-color: $color-accent-red;
+      box-shadow: 0 0 0 3px rgba($color-accent-red, 0.1);
+    }
+  }
+  
+  &-error-text {
+    font-size: map.get($font-sizes, 'sm');
+    color: $color-accent-red;
+    margin-top: map.get($spacing, 'xs');
+  }
+  
+  &-helper-text {
+    font-size: map.get($font-sizes, 'sm');
+    color: $color-text-tertiary;
+    margin-top: map.get($spacing, 'xs');
+  }
+}
+
+// Checkbox
+.checkbox {
+  &-wrapper {
+    @include flex-center;
+    gap: map.get($spacing, 'sm');
+    cursor: pointer;
+  }
+  
+  &-input {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid $color-border-primary;
+    border-radius: map.get($radius, 'sm');
+    background: $color-bg-tertiary;
+    cursor: pointer;
+    position: relative;
+    transition: all map.get($transition-speeds, 'base') map.get($transition-easings, 'smooth');
+    
+    &:checked {
+      background: $gradient-cyber;
+      border-color: $color-primary;
+      
+      &::after {
+        content: '✓';
+        @include absolute-center;
+        color: $color-text-primary;
+        font-size: 14px;
+        font-weight: map.get($font-weights, 'bold');
+      }
+    }
+    
+    &:hover {
+      border-color: $color-primary;
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+    }
+  }
+  
+  &-label {
+    font-size: map.get($font-sizes, 'base');
+    color: $color-text-primary;
+    cursor: pointer;
+  }
+}
+
+// Radio Button
+.radio {
+  &-wrapper {
+    @include flex-center;
+    gap: map.get($spacing, 'sm');
+    cursor: pointer;
+  }
+  
+  &-input {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid $color-border-primary;
+    border-radius: map.get($radius, 'full');
+    background: $color-bg-tertiary;
+    cursor: pointer;
+    position: relative;
+    transition: all map.get($transition-speeds, 'base') map.get($transition-easings, 'smooth');
+    
+    &:checked {
+      border-color: $color-primary;
+      
+      &::after {
+        content: '';
+        @include absolute-center;
+        width: 10px;
+        height: 10px;
+        border-radius: map.get($radius, 'full');
+        background: $gradient-cyber;
+      }
+    }
+    
+    &:hover {
+      border-color: $color-primary;
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+    }
+  }
+  
+  &-label {
+    font-size: map.get($font-sizes, 'base');
+    color: $color-text-primary;
+    cursor: pointer;
+  }
+}
+
+// Toggle/Switch
+.toggle {
+  &-wrapper {
+    @include flex-between;
+    gap: map.get($spacing, 'md');
+  }
+  
+  &-input {
+    appearance: none;
+    width: 48px;
+    height: 24px;
+    background: $color-bg-elevated;
+    border-radius: map.get($radius, 'full');
+    position: relative;
+    cursor: pointer;
+    transition: all map.get($transition-speeds, 'base') map.get($transition-easings, 'smooth');
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: $color-text-primary;
+      border-radius: map.get($radius, 'full');
+      transition: all map.get($transition-speeds, 'base') map.get($transition-easings, 'smooth');
+    }
+    
+    &:checked {
+      background: $gradient-cyber;
+      
+      &::after {
+        left: 26px;
+      }
+    }
+    
+    &:hover {
+      box-shadow: 0 0 0 4px rgba($color-primary, 0.1);
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 4px rgba($color-primary, 0.2);
+    }
+  }
+  
+  &-label {
+    font-size: map.get($font-sizes, 'base');
+    color: $color-text-primary;
+    font-weight: map.get($font-weights, 'medium');
+  }
+}
+
+// Form Group
+.form {
+  &-group {
+    margin-bottom: map.get($spacing, 'xl');
+  }
+  
+  &-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: map.get($spacing, 'lg');
+    margin-bottom: map.get($spacing, 'lg');
+  }
+  
+  &-actions {
+    @include flex-center;
+    gap: map.get($spacing, 'md');
+    margin-top: map.get($spacing, '2xl');
+    padding-top: map.get($spacing, 'xl');
+    border-top: 1px solid $color-border-primary;
+  }
+}
+
+

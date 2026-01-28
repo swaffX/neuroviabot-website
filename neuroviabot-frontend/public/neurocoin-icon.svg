@@ -1,0 +1,38 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Outer circle -->
+  <circle cx="50" cy="50" r="45" fill="url(#coinGradient)" filter="url(#glow)"/>
+  
+  <!-- Inner circle border -->
+  <circle cx="50" cy="50" r="40" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.3"/>
+  
+  <!-- Neural network connections -->
+  <path d="M30,50 Q50,30 70,50" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M70,50 Q50,70 30,50" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M50,30 L50,70" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <path d="M30,50 L70,50" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.4"/>
+  
+  <!-- Neural network nodes -->
+  <circle cx="30" cy="50" r="5" fill="#ffffff" filter="url(#glow)"/>
+  <circle cx="50" cy="30" r="5" fill="#ffffff" filter="url(#glow)"/>
+  <circle cx="70" cy="50" r="5" fill="#ffffff" filter="url(#glow)"/>
+  <circle cx="50" cy="70" r="5" fill="#ffffff" filter="url(#glow)"/>
+  <circle cx="50" cy="50" r="6" fill="#ffffff" filter="url(#glow)"/>
+  
+  <!-- NRC text -->
+  <text x="50" y="92" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle" opacity="0.9">NRC</text>
+</svg>
+

@@ -1,0 +1,294 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+
+/* Custom Animations */
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease infinite;
+}
+
+.animate-slide-down {
+  animation: slide-down-navbar 0.5s ease-out forwards;
+}
+
+@keyframes slide-down-navbar {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ==========================================
+   NeuroViaBot - Discord Theme
+   Official Discord Color Palette
+   ========================================== */
+
+:root {
+  /* Discord Official Colors */
+  --discord-blurple: #5865F2;
+  --discord-blurple-dark: #4752C4;
+  --discord-green: #3BA55D;
+  --discord-yellow: #FAA81A;
+  --discord-fuchsia: #EB459F;
+  --discord-red: #ED4245;
+  --discord-white: #FFFFFF;
+  --discord-black: #000000;
+  
+  /* Discord Dark Theme Colors */
+  --discord-dark-1: #1E1F22;  /* Primary background */
+  --discord-dark-2: #2B2D31;  /* Secondary background */
+  --discord-dark-3: #313338;  /* Tertiary background */
+  --discord-dark-4: #383A40;  /* Hover state */
+  --discord-dark-border: #26272B;  /* Borders */
+  
+  /* Text Colors */
+  --discord-text-primary: #F2F3F5;
+  --discord-text-secondary: #B5BAC1;
+  --discord-text-muted: #949BA4;
+  --discord-text-link: #00AFF4;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.16);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.24);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.32);
+  
+  /* Transitions */
+  --transition-fast: 150ms;
+  --transition-base: 200ms;
+  --transition-slow: 300ms;
+}
+
+/* Body Styles - Discord Theme */
+body {
+  color: var(--discord-text-primary);
+  background: var(--discord-dark-3);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* HTML Styles */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ==========================================
+   Scrollbar Styling - Purple Theme
+   Applied globally for all scrollable elements
+   ========================================== */
+
+/* Webkit browsers (Chrome, Edge, Safari, Opera) */
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8b5cf6 0%, #5865f2 100%);
+  border: 3px solid rgba(15, 15, 20, 0.3);
+  background-clip: padding-box;
+  border-radius: 10px;
+  min-height: 40px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #a78bfa 0%, #6875f5 100%);
+  border: 3px solid rgba(15, 15, 20, 0.2);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #7c3aed 0%, #4f46e5 100%);
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(15, 15, 20, 0.8);
+  border-radius: 10px;
+}
+
+/* Firefox */
+html,
+body,
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #8b5cf6 rgba(15, 15, 20, 0.8);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--discord-blurple);
+  color: var(--discord-white);
+}
+
+/* Focus States */
+*:focus-visible {
+  outline: 2px solid var(--discord-blurple);
+  outline-offset: 2px;
+}
+
+/* Tailwind Utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom Animations */
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Discord Button Styles */
+.discord-button-primary {
+  background-color: var(--discord-blurple);
+  color: var(--discord-white);
+  transition: background-color var(--transition-base);
+}
+
+.discord-button-primary:hover {
+  background-color: var(--discord-blurple-dark);
+}
+
+.discord-button-secondary {
+  background-color: var(--discord-dark-2);
+  color: var(--discord-text-primary);
+  transition: background-color var(--transition-base);
+}
+
+.discord-button-secondary:hover {
+  background-color: var(--discord-dark-4);
+}
+
+/* Discord Card Styles */
+.discord-card {
+  background-color: var(--discord-dark-2);
+  border: 1px solid var(--discord-dark-border);
+  border-radius: 8px;
+  transition: all var(--transition-base);
+}
+
+.discord-card:hover {
+  background-color: var(--discord-dark-4);
+  border-color: rgba(88, 101, 242, 0.3);
+}
+
+/* Discord Input Styles */
+.discord-input {
+  background-color: var(--discord-dark-1);
+  border: 1px solid transparent;
+  color: var(--discord-text-primary);
+  border-radius: 4px;
+  padding: 10px;
+  transition: border-color var(--transition-base);
+}
+
+.discord-input:focus {
+  border-color: var(--discord-blurple);
+  outline: none;
+}
+
+/* Discord Badge */
+.discord-badge {
+  background-color: var(--discord-blurple);
+  color: var(--discord-white);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}

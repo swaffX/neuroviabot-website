@@ -1,0 +1,97 @@
+name: 🔍 Diagnose Frontend Issues
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    name: 🔍 Frontend Diagnostics
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🔍 System Information
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          command_timeout: 10m
+          script: |
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "🔍 SYSTEM DIAGNOSTICS"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            
+            echo ""
+            echo "📦 Node.js & NPM:"
+            node --version
+            npm --version
+            
+            echo ""
+            echo "💾 Disk Space:"
+            df -h /root
+            
+            echo ""
+            echo "🧠 Memory:"
+            free -h
+            
+            echo ""
+            echo "📂 Frontend Directory Structure:"
+            ls -la /root/neuroviabot/bot/neuroviabot-frontend/ || echo "Directory not found!"
+            
+            echo ""
+            echo "📋 package.json exists:"
+            if [ -f "/root/neuroviabot/bot/neuroviabot-frontend/package.json" ]; then
+              echo "✅ package.json found"
+              cat /root/neuroviabot/bot/neuroviabot-frontend/package.json | grep -A 5 "\"dependencies\""
+            else
+              echo "❌ package.json NOT FOUND"
+            fi
+            
+            echo ""
+            echo "🔍 node_modules status:"
+            if [ -d "/root/neuroviabot/bot/neuroviabot-frontend/node_modules" ]; then
+              echo "✅ node_modules exists"
+              echo "📊 node_modules size: $(du -sh /root/neuroviabot/bot/neuroviabot-frontend/node_modules 2>/dev/null | cut -f1)"
+              
+              if [ -d "/root/neuroviabot/bot/neuroviabot-frontend/node_modules/next" ]; then
+                echo "✅ next package exists"
+              else
+                echo "❌ next package NOT FOUND"
+              fi
+              
+              if [ -f "/root/neuroviabot/bot/neuroviabot-frontend/node_modules/.bin/next" ]; then
+                echo "✅ next binary exists"
+              else
+                echo "❌ next binary NOT FOUND"
+              fi
+            else
+              echo "❌ node_modules does NOT exist"
+            fi
+            
+            echo ""
+            echo "🏗️ Build directory status:"
+            if [ -d "/root/neuroviabot/bot/neuroviabot-frontend/.next" ]; then
+              echo "✅ .next directory exists"
+              echo "📊 .next size: $(du -sh /root/neuroviabot/bot/neuroviabot-frontend/.next 2>/dev/null | cut -f1)"
+            else
+              echo "❌ .next directory does NOT exist"
+            fi
+            
+            echo ""
+            echo "📋 PM2 Status:"
+            pm2 list
+            
+            echo ""
+            echo "🔍 PM2 Config:"
+            if [ -f "/root/neuroviabot/bot/PM2-ECOSYSTEM.config.js" ]; then
+              echo "✅ PM2 config exists"
+              cat /root/neuroviabot/bot/PM2-ECOSYSTEM.config.js | grep -A 20 "neuroviabot-frontend"
+            else
+              echo "❌ PM2 config NOT FOUND"
+            fi
+            
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "✅ DIAGNOSTICS COMPLETED"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

@@ -1,0 +1,250 @@
+╔═══════════════════════════════════════════════════════════════╗
+║  🔍 FRONTEND DIAGNOSTIC & FIX COMMANDS                       ║
+╚═══════════════════════════════════════════════════════════════╝
+
+
+🚀 1. OTOMATİK DÜZELTME (ÖNERİLEN)
+═══════════════════════════════════════════════════════════════
+
+cd /root/neuroviabot/bot/neuroviabot-discord
+chmod +x CHECK-AND-FIX-FRONTEND.sh
+./CHECK-AND-FIX-FRONTEND.sh
+
+Bu script:
+✅ Tüm dosyaları kontrol eder
+✅ node_modules'ü kontrol/düzeltir
+✅ next.config.js'i düzeltir (deprecated ayarları kaldırır)
+✅ Build yapar (.next oluşturur)
+✅ PM2 ile başlatır
+✅ Detaylı rapor verir
+
+
+🔍 2. MANUEL KONTROL ADIMLARI
+═══════════════════════════════════════════════════════════════
+
+# Adım 1: PM2'de hatalı process'i durdur
+pm2 delete neuroviabot-frontend
+
+# Adım 2: Frontend klasörüne git
+cd /root/neuroviabot/bot/neuroviabot-frontend
+
+# Adım 3: Dosya yapısını kontrol et
+ls -la
+
+# Görmek istediğin:
+# - package.json
+# - next.config.js
+# - app/ klasörü
+# - components/ klasörü
+# - node_modules/ klasörü
+
+# Adım 4: next.config.js içeriğini kontrol et
+cat next.config.js
+
+# Görmemek istediğin:
+# - swcMinify (deprecated)
+# - experimental flags (genelde)
+
+# Adım 5: node_modules'ü kontrol et
+ls -la node_modules/.bin/next
+
+# Eğer "No such file" hatası alırsan:
+rm -rf node_modules package-lock.json
+npm install --legacy-peer-deps
+
+# Adım 6: .next klasörünü kontrol et
+ls -la .next
+
+# Eğer yoksa veya eski ise:
+rm -rf .next
+npm run build
+
+# Adım 7: Build sonrası kontrol
+ls -la .next
+
+# Görmek istediğin:
+# - .next/BUILD_ID
+# - .next/server/
+# - .next/static/
+
+# Adım 8: Frontend'i başlat
+pm2 start npm --name "neuroviabot-frontend" -- start -- -p 3001
+pm2 save
+
+# Adım 9: Logları kontrol et
+pm2 logs neuroviabot-frontend --lines 30
+
+
+⚙️  3. NEXT.CONFIG.JS DÜZELTMESİ
+═══════════════════════════════════════════════════════════════
+
+cd /root/neuroviabot/bot/neuroviabot-frontend
+
+# Backup al
+cp next.config.js next.config.js.backup
+
+# Düzeltilmiş config yaz
+cat > next.config.js << 'EOF'
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  images: {
+    domains: ['cdn.discordapp.com', 'i.imgur.com'],
+  },
+  reactStrictMode: true,
+}
+
+module.exports = nextConfig
+EOF
+
+echo "✅ next.config.js düzeltildi"
+
+
+🔨 4. FORCE REBUILD
+═══════════════════════════════════════════════════════════════
+
+cd /root/neuroviabot/bot/neuroviabot-frontend
+
+# 1. PM2'den kaldır
+pm2 delete neuroviabot-frontend
+
+# 2. Cache'leri temizle
+rm -rf .next
+rm -rf node_modules/.cache
+rm -rf .turbo
+
+# 3. Build
+npm run build
+
+# 4. Start
+pm2 start npm --name "neuroviabot-frontend" -- start -- -p 3001
+pm2 save
+
+
+🐛 5. DEBUG KOMUTLARI
+═══════════════════════════════════════════════════════════════
+
+# Build ile ilgili hatalar
+cd /root/neuroviabot/bot/neuroviabot-frontend
+npm run build 2>&1 | tee build-log.txt
+cat build-log.txt
+
+# node_modules boyutu
+du -sh node_modules/
+
+# Disk alanı kontrolü
+df -h
+
+# Port kontrolü
+lsof -i:3001
+
+# Process kontrolü
+ps aux | grep next
+
+# PM2 memory usage
+pm2 monit
+
+
+📊 6. BAŞARILI DURUMUN BELİRTİLERİ
+═══════════════════════════════════════════════════════════════
+
+✅ pm2 list çıktısında:
+   neuroviabot-frontend │ online │ 0 │ 0
+
+✅ pm2 logs çıktısında:
+   ready - started server on 0.0.0.0:3001
+   compiled client and server successfully
+
+✅ ls -la .next/ çıktısında:
+   BUILD_ID dosyası
+   server/ klasörü
+   static/ klasörü
+
+✅ Browser'da:
+   https://neuroviabot.xyz açılıyor
+
+
+❌ 7. YAYGIN HATALAR VE ÇÖZÜMLERİ
+═══════════════════════════════════════════════════════════════
+
+HATA: "Could not find a production build in the '.next' directory"
+ÇÖZÜM: npm run build
+
+HATA: "Unrecognized key(s) in object: 'swcMinify'"
+ÇÖZÜM: next.config.js'i düzelt (yukarıda)
+
+HATA: "node_modules/.bin/next: No such file or directory"
+ÇÖZÜM: npm install --legacy-peer-deps
+
+HATA: "Error: ENOSPC: System limit for number of file watchers reached"
+ÇÖZÜM: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+
+HATA: "Port 3001 already in use"
+ÇÖZÜM: lsof -ti:3001 | xargs kill -9
+
+
+🔧 8. TÜM SİSTEM SAĞLIK KONTROLÜ
+═══════════════════════════════════════════════════════════════
+
+# PM2 durumu
+pm2 status
+
+# Disk alanı
+df -h
+
+# Memory
+free -h
+
+# CPU
+top -bn1 | head -20
+
+# Port'lar
+ss -tlnp | grep -E ':(3000|3001|3002|5000)'
+
+# Git status
+cd /root/neuroviabot/bot/neuroviabot-discord
+git status
+
+# Node version
+node --version
+npm --version
+
+
+🚨 9. ACİL DURUM - TAM RESET
+═══════════════════════════════════════════════════════════════
+
+cd /root/neuroviabot/bot/neuroviabot-frontend
+
+# 1. Stop
+pm2 delete neuroviabot-frontend
+
+# 2. Tüm cache'leri temizle
+rm -rf .next
+rm -rf node_modules
+rm -rf package-lock.json
+rm -rf .turbo
+rm -rf .cache
+
+# 3. Git'ten taze çek
+cd /root/neuroviabot/bot/neuroviabot-discord
+git stash
+git pull origin main
+
+# 4. Frontend setup
+cd /root/neuroviabot/bot/neuroviabot-frontend
+npm install --legacy-peer-deps
+npm run build
+pm2 start npm --name "neuroviabot-frontend" -- start -- -p 3001
+pm2 save
+
+
+╔═══════════════════════════════════════════════════════════════╗
+║     ÖNCELİKLE CHECK-AND-FIX-FRONTEND.SH ÇALIŞTIR!           ║
+║           Bu tüm kontrolleri otomatik yapar                  ║
+╚═══════════════════════════════════════════════════════════════╝
+

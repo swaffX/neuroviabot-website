@@ -1,0 +1,153 @@
+// ==========================================
+// 🎨 NeuroViaBot - SCSS Functions
+// Utility Functions
+// ==========================================
+
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:color';
+@use 'variables' as *;
+
+// ==========================================
+// Spacing Functions
+// ==========================================
+
+@function spacing($size) {
+  @if map.has-key($spacing, $size) {
+    @return map.get($spacing, $size);
+  } @else {
+    @warn "Spacing size `#{$size}` not found in $spacing map.";
+    @return $size;
+  }
+}
+
+// ==========================================
+// Color Functions
+// ==========================================
+
+@function alpha($color, $opacity) {
+  @return rgba($color, $opacity);
+}
+
+@function lighten-color($color, $amount) {
+  @return color.adjust($color, $lightness: $amount);
+}
+
+@function darken-color($color, $amount) {
+  @return color.adjust($color, $lightness: -$amount);
+}
+
+// ==========================================
+// Font Size Functions
+// ==========================================
+
+@function font-size($size) {
+  @if map.has-key($font-sizes, $size) {
+    @return map.get($font-sizes, $size);
+  } @else {
+    @warn "Font size `#{$size}` not found in $font-sizes map.";
+    @return $size;
+  }
+}
+
+// ==========================================
+// Border Radius Functions
+// ==========================================
+
+@function radius($size) {
+  @if map.has-key($radius, $size) {
+    @return map.get($radius, $size);
+  } @else {
+    @warn "Radius size `#{$size}` not found in $radius map.";
+    @return $size;
+  }
+}
+
+// ==========================================
+// Shadow Functions
+// ==========================================
+
+@function shadow($size) {
+  @if map.has-key($shadows, $size) {
+    @return map.get($shadows, $size);
+  } @else {
+    @warn "Shadow `#{$size}` not found in $shadows map.";
+    @return $size;
+  }
+}
+
+// ==========================================
+// Z-Index Functions
+// ==========================================
+
+@function z-index($layer) {
+  @if map.has-key($z-indices, $layer) {
+    @return map.get($z-indices, $layer);
+  } @else {
+    @warn "Z-index layer `#{$layer}` not found in $z-indices map.";
+    @return 0;
+  }
+}
+
+// ==========================================
+// Transition Functions
+// ==========================================
+
+@function transition-speed($speed) {
+  @if map.has-key($transition-speeds, $speed) {
+    @return map.get($transition-speeds, $speed);
+  } @else {
+    @warn "Transition speed `#{$speed}` not found in $transition-speeds map.";
+    @return $speed;
+  }
+}
+
+@function transition-easing($easing) {
+  @if map.has-key($transition-easings, $easing) {
+    @return map.get($transition-easings, $easing);
+  } @else {
+    @warn "Transition easing `#{$easing}` not found in $transition-easings map.";
+    @return $easing;
+  }
+}
+
+// ==========================================
+// Unit Conversion
+// ==========================================
+
+@function rem($pixels) {
+  @return math.div($pixels, 16) * 1rem;
+}
+
+@function em($pixels, $context: 16) {
+  @return math.div($pixels, $context) * 1em;
+}
+
+// ==========================================
+// String Functions
+// ==========================================
+
+@function str-replace($string, $search, $replace: '') {
+  $index: string.index($string, $search);
+  
+  @if $index {
+    @return string.slice($string, 1, $index - 1) + $replace + 
+            str-replace(string.slice($string, $index + string.length($search)), $search, $replace);
+  }
+  
+  @return $string;
+}
+
+// ==========================================
+// Color Gradient Functions
+// ==========================================
+
+@function gradient-linear($direction, $colors...) {
+  @return linear-gradient($direction, $colors);
+}
+
+@function gradient-radial($colors...) {
+  @return radial-gradient($colors);
+}
+
+

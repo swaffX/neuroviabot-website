@@ -1,0 +1,31 @@
+// ==========================================
+// 🎨 NeuroViaBot - Main SCSS Entry Point
+// Modern, Animated, Glassmorphism Design System
+// ==========================================
+
+// Abstracts - Variables, Mixins, Functions, Animations
+@use 'abstracts/variables';
+@use 'abstracts/mixins';
+@use 'abstracts/functions';
+@use 'abstracts/animations';
+
+// Base - Reset, Typography, Global
+@use 'base/reset';
+@use 'base/typography';
+@use 'base/global';
+
+// Components
+@use 'components/buttons';
+@use 'components/cards';
+@use 'components/navbar';
+@use 'components/language-selector';
+
+// ==========================================
+// Tailwind Integration (if needed)
+// ==========================================
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+

@@ -1,0 +1,72 @@
+// ==========================================
+// 🎨 NeuroViaBot - Global Styles
+// Main Entry Point
+// ==========================================
+
+// Import Main SCSS
+@use '../styles/abstracts/variables' as *;
+@use '../styles/abstracts/mixins' as *;
+@use '../styles/abstracts/animations';
+@use '../styles/base/reset';
+@use '../styles/base/typography';
+@use '../styles/base/global';
+@use '../styles/components/buttons';
+@use '../styles/components/cards';
+@use '../styles/components/navbar';
+@use '../styles/components/language-selector';
+@use '../styles/components/nrc-price-widget';
+@use '../styles/components/auth-modal';
+@use '../styles/components/go-back-button';
+@use '../styles/components/carousel';
+@use '../styles/components/product-card';
+@use '../styles/components/product-request-form';
+@use '../styles/components/purchase-modal';
+@use '../styles/components/notification-bell';
+@use '../styles/components/forms';
+@use '../styles/pages/home';
+@use '../styles/pages/nrc-about';
+@use '../styles/pages/nrc-trading-panel';
+@use '../styles/pages/nrc-features';
+@use '../styles/pages/nrc-marketplace';
+@use '../styles/pages/nrc-leaderboard';
+@use '../styles/pages/nrc-games';
+@use '../styles/pages/nrc-profile';
+
+// Tailwind directives
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// ==========================================
+// 📜 Custom Scrollbar Styles
+// ==========================================
+@layer utilities {
+  /* Custom scrollbar for manage panel sidebar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: rgba(31, 41, 55, 0.3);
+    border-radius: 10px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(168, 85, 247, 0.5);
+    border-radius: 10px;
+    transition: background 0.2s;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(168, 85, 247, 0.7);
+  }
+}
+
+// ==========================================
+// 🎯 Custom Cursor - Removed (Using Default Browser Cursor)
+// ==========================================
+

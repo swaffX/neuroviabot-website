@@ -1,0 +1,218 @@
+// ==========================================
+// 🎨 NeuroViaBot - Button Components
+// ==========================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use 'sass:map';
+@use 'sass:color';
+
+.btn {
+  @include button-base;
+  position: relative;
+  overflow: hidden;
+  
+  // Ripple effect container
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+  
+  &:active::before {
+    width: 300px;
+    height: 300px;
+  }
+  
+  // Variants
+  &-primary {
+    @include button-primary;
+  }
+  
+  &-secondary {
+    @include button-secondary;
+  }
+  
+  &-gradient {
+    @include button-gradient;
+  }
+  
+  &-gradient-aurora {
+    @include button-gradient($gradient-aurora);
+  }
+  
+  &-gradient-sunset {
+    @include button-gradient($gradient-sunset);
+  }
+  
+  &-ghost {
+    background: transparent;
+    color: $color-text-primary;
+    border: 1px solid $color-border-primary;
+    
+    &:hover:not(:disabled) {
+      background: $color-bg-elevated;
+      border-color: $color-primary;
+    }
+  }
+  
+  &-danger {
+    background: $color-accent-red;
+    color: $color-text-primary;
+    
+    &:hover:not(:disabled) {
+      background: color.adjust($color-accent-red, $lightness: -10%);
+      box-shadow: 0 4px 12px rgba($color-accent-red, 0.4);
+    }
+  }
+  
+  &-success {
+    background: $color-accent-green;
+    color: $color-text-primary;
+    
+    &:hover:not(:disabled) {
+      background: color.adjust($color-accent-green, $lightness: -10%);
+      box-shadow: 0 4px 12px rgba($color-accent-green, 0.4);
+    }
+  }
+  
+  &-discord {
+    background: $color-primary;
+    color: $color-text-primary;
+    @include flex-center;
+    gap: map.get($spacing, 'sm');
+    font-weight: map.get($font-weights, 'semibold');
+    transition: all map.get($transition-speeds, 'base') map.get($transition-easings, 'smooth');
+    
+    &:hover:not(:disabled) {
+      background: $color-primary-dark;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba($color-primary, 0.4);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+  
+  // Sizes
+  &-sm {
+    padding: map.get($spacing, 'xs') map.get($spacing, 'md');
+    font-size: map.get($font-sizes, 'sm');
+  }
+  
+  &-md {
+    padding: map.get($spacing, 'sm') map.get($spacing, 'lg');
+    font-size: map.get($font-sizes, 'base');
+  }
+  
+  &-lg {
+    padding: map.get($spacing, 'md') map.get($spacing, 'xl');
+    font-size: map.get($font-sizes, 'lg');
+  }
+  
+  &-xl {
+    padding: map.get($spacing, 'lg') map.get($spacing, '2xl');
+    font-size: map.get($font-sizes, 'xl');
+  }
+  
+  // Icon button
+  &-icon {
+    padding: map.get($spacing, 'sm');
+    border-radius: map.get($radius, 'full');
+    
+    &:hover:not(:disabled) {
+      @include hover-scale(1.1);
+    }
+  }
+  
+  // Glow effect
+  &-glow {
+    &:hover:not(:disabled) {
+      @include glow($color-primary, 0.6);
+    }
+  }
+  
+  // Loading state
+  &-loading {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      margin-left: -8px;
+      margin-top: -8px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: $color-text-primary;
+      border-radius: 50%;
+      animation: loading-spin 0.8s linear infinite;
+    }
+  }
+  
+  // Block button
+  &-block {
+    width: 100%;
+    display: flex;
+  }
+  
+  // Group
+  &-group {
+    display: inline-flex;
+    
+    .btn {
+      border-radius: 0;
+      
+      &:first-child {
+        border-top-left-radius: map.get($radius, 'md');
+        border-bottom-left-radius: map.get($radius, 'md');
+      }
+      
+      &:last-child {
+        border-top-right-radius: map.get($radius, 'md');
+        border-bottom-right-radius: map.get($radius, 'md');
+      }
+      
+      &:not(:last-child) {
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}
+
+// Floating Action Button
+.fab {
+  @include button-base;
+  @include flex-center;
+  position: fixed;
+  bottom: map.get($spacing, '2xl');
+  right: map.get($spacing, '2xl');
+  width: 56px;
+  height: 56px;
+  border-radius: map.get($radius, 'full');
+  background: $gradient-cyber;
+  box-shadow: map.get($shadows, 'xl');
+  z-index: map.get($z-indices, 'fixed');
+  
+  @include hover-scale(1.1);
+  @include glow-on-hover($color-primary, 0.7);
+  
+  @include respond-below('md') {
+    bottom: map.get($spacing, 'xl');
+    right: map.get($spacing, 'xl');
+  }
+}
+
+

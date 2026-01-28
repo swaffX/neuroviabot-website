@@ -1,0 +1,118 @@
+# ==========================================
+# 🤖 NeuroViaBot - Git Ignore Configuration
+# ==========================================
+
+# Environment & Secrets (CRITICAL - NEVER COMMIT!)
+.env
+.env.*
+!.env.example
+*.env
+config/config.json
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+backend/.env
+backend/.env.local
+backend/.env.production
+neuroviabot-backend/.env
+neuroviabot-backend/.env.*
+!neuroviabot-backend/.env.example
+neuroviabot-frontend/.env.local
+neuroviabot-frontend/.env.production
+neuroviabot-frontend/.env.*
+!neuroviabot-frontend/.env.example
+Caddyfile
+
+# Session Storage (Backend)
+neuroviabot-backend/sessions/
+sessions/
+
+# SSH Keys (NEVER COMMIT!)
+github_deploy
+github_deploy.pub
+authorized_keys
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+
+# Webhook Deployment (VPS only)
+webhook-deploy.js
+WEBHOOK-*.md
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+
+# Database & Data
+*.sqlite
+*.sqlite3
+*.db
+data/*.json
+!data/.gitkeep
+config/data/*.json
+src/database/*.sqlite
+
+# Logs
+logs/
+*.log
+src/logs/*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# Build & Dist
+dist/
+build/
+*.tgz
+
+# Temporary Files
+tmp/
+temp/
+*.tmp
+
+# Backups
+*.backup
+*.bak
+backup-*
+
+# PM2
+.pm2/
+pids/
+*.pid
+*.seed
+
+# Coverage & Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# Next.js (if used)
+/.next/
+/out/
+
+# Vercel
+.vercel
+
+# Documentation (optional)
+docs/_build/
+site/
+
+# MD Files Directory
+md-files/

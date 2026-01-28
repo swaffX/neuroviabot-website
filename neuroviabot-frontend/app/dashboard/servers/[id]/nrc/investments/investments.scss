@@ -1,0 +1,362 @@
+.investments-page {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    .loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+        gap: 1rem;
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #2ECC71;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+    }
+
+    .create-investment-section {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 3rem;
+
+        h2 {
+            margin-bottom: 2rem;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+
+            .plan-card {
+                background: var(--bg-secondary);
+                border: 2px solid transparent;
+                border-radius: 12px;
+                padding: 1.5rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    border-color: #2ECC71;
+                    transform: translateY(-4px);
+                }
+
+                &.selected {
+                    border-color: #2ECC71;
+                    background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(39, 174, 96, 0.1) 100%);
+                }
+
+                .plan-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 1rem;
+
+                    h3 {
+                        font-size: 1.3rem;
+                        font-weight: 600;
+                    }
+
+                    .plan-apy {
+                        background: #2ECC71;
+                        color: #fff;
+                        padding: 0.4rem 0.8rem;
+                        border-radius: 6px;
+                        font-weight: 700;
+                        font-size: 0.9rem;
+                    }
+                }
+
+                .plan-details {
+                    .plan-range {
+                        color: var(--text-secondary);
+                        font-size: 0.9rem;
+                        margin-bottom: 0.3rem;
+                    }
+                }
+            }
+        }
+
+        .investment-form {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+
+            .form-group {
+                margin-bottom: 1.5rem;
+
+                label {
+                    display: block;
+                    margin-bottom: 0.5rem;
+                    font-weight: 600;
+                    color: var(--text-primary);
+                }
+
+                input {
+                    width: 100%;
+                    padding: 0.75rem;
+                    background: var(--card-bg);
+                    border: 2px solid rgba(255, 255, 255, 0.1);
+                    border-radius: 8px;
+                    color: var(--text-primary);
+                    font-size: 1rem;
+
+                    &:focus {
+                        outline: none;
+                        border-color: #2ECC71;
+                    }
+                }
+            }
+
+            .earnings-preview {
+                background: var(--card-bg);
+                border-radius: 12px;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+
+                h4 {
+                    margin-bottom: 1rem;
+                }
+
+                .preview-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                    gap: 1rem;
+
+                    .preview-item {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.3rem;
+
+                        .label {
+                            color: var(--text-secondary);
+                            font-size: 0.9rem;
+                        }
+
+                        .value {
+                            font-size: 1.2rem;
+                            font-weight: 700;
+
+                            &.green {
+                                color: #2ECC71;
+                            }
+
+                            &.total {
+                                color: #FFD700;
+                                font-size: 1.4rem;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .create-button {
+                width: 100%;
+                padding: 1rem;
+                background: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%);
+                border: none;
+                border-radius: 8px;
+                color: #fff;
+                font-size: 1.1rem;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                margin-bottom: 1rem;
+
+                &:hover {
+                    transform: scale(1.02);
+                }
+            }
+
+            .warning-text {
+                text-align: center;
+                color: #E74C3C;
+                font-size: 0.9rem;
+            }
+        }
+    }
+
+    .active-investments-section {
+        h2 {
+            margin-bottom: 2rem;
+        }
+
+        .investments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+
+            .investment-card {
+                background: var(--card-bg);
+                border: 2px solid rgba(46, 204, 113, 0.2);
+                border-radius: 12px;
+                padding: 1.5rem;
+
+                &.completed {
+                    border-color: rgba(52, 152, 219, 0.3);
+                }
+
+                &.withdrawn_early {
+                    border-color: rgba(231, 76, 60, 0.3);
+                }
+
+                .investment-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 1.5rem;
+
+                    h3 {
+                        font-size: 1.4rem;
+                        font-weight: 700;
+                    }
+
+                    .status-badge {
+                        padding: 0.4rem 0.8rem;
+                        border-radius: 6px;
+                        font-size: 0.85rem;
+                        font-weight: 600;
+
+                        &.active {
+                            background: rgba(46, 204, 113, 0.2);
+                            color: #2ECC71;
+                        }
+
+                        &.completed {
+                            background: rgba(52, 152, 219, 0.2);
+                            color: #3498DB;
+                        }
+
+                        &.withdrawn_early {
+                            background: rgba(231, 76, 60, 0.2);
+                            color: #E74C3C;
+                        }
+                    }
+                }
+
+                .investment-details {
+                    margin-bottom: 1.5rem;
+
+                    .detail-row {
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 0.5rem 0;
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+                        .label {
+                            color: var(--text-secondary);
+                        }
+
+                        .value {
+                            font-weight: 600;
+                        }
+                    }
+                }
+
+                .progress-bar {
+                    width: 100%;
+                    height: 8px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 4px;
+                    overflow: hidden;
+                    margin-bottom: 1.5rem;
+
+                    .progress-fill {
+                        height: 100%;
+                        background: linear-gradient(90deg, #2ECC71 0%, #27AE60 100%);
+                        transition: width 0.5s ease;
+                    }
+                }
+
+                .investment-actions {
+                    .withdraw-button {
+                        width: 100%;
+                        padding: 0.75rem;
+                        border: none;
+                        border-radius: 8px;
+                        font-weight: 700;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+
+                        &.matured {
+                            background: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%);
+                            color: #fff;
+
+                            &:hover {
+                                transform: scale(1.02);
+                            }
+                        }
+
+                        &.early {
+                            background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
+                            color: #fff;
+
+                            &:hover {
+                                transform: scale(1.02);
+                            }
+                        }
+                    }
+                }
+
+                .completed-info {
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 1rem;
+                    background: rgba(52, 152, 219, 0.1);
+                    border-radius: 8px;
+
+                    .earned-label {
+                        color: var(--text-secondary);
+                    }
+
+                    .earned-value {
+                        font-size: 1.2rem;
+                        font-weight: 700;
+                        color: #2ECC71;
+                    }
+                }
+            }
+        }
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text-secondary);
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+

@@ -1,0 +1,182 @@
+╔═══════════════════════════════════════════════════════════════╗
+║  🎨 FRONTEND BAŞLATMA KOMUTLARI - GÜVENLİ                    ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📋 ÖNEMLİ: HİÇBİR ŞEY SİLİNMEZ!
+
+
+🔍 1. FRONTEND KLASÖRÜNÜ KONTROL ET
+═══════════════════════════════════════════════════════════════
+
+ls -la /root/neuroviabot/bot/neuroviabot-frontend
+
+# Görmemiz gereken:
+# - package.json
+# - package-lock.json
+# - app/ klasörü
+# - components/ klasörü
+# - node_modules/ klasörü
+
+
+🚀 2. OTOMATİK BAŞLATMA (ÖNERİLEN)
+═══════════════════════════════════════════════════════════════
+
+cd /root/neuroviabot/bot/neuroviabot-discord
+chmod +x START-FRONTEND-SAFE.sh
+./START-FRONTEND-SAFE.sh
+
+
+📝 3. MANUEL BAŞLATMA (ADIM ADIM)
+═══════════════════════════════════════════════════════════════
+
+# Adım 1: Klasöre git
+cd /root/neuroviabot/bot/neuroviabot-frontend
+
+# Adım 2: PM2 durumunu kontrol et
+pm2 list
+
+# Adım 3a: Frontend ÇALIŞIYORsa (restart)
+pm2 restart neuroviabot-frontend
+
+# Adım 3b: Frontend ÇALIŞMIYORSA (start)
+pm2 start "node_modules/.bin/next start -p 3001" --name "neuroviabot-frontend"
+
+# Adım 4: Save
+pm2 save
+
+# Adım 5: Logları kontrol et
+pm2 logs neuroviabot-frontend --lines 20
+
+
+🔍 4. SORUN GİDERME
+═══════════════════════════════════════════════════════════════
+
+# Problem: "next: not found"
+# Çözüm: node_modules kurulu mu kontrol et
+ls -la node_modules/.bin/next
+
+# Eğer next yoksa:
+cd /root/neuroviabot/bot/neuroviabot-frontend
+npm install --legacy-peer-deps
+
+
+# Problem: ".next klasörü yok"
+# Çözüm: Build yap
+cd /root/neuroviabot/bot/neuroviabot-frontend
+npm run build
+
+
+# Problem: "Port 3001 already in use"
+# Çözüm: Eski process'i durdur
+pm2 delete neuroviabot-frontend
+lsof -ti:3001 | xargs kill -9
+pm2 start "node_modules/.bin/next start -p 3001" --name "neuroviabot-frontend"
+
+
+# Problem: Frontend dosyaları SİLİNMİŞ
+# Çözüm: Git'ten clone et
+cd /root/neuroviabot/bot
+git clone https://github.com/YOUR_USERNAME/neuroviabot-discord.git temp
+cp -r temp/neuroviabot-frontend/* neuroviabot-frontend/
+rm -rf temp
+cd neuroviabot-frontend
+npm install --legacy-peer-deps
+npm run build
+
+
+🔧 5. FULL REBUILD (Son Çare - SİLER VE YENİDEN YAPAR)
+═══════════════════════════════════════════════════════════════
+
+cd /root/neuroviabot/bot/neuroviabot-frontend
+
+# 1. PM2'den kaldır
+pm2 delete neuroviabot-frontend
+
+# 2. Build cache'i temizle
+rm -rf .next
+
+# 3. Build yap
+npm run build
+
+# 4. Start
+pm2 start "node_modules/.bin/next start -p 3001" --name "neuroviabot-frontend"
+
+# 5. Save
+pm2 save
+
+
+📊 6. DURUM KONTROLÜ
+═══════════════════════════════════════════════════════════════
+
+# PM2 status
+pm2 status
+
+# Frontend logs
+pm2 logs neuroviabot-frontend --lines 30
+
+# Port kontrolü
+lsof -i:3001
+
+# Process kontrolü
+ps aux | grep next
+
+
+✅ 7. BAŞARILI BAŞLATMA BELİRTİLERİ
+═══════════════════════════════════════════════════════════════
+
+pm2 list çıktısında:
+  ✅ neuroviabot-frontend | online
+  ✅ restart: 0
+  ✅ status: online
+
+pm2 logs çıktısında:
+  ✅ "ready - started server on 0.0.0.0:3001"
+  ✅ "compiled client and server successfully"
+
+Browser'da:
+  ✅ https://neuroviabot.xyz açılıyor
+  ✅ Login sayfası görünüyor
+
+
+🚨 8. ACİL DURUM - FRONTEND KLASÖRÜ TAMAMEN SİLİNMİŞ
+═══════════════════════════════════════════════════════════════
+
+# Git'ten taze clone
+cd /root/neuroviabot/bot
+mv neuroviabot-frontend neuroviabot-frontend-backup-$(date +%s) 2>/dev/null
+git clone https://github.com/YOUR_USERNAME/neuroviabot-discord.git temp
+mv temp/neuroviabot-frontend .
+rm -rf temp
+
+# Setup
+cd neuroviabot-frontend
+npm install --legacy-peer-deps
+npm run build
+pm2 start "node_modules/.bin/next start -p 3001" --name "neuroviabot-frontend"
+pm2 save
+
+
+📝 9. NOTLAR
+═══════════════════════════════════════════════════════════════
+
+⚠️  HİÇBİR SCRIPT OTOMATİK SİLME YAPMAZ!
+⚠️  Sadece GÜVENLİ komutlar kullanıyoruz
+⚠️  Frontend klasörü korunuyor
+
+✅ START-FRONTEND-SAFE.sh kullan
+✅ Bu script HİÇBİR ŞEY SİLMEZ
+✅ Sadece restart/start yapar
+
+
+🔗 YARDIMCI LİNKLER
+═══════════════════════════════════════════════════════════════
+
+Frontend URL: https://neuroviabot.xyz
+PM2 Docs: https://pm2.keymetrics.io/
+Next.js Docs: https://nextjs.org/
+
+
+╔═══════════════════════════════════════════════════════════════╗
+║         ÖNCE START-FRONTEND-SAFE.SH KULLAN!                  ║
+╚═══════════════════════════════════════════════════════════════╝
+

@@ -1,0 +1,252 @@
+name: 🌐 Deploy Frontend Only
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'neuroviabot-frontend/**'
+      - '.github/workflows/deploy-frontend.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy-frontend:
+    name: 🌐 Deploy Frontend
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Pull Latest Frontend Code
+        uses: appleboy/ssh-action@v1.0.3
+        continue-on-error: true
+        id: pull_code_attempt1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          command_timeout: 30m
+          script: |
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "📥 FRONTEND: Pulling Latest Changes"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            cd /root/neuroviabot/bot
+            git fetch origin main
+            git reset --hard origin/main
+            echo "✅ Frontend code updated"
+            echo ""
+
+      - name: 📥 Pull Latest Frontend Code (Retry)
+        if: steps.pull_code_attempt1.outcome == 'failure'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          command_timeout: 30m
+          script: |
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "🔄 FRONTEND: Retrying Pull (Attempt 2)"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            cd /root/neuroviabot/bot
+            git fetch origin main
+            git reset --hard origin/main
+            echo "✅ Frontend code updated (retry successful)"
+            echo ""
+
+      - name: 🗑️ Clean Frontend Build
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          command_timeout: 30m
+          script: |
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "🗑️ FRONTEND: Cleaning Build"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            cd /root/neuroviabot/bot/neuroviabot-frontend
+            rm -rf node_modules package-lock.json .next out
+            echo "✅ Build cleaned"
+            echo ""
+
+      - name: 📦 Install Frontend Dependencies
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          command_timeout: 30m
+          script: |
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "📦 FRONTEND: Installing Dependencies"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            cd /root/neuroviabot/bot/neuroviabot-frontend
+            
+            # Check Node.js version
+            echo "🔹 Node.js version: $(node --version)"
+            echo "🔹 NPM version: $(npm --version)"
+            
+            # Clean npm cache to avoid corrupted package issues
+            echo "🧹 Cleaning npm cache..."
+            npm cache clean --force
+            
+            # Install dependencies with legacy peer deps for compatibility
+            npm install --legacy-peer-deps
+            INSTALL_EXIT_CODE=$?
+            
+            if [ $INSTALL_EXIT_CODE -eq 0 ]; then
+              echo "✅ Dependencies installed successfully"
+              
+              # Verify critical packages
+              if [ -f "node_modules/.bin/next" ]; then
+                echo "✅ Next.js binary found"
+              else
+                echo "❌ Next.js binary NOT FOUND after install!"
+                echo "🚨 Critical dependency missing"
+                exit 1
+              fi
+            else
+              echo "❌ npm install FAILED with exit code $INSTALL_EXIT_CODE"
+              exit 1
+            fi
+            echo ""
+
+      - name: 🏗️ Build Frontend
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          command_timeout: 30m
+          script: |
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "🏗️ FRONTEND: Building Application"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            cd /root/neuroviabot/bot/neuroviabot-frontend
+            
+            # Run build and capture exit code
+            npm run build
+            BUILD_EXIT_CODE=$?
+            
+            if [ $BUILD_EXIT_CODE -eq 0 ]; then
+              echo "✅ Build completed successfully"
+              
+              # Verify .next directory was created
+              if [ -d ".next" ]; then
+                echo "✅ .next build directory found"
+              else
+                echo "❌ .next directory NOT FOUND after build!"
+                exit 1
+              fi
+            else
+              echo "❌ Build FAILED with exit code $BUILD_EXIT_CODE"
+              exit 1
+            fi
+            echo ""
+
+      - name: 🔄 Restart Frontend Service
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          command_timeout: 30m
+          script: |
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "🔄 PM2: Restarting Frontend"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            
+            # Go to project directory
+            cd /root/neuroviabot/bot
+            
+            # Stop and delete frontend if exists
+            echo "🛡️ Stopping existing frontend process..."
+            pm2 stop neuroviabot-frontend 2>/dev/null || echo "ℹ️ Frontend was not running"
+            pm2 delete neuroviabot-frontend 2>/dev/null || echo "ℹ️ Frontend was not in PM2"
+            
+            # Verify build exists before starting
+            echo "🔍 Verifying frontend build..."
+            if [ -d "/root/neuroviabot/bot/neuroviabot-frontend/.next" ]; then
+              echo "✅ Frontend build found (.next directory exists)"
+            else
+              echo "❌ Frontend build NOT FOUND!"
+              echo "🚨 .next directory is missing. Build may have failed."
+              exit 1
+            fi
+            
+            # Start with ecosystem config
+            echo "🚀 Starting frontend with PM2..."
+            pm2 start PM2-ECOSYSTEM.config.js --only neuroviabot-frontend
+            
+            # Check if start was successful
+            if [ $? -eq 0 ]; then
+              echo "✅ PM2 start command executed"
+              pm2 save
+              echo "✅ PM2 configuration saved"
+            else
+              echo "❌ PM2 start command FAILED"
+              exit 1
+            fi
+            
+            echo ""
+
+      - name: ✅ Verify Frontend Status
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          command_timeout: 30m
+          script: |
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "✅ FRONTEND DEPLOYMENT COMPLETED!"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            
+            # Wait for startup
+            echo "⏳ Waiting 10 seconds for frontend to start..."
+            sleep 10
+            
+            # Show ALL PM2 processes
+            echo "📊 All PM2 Processes:"
+            pm2 list
+            
+            # Check if frontend exists in PM2
+            echo ""
+            echo "🔍 Checking Frontend Status:"
+            if pm2 list | grep -q "neuroviabot-frontend"; then
+              # Show frontend logs
+              echo "📋 Frontend Logs:"
+              pm2 logs neuroviabot-frontend --lines 30 --nostream || echo "⚠️ Could not fetch logs"
+              
+              # Check if online
+              if pm2 list | grep "neuroviabot-frontend" | grep -q "online"; then
+                echo "✅ Frontend is ONLINE"
+              else
+                echo "⚠️ Frontend exists but status is not online"
+                pm2 describe neuroviabot-frontend
+                exit 1
+              fi
+            else
+              echo "❌ Frontend process NOT FOUND in PM2"
+              echo "💡 Checking if PM2 config exists:"
+              ls -la /root/neuroviabot/bot/PM2-ECOSYSTEM.config.js
+              exit 1
+            fi
+
+      - name: 📊 Deployment Summary
+        if: always()
+        run: |
+          echo "### 🌐 Frontend Deployment Completed!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🌐 Frontend | ✅ Deployed |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployed by:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY

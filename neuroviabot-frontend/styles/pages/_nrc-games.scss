@@ -1,0 +1,525 @@
+// ==========================================
+// NRC Games - Casino & Gaming Aesthetic
+// ==========================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+$bg-primary: #0A0B14;
+$color-purple: #A855F7;
+$color-blue: #60A5FA;
+$color-cyan: #22D3EE;
+$color-green: #10B981;
+$color-red: #EF4444;
+$color-gold: #F59E0B;
+$border-color: rgba(255, 255, 255, 0.1);
+
+@mixin glassmorphism {
+  backdrop-filter: blur(24px);
+  background: linear-gradient(
+    135deg,
+    rgba(168, 85, 247, 0.05),
+    rgba(96, 165, 250, 0.03)
+  );
+  border: 1px solid $border-color;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.games-page {
+  min-height: 100vh;
+  background: $bg-primary;
+  color: white;
+  padding-top: 2rem; // Further reduced for better centering
+  padding-bottom: 2rem;
+  position: relative; // For absolute positioning of GoBackButton
+  
+  @media (max-width: 768px) {
+    padding-top: 1.5rem;
+  }
+}
+
+.games-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
+}
+
+.games-hero {
+  padding: 3rem 0;
+  background: linear-gradient(
+    180deg,
+    rgba(168, 85, 247, 0.1) 0%,
+    transparent 100%
+  );
+}
+
+.games-title {
+  font-size: 3rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: linear-gradient(135deg, $color-gold, $color-purple, $color-blue);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    flex-direction: column;
+  }
+}
+
+.jackpot-display {
+  text-align: center;
+  padding: 2rem;
+  @include glassmorphism;
+  border-radius: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(245, 158, 11, 0.1) 50%,
+      transparent 70%
+    );
+    animation: shimmer 3s infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(0deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(360deg);
+  }
+}
+
+.jackpot-icon {
+  width: 3rem;
+  height: 3rem;
+  color: $color-gold;
+  margin: 0 auto 1rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.8));
+  }
+}
+
+.jackpot-label {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.jackpot-amount {
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, $color-gold, $color-purple);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+  }
+}
+
+.big-wins-ticker {
+  @include glassmorphism;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.ticker-label {
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+}
+
+.ticker-content {
+  display: flex;
+  gap: 1rem;
+  animation: scroll 20s linear infinite;
+  white-space: nowrap;
+
+  span {
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.games-grid-section {
+  padding: 4rem 0;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.game-card {
+  @include glassmorphism;
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: 
+      0 16px 48px rgba(168, 85, 247, 0.3),
+      0 0 40px rgba(96, 165, 250, 0.2);
+
+    .game-glow {
+      opacity: 1;
+    }
+  }
+}
+
+.game-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(168, 85, 247, 0.2) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.game-icon {
+  font-size: 5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.game-name {
+  font-size: 2rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.game-description {
+  font-size: 1rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 2rem;
+}
+
+.game-limits {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.game-limit {
+  text-align: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0.75rem;
+
+  span {
+    display: block;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 0.375rem;
+  }
+
+  strong {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: white;
+  }
+}
+
+.game-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.game-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+
+  svg {
+    color: $color-purple;
+  }
+}
+
+.game-actions {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
+
+.game-play-btn {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, $color-purple, $color-blue);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.4);
+  }
+}
+
+.game-rules-btn {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(168, 85, 247, 0.3);
+  }
+}
+
+.games-stats-section {
+  padding: 4rem 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(168, 85, 247, 0.03) 50%,
+    transparent 100%
+  );
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: white;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.stat-card {
+  @include glassmorphism;
+  padding: 2rem;
+  border-radius: 1.25rem;
+  display: flex;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba(168, 85, 247, 0.3);
+    box-shadow: 0 12px 40px rgba(168, 85, 247, 0.3);
+  }
+}
+
+.stat-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, $color-purple, $color-blue);
+  border-radius: 1rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 900;
+  color: white;
+
+  &.positive {
+    color: $color-green;
+  }
+}
+
+.recent-plays-section {
+  padding: 4rem 0;
+}
+
+.recent-plays-table {
+  @include glassmorphism;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead {
+      tr {
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      }
+
+      th {
+        padding: 1rem;
+        text-align: left;
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: background 0.2s;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.03);
+        }
+      }
+
+      td {
+        padding: 1rem;
+        font-size: 0.9375rem;
+        color: white;
+
+        &.positive {
+          color: $color-green;
+          font-weight: 700;
+        }
+
+        &.negative {
+          color: $color-red;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+.player-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.player-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $color-purple, $color-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.75rem;
+}
+
+.result-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  &.result-won {
+    background: rgba(16, 185, 129, 0.15);
+    color: $color-green;
+  }
+
+  &.result-lost {
+    background: rgba(239, 68, 68, 0.15);
+    color: $color-red;
+  }
+}
+
+.time-cell {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.875rem;
+}
+

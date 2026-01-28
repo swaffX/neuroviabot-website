@@ -1,0 +1,166 @@
+// ==========================================
+// 🎨 NeuroViaBot - Typography
+// ==========================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use 'sass:map';
+
+body {
+  font-family: $font-primary;
+  font-size: map.get($font-sizes, 'base');
+  font-weight: map.get($font-weights, 'normal');
+  line-height: map.get($line-heights, 'normal');
+  color: $color-text-primary;
+}
+
+// Headings
+h1, .h1 {
+  @include heading('6xl');
+  margin-bottom: map.get($spacing, 'lg');
+  
+  @include respond-below('md') {
+    font-size: map.get($font-sizes, '4xl');
+  }
+}
+
+h2, .h2 {
+  @include heading('5xl');
+  margin-bottom: map.get($spacing, 'lg');
+  
+  @include respond-below('md') {
+    font-size: map.get($font-sizes, '3xl');
+  }
+}
+
+h3, .h3 {
+  @include heading('4xl');
+  margin-bottom: map.get($spacing, 'md');
+  
+  @include respond-below('md') {
+    font-size: map.get($font-sizes, '2xl');
+  }
+}
+
+h4, .h4 {
+  @include heading('3xl');
+  margin-bottom: map.get($spacing, 'md');
+  
+  @include respond-below('md') {
+    font-size: map.get($font-sizes, 'xl');
+  }
+}
+
+h5, .h5 {
+  @include heading('2xl');
+  margin-bottom: map.get($spacing, 'sm');
+}
+
+h6, .h6 {
+  @include heading('xl');
+  margin-bottom: map.get($spacing, 'sm');
+}
+
+// Paragraph
+p {
+  margin-bottom: map.get($spacing, 'md');
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Links
+a {
+  color: $color-primary;
+  text-decoration: none;
+  transition: color map.get($transition-speeds, 'fast') map.get($transition-easings, 'smooth');
+  
+  &:hover {
+    color: $color-primary-light;
+  }
+}
+
+// Text Utilities
+.text {
+  &-primary {
+    color: $color-text-primary;
+  }
+  
+  &-secondary {
+    color: $color-text-secondary;
+  }
+  
+  &-tertiary {
+    color: $color-text-tertiary;
+  }
+  
+  &-muted {
+    color: $color-text-muted;
+  }
+  
+  &-gradient {
+    @include text-gradient();
+  }
+  
+  &-glow {
+    @include text-glow();
+  }
+}
+
+// Font Weight Utilities
+@each $name, $weight in $font-weights {
+  .font-#{$name} {
+    font-weight: $weight;
+  }
+}
+
+// Font Size Utilities
+@each $name, $size in $font-sizes {
+  .text-#{$name} {
+    font-size: $size;
+  }
+}
+
+// Text Alignment
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+// Text Transform
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
+
+// Line Clamp
+.line-clamp-1 { @include line-clamp(1); }
+.line-clamp-2 { @include line-clamp(2); }
+.line-clamp-3 { @include line-clamp(3); }
+
+// Code & Monospace
+code,
+pre {
+  font-family: $font-mono;
+  font-size: map.get($font-sizes, 'sm');
+}
+
+code {
+  background: $color-bg-elevated;
+  padding: 0.2em 0.4em;
+  border-radius: map.get($radius, 'sm');
+  color: $color-accent-cyan;
+}
+
+pre {
+  background: $color-bg-secondary;
+  padding: map.get($spacing, 'lg');
+  border-radius: map.get($radius, 'lg');
+  overflow-x: auto;
+  
+  code {
+    background: none;
+    padding: 0;
+  }
+}
+
+

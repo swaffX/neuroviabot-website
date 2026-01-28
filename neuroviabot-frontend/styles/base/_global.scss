@@ -1,0 +1,209 @@
+// ==========================================
+// 🎨 NeuroViaBot - Global Styles
+// ==========================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use 'sass:map';
+
+// Body
+body {
+  background: $color-bg-primary;
+  color: $color-text-primary;
+}
+
+// Selection
+::selection {
+  background: $color-primary;
+  color: $color-text-primary;
+}
+
+::-moz-selection {
+  background: $color-primary;
+  color: $color-text-primary;
+}
+
+// Container
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 map.get($spacing, 'lg');
+  
+  @each $breakpoint, $width in $container-max-widths {
+    @if $breakpoint != 'full' {
+      @include respond-to($breakpoint) {
+        max-width: $width;
+      }
+    }
+  }
+}
+
+// Section Spacing
+.section {
+  padding: map.get($spacing, '4xl') 0;
+  
+  @include respond-below('md') {
+    padding: map.get($spacing, '3xl') 0;
+  }
+  
+  &-sm {
+    padding: map.get($spacing, '3xl') 0;
+    
+    @include respond-below('md') {
+      padding: map.get($spacing, '2xl') 0;
+    }
+  }
+  
+  &-lg {
+    padding: map.get($spacing, '5xl') 0;
+    
+    @include respond-below('md') {
+      padding: map.get($spacing, '4xl') 0;
+    }
+  }
+}
+
+// Grid System
+.grid {
+  display: grid;
+  gap: map.get($spacing, 'lg');
+  
+  &-cols-1 { grid-template-columns: repeat(1, 1fr); }
+  &-cols-2 { grid-template-columns: repeat(2, 1fr); }
+  &-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  &-cols-4 { grid-template-columns: repeat(4, 1fr); }
+  
+  @include respond-below('lg') {
+    &-cols-4 { grid-template-columns: repeat(2, 1fr); }
+    &-cols-3 { grid-template-columns: repeat(2, 1fr); }
+  }
+  
+  @include respond-below('md') {
+    &-cols-4,
+    &-cols-3,
+    &-cols-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// Flex Utilities
+.flex {
+  display: flex;
+  
+  &-center {
+    @include flex-center;
+  }
+  
+  &-between {
+    @include flex-between;
+  }
+  
+  &-column {
+    @include flex-column;
+  }
+  
+  &-wrap {
+    flex-wrap: wrap;
+  }
+}
+
+// Spacing Utilities
+@each $name, $value in $spacing {
+  .m-#{$name} { margin: $value; }
+  .mt-#{$name} { margin-top: $value; }
+  .mr-#{$name} { margin-right: $value; }
+  .mb-#{$name} { margin-bottom: $value; }
+  .ml-#{$name} { margin-left: $value; }
+  .mx-#{$name} {
+    margin-left: $value;
+    margin-right: $value;
+  }
+  .my-#{$name} {
+    margin-top: $value;
+    margin-bottom: $value;
+  }
+  
+  .p-#{$name} { padding: $value; }
+  .pt-#{$name} { padding-top: $value; }
+  .pr-#{$name} { padding-right: $value; }
+  .pb-#{$name} { padding-bottom: $value; }
+  .pl-#{$name} { padding-left: $value; }
+  .px-#{$name} {
+    padding-left: $value;
+    padding-right: $value;
+  }
+  .py-#{$name} {
+    padding-top: $value;
+    padding-bottom: $value;
+  }
+  
+  .gap-#{$name} { gap: $value; }
+}
+
+// Background Utilities
+.bg {
+  &-primary { background: $color-bg-primary; }
+  &-secondary { background: $color-bg-secondary; }
+  &-tertiary { background: $color-bg-tertiary; }
+  &-elevated { background: $color-bg-elevated; }
+  
+  &-gradient-primary { background: $gradient-primary; }
+  &-gradient-cyber { background: $gradient-cyber; }
+  &-gradient-aurora { background: $gradient-aurora; }
+}
+
+// Border Radius Utilities
+@each $name, $value in $radius {
+  .rounded-#{$name} {
+    border-radius: $value;
+  }
+}
+
+// Shadow Utilities
+@each $name, $value in $shadows {
+  .shadow-#{$name} {
+    box-shadow: $value;
+  }
+}
+
+// Visibility
+.hidden { display: none; }
+.visible { display: block; }
+
+// Responsive Visibility
+@include respond-below('md') {
+  .hide-mobile { display: none; }
+}
+
+@include respond-to('md') {
+  .hide-desktop { display: none; }
+}
+
+// Position
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+
+// Overflow
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+.overflow-scroll { overflow: scroll; }
+
+// Cursor
+.cursor-pointer { cursor: pointer; }
+.cursor-not-allowed { cursor: not-allowed; }
+
+// Transition
+.transition-all {
+  transition: all map.get($transition-speeds, 'base') map.get($transition-easings, 'smooth');
+}
+
+// Backdrop Blur
+.backdrop-blur {
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+}
+
+

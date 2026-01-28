@@ -1,0 +1,106 @@
+/* ==========================================
+   NeuroViaBot Dashboard - Theme Variables
+   ========================================== */
+
+:root {
+  /* Background Colors */
+  --bg-primary: #0B0E11;
+  --bg-secondary: #151922;
+  --bg-tertiary: #1E2530;
+  --bg-hover: #252D3A;
+  --bg-card: #1a1d26;
+  
+  /* Discord Brand Colors */
+  --discord-blue: #5865F2;
+  --discord-blue-dark: #4752C4;
+  --discord-blue-light: #7289DA;
+  --discord-blurple: #5865F2;
+  
+  /* Text Colors */
+  --text-primary: #FFFFFF;
+  --text-secondary: #B9BBBE;
+  --text-muted: #72767D;
+  --text-disabled: #4E5058;
+  
+  /* Status Colors */
+  --success: #3BA55D;
+  --warning: #FAA81A;
+  --error: #ED4245;
+  --info: #00AFF4;
+  
+  /* Accent Colors */
+  --purple: #7289DA;
+  --green: #43B581;
+  --yellow: #FEE75C;
+  --red: #F04747;
+  --orange: #FF6B6B;
+  --cyan: #4ECDC4;
+  
+  /* Border & Shadow */
+  --border-color: #2E3338;
+  --border-light: #3E4349;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.16);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.24);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.32);
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+  
+  /* Transitions */
+  --transition-fast: 150ms;
+  --transition-base: 200ms;
+  --transition-slow: 300ms;
+  --transition-slower: 500ms;
+  
+  /* Z-index Layers */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
+
+/* Dark Theme Enhancements */
+.dark {
+  color-scheme: dark;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--discord-blue);
+  color: var(--text-primary);
+}
+
+/* Focus States */
+*:focus-visible {
+  outline: 2px solid var(--discord-blue);
+  outline-offset: 2px;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Anti-aliasing */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
