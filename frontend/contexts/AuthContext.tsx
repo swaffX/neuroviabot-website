@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [showDevNotification, setShowDevNotification] = useState(false);
-  
+
   // Developer IDs
   const DEVELOPER_IDS = ['315875588906680330', '413081778031427584']; // swxff & schizoid
 
@@ -49,12 +49,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function checkAuth() {
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-      
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://neuroviabot.xyz';
+
       // Add timeout to fetch
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000);
-      
+
       const res = await fetch(`${API_URL}/api/auth/user`, {
         credentials: 'include',
         signal: controller.signal,
@@ -63,9 +63,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           'Content-Type': 'application/json'
         }
       });
-      
+
       clearTimeout(timeoutId);
-      
+
       if (res.ok) {
         const userData = await res.json();
         if (userData && userData.id) {
@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (typeof window !== 'undefined') {
             localStorage.setItem('neurovia_user', JSON.stringify(userData));
           }
-          
+
           // Check if developer and show notification
           if (wasNotLoggedIn && DEVELOPER_IDS.includes(userData.id)) {
             // Mark that dev notification should be shown
@@ -83,14 +83,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               localStorage.setItem('neurovia_show_dev_notification', 'true');
             }
           }
-          
+
           // Check if we should show dev notification (after redirect)
           if (typeof window !== 'undefined') {
             const shouldShow = localStorage.getItem('neurovia_show_dev_notification');
             if (shouldShow === 'true' && DEVELOPER_IDS.includes(userData.id)) {
               localStorage.removeItem('neurovia_show_dev_notification');
               setShowDevNotification(true);
-              
+
               // Browser notification sound (simple beep without AudioContext)
               setTimeout(() => {
                 try {
@@ -106,7 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                   console.log('Notification failed:', err);
                 }
               }, 500);
-              
+
               // Hide notification after 3 seconds
               setTimeout(() => setShowDevNotification(false), 3000);
             }
@@ -135,12 +135,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const login = () => {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://neuroviabot.xyz';
     window.location.href = `${API_URL}/api/auth/discord`;
   };
 
   const logout = async () => {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://neuroviabot.xyz';
     await fetch(`${API_URL}/api/auth/logout`, {
       method: 'POST',
       credentials: 'include'
@@ -166,14 +166,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       refreshUser
     }}>
       {children}
-      
+
       {/* Developer Login Notification - Minimal Style */}
       <AnimatePresence>
         {showDevNotification && (
           <motion.div
             initial={{ opacity: 0, y: -50 }}
-            animate={{ 
-              opacity: 1, 
+            animate={{
+              opacity: 1,
               y: 0,
               transition: {
                 type: "spring",
@@ -181,13 +181,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 damping: 25
               }
             }}
-            exit={{ 
+            exit={{
               opacity: 0,
               y: -20,
-              transition: { 
+              transition: {
                 duration: 0.5,
                 ease: "easeOut"
-              } 
+              }
             }}
             style={{
               position: 'fixed',
@@ -203,7 +203,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             <div className="relative">
               {/* Subtle glow */}
               <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl blur-lg opacity-30" />
-              
+
               {/* Card */}
               <div className="relative flex items-center gap-3 bg-gray-900/95 backdrop-blur-xl border border-purple-500/30 rounded-2xl p-4 shadow-xl">
                 {/* Icon */}
@@ -212,13 +212,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                 </div>
-                
+
                 {/* Text */}
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-semibold text-sm mb-0.5">Developer Mode Active</p>
                   <p className="text-gray-400 text-xs">Tüm sistemler hazır 🚀</p>
                 </div>
-                
+
                 {/* Status dot */}
                 <div className="flex-shrink-0 w-2 h-2 bg-green-400 rounded-full animate-pulse" />
               </div>

@@ -34,9 +34,9 @@ export default function PurchaseModal({ product, onClose, onSuccess }: PurchaseM
 
   const fetchBalance = async () => {
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://neuroviabot.xyz';
       const response = await axios.get(`${API_URL}/api/nrc/balance`);
-      
+
       if (response.data.success) {
         setUserBalance(response.data.balance);
       }
@@ -63,8 +63,8 @@ export default function PurchaseModal({ product, onClose, onSuccess }: PurchaseM
       setLoading(true);
       setError(null);
 
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-      
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://neuroviabot.xyz';
+
       const response = await axios.post(`${API_URL}/api/marketplace/purchase/${product.id}`);
 
       if (response.data.success) {
@@ -144,9 +144,8 @@ export default function PurchaseModal({ product, onClose, onSuccess }: PurchaseM
                 <div className="purchase-pricing-row">
                   <span className="purchase-pricing-label">Bakiyeniz:</span>
                   <span
-                    className={`purchase-pricing-value ${
-                      hasInsufficientBalance ? 'text-red-400' : 'text-emerald-400'
-                    }`}
+                    className={`purchase-pricing-value ${hasInsufficientBalance ? 'text-red-400' : 'text-emerald-400'
+                      }`}
                   >
                     <CurrencyDollarIcon className="w-5 h-5" />
                     {userBalance} NRC
@@ -158,9 +157,8 @@ export default function PurchaseModal({ product, onClose, onSuccess }: PurchaseM
                 <div className="purchase-pricing-row purchase-pricing-row-total">
                   <span className="purchase-pricing-label">İşlem Sonrası Bakiye:</span>
                   <span
-                    className={`purchase-pricing-value ${
-                      hasInsufficientBalance ? 'text-red-400' : 'text-white'
-                    }`}
+                    className={`purchase-pricing-value ${hasInsufficientBalance ? 'text-red-400' : 'text-white'
+                      }`}
                   >
                     <CurrencyDollarIcon className="w-5 h-5" />
                     {Math.max(0, userBalance - product.price)} NRC
