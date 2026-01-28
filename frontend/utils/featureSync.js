@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://neuroviabot.xyz';
 
 // Frontend feature list (hardcoded for comparison)
 const FRONTEND_FEATURES = [
