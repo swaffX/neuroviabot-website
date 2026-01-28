@@ -117,6 +117,28 @@ class AuditLogStorage {
     const guildData = await this.readGuildLogs(guildId);
     let logs = guildData.logs || [];
 
+    // --- SELF-HEALING: Remove duplicates based on ID ---
+    const seenIds = new Set();
+    const uniqueLogs = [];
+    let hasDuplicates = false;
+
+    for (const log of logs) {
+      if (!seenIds.has(log.id)) {
+        seenIds.add(log.id);
+        uniqueLogs.push(log);
+      } else {
+        hasDuplicates = true;
+      }
+    }
+
+    if (hasDuplicates) {
+      console.log(`[AuditLog] Removing duplicates for guild ${guildId} (Original: ${logs.length}, Unique: ${uniqueLogs.length})`);
+      logs = uniqueLogs;
+      // Save flattened/cleaned logs back to storage asynchronously to fix the file
+      this.writeGuildLogs(guildId, logs).catch(err => console.error('Error rewriting cleaned logs:', err));
+    }
+    // ---------------------------------------------------
+
     // Apply filters
     if (action) {
       logs = logs.filter(log => log.action === action);
