@@ -11,7 +11,7 @@ class SimpleDatabase {
         this.dataDir = path.join(__dirname, '..', '..', 'data');
         this.dbPath = path.join(this.dataDir, 'database.json');
         this.backupPath = path.join(this.dataDir, 'database-backup.json');
-        
+
         this.data = {
             users: new Map(),
             guilds: new Map(),
@@ -35,7 +35,7 @@ class SimpleDatabase {
             stakingPositions: new Map(), // New: stakingId -> staking position
             stakingPools: new Map(), // New: poolId -> staking pool data
             loans: new Map(), // New: loanId -> loan details
-            
+
             // NRC Expansion - Phase 2
             nftCollections: new Map(), // collectionId -> { name, type, items, totalSupply }
             userCollections: new Map(), // userId -> { ownedItems, favoriteItem, totalValue }
@@ -45,10 +45,10 @@ class SimpleDatabase {
             gameStats: new Map(), // userId -> { totalGamesPlayed, wins, losses, biggestWin, streak }
             tournamentHistory: new Map(), // tournamentId -> { gametype, participants, winner, prizePool }
             tradeHistory: new Map(), // tradeId -> { buyerId, sellerId, itemId, price, platformFee, timestamp }
-            
+
             // NRC Live Activity Feed
             activityFeed: new Map(), // activityId -> { type, userId, username, avatar, serverId, serverName, serverIcon, details, amount, timestamp, visibility }
-            
+
             warnings: new Map(),
             tickets: new Map(),
             giveaways: new Map(),
@@ -60,10 +60,10 @@ class SimpleDatabase {
             reactionRoles: new Map(), // New: messageId -> reaction role setup
             tempBans: new Map() // New: userId_guildId -> { userId, guildId, expiresAt, reason, createdAt }
         };
-        
+
         this.ensureDirectory();
         this.loadData();
-        
+
         // Otomatik kaydetme (her 5 dakikada)
         setInterval(() => this.saveData(), 5 * 60 * 1000);
     }
@@ -80,14 +80,14 @@ class SimpleDatabase {
             if (fs.existsSync(this.dbPath)) {
                 const rawData = fs.readFileSync(this.dbPath, 'utf8');
                 const jsonData = JSON.parse(rawData);
-                
+
                 // JSON objelerini Map'lere dönüştür
                 for (const [key, value] of Object.entries(jsonData)) {
                     if (this.data.hasOwnProperty(key)) {
                         this.data[key] = new Map(Object.entries(value || {}));
                     }
                 }
-                
+
                 logger.success('Database JSON dosyasından yüklendi');
             } else {
                 logger.info('Yeni database oluşturuluyor');
@@ -95,19 +95,19 @@ class SimpleDatabase {
             }
         } catch (error) {
             logger.error('Database yükleme hatası', error);
-            
+
             // Backup'tan geri yüklemeyi dene
             if (fs.existsSync(this.backupPath)) {
                 try {
                     const backupData = fs.readFileSync(this.backupPath, 'utf8');
                     const jsonBackup = JSON.parse(backupData);
-                    
+
                     for (const [key, value] of Object.entries(jsonBackup)) {
                         if (this.data.hasOwnProperty(key)) {
                             this.data[key] = new Map(Object.entries(value || {}));
                         }
                     }
-                    
+
                     logger.warn('Database backup\'tan geri yüklendi');
                 } catch (backupError) {
                     logger.error('Backup geri yükleme hatası', backupError);
@@ -118,26 +118,35 @@ class SimpleDatabase {
 
     // Veriyi diske kaydet
     saveData() {
+        const now = Date.now();
+        // Sadece 30 saniyede bir veya manuel zorunlu durumlarda diske yaz
+        if (this.lastSave && (now - this.lastSave < 30000)) {
+            return;
+        }
+
         try {
+            this.lastSave = now;
             // Backup oluştur
             if (fs.existsSync(this.dbPath)) {
                 fs.copyFileSync(this.dbPath, this.backupPath);
             }
-            
+
             // Map'leri JSON objelerine dönüştür
             const jsonData = {};
             for (const [key, mapValue] of Object.entries(this.data)) {
                 jsonData[key] = Object.fromEntries(mapValue);
             }
-            
+
             // Dosyaya yaz
+            // OPTIMIZATION: Use async write if possible or throttled synchronous write
             fs.writeFileSync(this.dbPath, JSON.stringify(jsonData, null, 2), 'utf8');
-            logger.debug('Database kaydedildi');
-            
+            logger.debug('Database disk üzerine kaydedildi (Throttled)');
+
         } catch (error) {
             logger.error('Database kaydetme hatası', { error: error.message, stack: error.stack });
         }
     }
+
 
     // User işlemleri
     getUser(userId) {
@@ -155,7 +164,7 @@ class SimpleDatabase {
             lastSeen: new Date().toISOString(),
             ...userData
         };
-        
+
         this.data.users.set(userId, user);
         return user;
     }
@@ -188,7 +197,7 @@ class SimpleDatabase {
             createdAt: new Date().toISOString(),
             ...guildData
         };
-        
+
         this.data.guilds.set(guildId, guild);
         return guild;
     }
@@ -290,7 +299,7 @@ class SimpleDatabase {
             createdAt: new Date().toISOString(),
             active: true
         };
-        
+
         this.data.warnings.set(warningId, warning);
         return warning;
     }
@@ -334,41 +343,41 @@ class SimpleDatabase {
 
     updateNeuroCoinBalance(userId, amount, type = 'wallet') {
         const balance = this.getNeuroCoinBalance(userId);
-        
+
         if (type === 'wallet') {
             balance.wallet += amount;
         } else if (type === 'bank') {
             balance.bank += amount;
         }
-        
+
         balance.total = balance.wallet + balance.bank;
         this.data.neuroCoinBalances.set(userId, balance);
         this.saveData();
-        
+
         return balance;
     }
 
     transferNeuroCoin(fromUserId, toUserId, amount) {
         const fromBalance = this.getNeuroCoinBalance(fromUserId);
         const toBalance = this.getNeuroCoinBalance(toUserId);
-        
+
         if (fromBalance.wallet < amount) {
             return { success: false, error: 'Yetersiz bakiye' };
         }
-        
+
         fromBalance.wallet -= amount;
         fromBalance.total = fromBalance.wallet + fromBalance.bank;
-        
+
         toBalance.wallet += amount;
         toBalance.total = toBalance.wallet + toBalance.bank;
-        
+
         this.data.neuroCoinBalances.set(fromUserId, fromBalance);
         this.data.neuroCoinBalances.set(toUserId, toBalance);
-        
+
         // Record transaction
         const txId = `tx-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
         this.recordTransaction(fromUserId, toUserId, amount, 'transfer', { txId });
-        
+
         this.saveData();
         return { success: true, txId };
     }
@@ -384,10 +393,10 @@ class SimpleDatabase {
             metadata,
             timestamp: new Date().toISOString()
         };
-        
+
         this.data.neuroCoinTransactions.set(txId, transaction);
         this.saveData();
-        
+
         return transaction;
     }
 
@@ -398,7 +407,7 @@ class SimpleDatabase {
                 transactions.push(tx);
             }
         }
-        
+
         // Sort by timestamp descending
         transactions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         return transactions.slice(0, limit);
@@ -419,10 +428,10 @@ class SimpleDatabase {
             listed: new Date().toISOString(),
             active: true
         };
-        
+
         this.data.marketplaceListings.set(listingId, listing);
         this.saveData();
-        
+
         return listing;
     }
 
@@ -431,18 +440,18 @@ class SimpleDatabase {
         if (!listing || !listing.active) {
             return { success: false, error: 'Liste bulunamadı veya aktif değil' };
         }
-        
+
         const buyerBalance = this.getNeuroCoinBalance(buyerId);
         if (buyerBalance.wallet < listing.price) {
             return { success: false, error: 'Yetersiz bakiye' };
         }
-        
+
         // Transfer NRC
         const transfer = this.transferNeuroCoin(buyerId, listing.seller, listing.price);
         if (!transfer.success) {
             return transfer;
         }
-        
+
         // Add item to buyer inventory
         const inventory = this.data.userInventory.get(buyerId) || [];
         inventory.push({
@@ -451,13 +460,13 @@ class SimpleDatabase {
             purchasedFrom: listing.seller
         });
         this.data.userInventory.set(buyerId, inventory);
-        
+
         // Mark listing as sold
         listing.active = false;
         listing.soldTo = buyerId;
         listing.soldAt = new Date().toISOString();
         this.data.marketplaceListings.set(listingId, listing);
-        
+
         this.saveData();
         return { success: true, listing };
     }
@@ -520,20 +529,20 @@ class SimpleDatabase {
     updateNRCBalance(userId, amount, reason = 'manual') {
         // Alias for updateNeuroCoinBalance
         this.updateNeuroCoinBalance(userId, amount, 'wallet');
-        
+
         // Record transaction
         if (amount > 0) {
             this.recordTransaction('system', userId, amount, reason, {});
         } else if (amount < 0) {
             this.recordTransaction(userId, 'system', Math.abs(amount), reason, {});
         }
-        
+
         this.saveData();
     }
 
     createStakingPosition(userId, amount, duration) {
         const balance = this.getNeuroCoinBalance(userId);
-        
+
         if (balance.bank < amount) {
             return { success: false, error: 'Yetersiz banka bakiyesi' };
         }
@@ -549,7 +558,7 @@ class SimpleDatabase {
         const apy = apyRates[duration] || 5;
         const stakingId = `stake_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         const endsAt = Date.now() + (duration * 24 * 60 * 60 * 1000);
-        
+
         // Calculate expected reward
         const yearlyReward = amount * (apy / 100);
         const dailyReward = yearlyReward / 365;
@@ -570,22 +579,22 @@ class SimpleDatabase {
 
         // Deduct from bank
         this.updateNeuroCoinBalance(userId, -amount, 'bank');
-        
+
         // Store staking position
         if (!this.data.stakingPositions) {
             this.data.stakingPositions = new Map();
         }
         this.data.stakingPositions.set(stakingId, stakingPosition);
-        
+
         this.recordTransaction(userId, 'staking', amount, 'stake_created', {
             stakingId,
             duration,
             apy,
             expectedReward: totalReward
         });
-        
+
         this.saveData();
-        
+
         return { success: true, staking: stakingPosition };
     }
 
@@ -609,7 +618,7 @@ class SimpleDatabase {
         }
 
         const position = this.data.stakingPositions.get(stakingId);
-        
+
         if (!position) {
             return { success: false, error: 'Staking pozisyonu bulunamadı' };
         }
@@ -624,7 +633,7 @@ class SimpleDatabase {
 
         const now = Date.now();
         const isEarly = now < position.endsAt;
-        
+
         let returnAmount = position.amount;
         let reward = 0;
 
@@ -632,7 +641,7 @@ class SimpleDatabase {
             // Early withdrawal penalty: 20% of principal
             const penalty = Math.floor(position.amount * 0.2);
             returnAmount = position.amount - penalty;
-            
+
             position.earlyWithdraw = true;
             position.penalty = penalty;
         } else {
@@ -643,27 +652,27 @@ class SimpleDatabase {
 
         // Return to bank
         this.updateNeuroCoinBalance(userId, returnAmount, 'bank');
-        
+
         // Mark as claimed
         position.claimed = true;
         position.claimedAt = now;
         this.data.stakingPositions.set(stakingId, position);
-        
+
         this.recordTransaction('staking', userId, returnAmount, 'stake_claimed', {
             stakingId,
             isEarly,
             penalty: position.penalty || 0,
             reward
         });
-        
+
         this.saveData();
-        
-        return { 
-            success: true, 
-            returnAmount, 
-            reward, 
-            isEarly, 
-            penalty: position.penalty || 0 
+
+        return {
+            success: true,
+            returnAmount,
+            reward,
+            isEarly,
+            penalty: position.penalty || 0
         };
     }
 
@@ -674,10 +683,10 @@ class SimpleDatabase {
     createLoan(userId, amount, durationDays, collateral = null) {
         const balance = this.getNeuroCoinBalance(userId);
         const userSettings = this.getUserSettings(userId) || {};
-        
+
         // Check credit score
         const creditScore = userSettings.creditScore || 100; // 0-100
-        
+
         if (creditScore < 30) {
             return { success: false, error: 'Kredi skorunuz çok düşük' };
         }
@@ -715,17 +724,17 @@ class SimpleDatabase {
 
         // Give loan to user (to wallet)
         this.updateNeuroCoinBalance(userId, amount, 'wallet');
-        
+
         this.data.loans.set(loanId, loan);
-        
+
         this.recordTransaction('loan_system', userId, amount, 'loan_taken', {
             loanId,
             interestRate,
             dueDate: new Date(dueDate).toISOString()
         });
-        
+
         this.saveData();
-        
+
         return { success: true, loan };
     }
 
@@ -749,7 +758,7 @@ class SimpleDatabase {
         }
 
         const loan = this.data.loans.get(loanId);
-        
+
         if (!loan) {
             return { success: false, error: 'Kredi bulunamadı' };
         }
@@ -771,34 +780,34 @@ class SimpleDatabase {
 
         // Deduct from wallet
         this.updateNeuroCoinBalance(userId, -repayAmount, 'wallet');
-        
+
         // Update loan status
         loan.status = 'repaid';
         loan.repaid = true;
         loan.repaidAt = Date.now();
         loan.repaidAmount = repayAmount;
         this.data.loans.set(loanId, loan);
-        
+
         // Update credit score (improve on successful repayment)
         const userSettings = this.getUserSettings(userId) || {};
         if (!userSettings.creditScore) {
             userSettings.creditScore = 100;
         }
-        
+
         const isOnTime = Date.now() <= loan.dueDate;
         if (isOnTime) {
             userSettings.creditScore = Math.min(100, userSettings.creditScore + 5);
         }
-        
+
         this.setUserSettings(userId, userSettings);
-        
+
         this.recordTransaction(userId, 'loan_system', repayAmount, 'loan_repaid', {
             loanId,
             onTime: isOnTime
         });
-        
+
         this.saveData();
-        
+
         return { success: true, loan };
     }
 
@@ -825,7 +834,7 @@ class SimpleDatabase {
         try {
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
             const backupFile = path.join(this.dataDir, `backup-${timestamp}.json`);
-            
+
             fs.copyFileSync(this.dbPath, backupFile);
             logger.success(`Backup oluşturuldu: ${backupFile}`);
             return backupFile;
@@ -840,11 +849,11 @@ class SimpleDatabase {
             const files = fs.readdirSync(this.dataDir);
             const backupFiles = files.filter(f => f.startsWith('backup-'));
             const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-            
+
             backupFiles.forEach(file => {
                 const filePath = path.join(this.dataDir, file);
                 const stats = fs.statSync(filePath);
-                
+
                 if (stats.mtime < thirtyDaysAgo) {
                     fs.unlinkSync(filePath);
                     logger.info(`Eski backup silindi: ${file}`);
@@ -909,12 +918,12 @@ class SimpleDatabase {
         }
         const logs = this.data.auditLogs.get(guildId);
         logs.unshift(entry); // Add to beginning
-        
+
         // Keep only last 1000 entries per guild
         if (logs.length > 1000) {
             logs.splice(1000);
         }
-        
+
         this.data.auditLogs.set(guildId, logs);
         this.saveData();
     }
@@ -923,7 +932,7 @@ class SimpleDatabase {
         // First try to get from new location (in settings)
         const settings = this.getGuildSettings(guildId);
         let logs = settings.auditLogs || [];
-        
+
         // Then merge with old location (audit logs map)
         if (this.data.auditLogs.has(guildId)) {
             const oldLogs = this.data.auditLogs.get(guildId) || [];
@@ -936,7 +945,7 @@ class SimpleDatabase {
             });
             logs = Array.from(logsMap.values());
         }
-        
+
         let filtered = [...logs];
 
         // Apply filters
