@@ -675,33 +675,7 @@ export default function AuditLog({ guildId, userId }: AuditLogProps) {
               </button>
             </div>
 
-            {/* Sync Old Logs Button */}
-            <div className="text-center">
-              <p className="text-xs text-gray-500 mb-2">Aradığınızı bulamadınız mı?</p>
-              <button
-                onClick={async () => {
-                  setLoadingMore(true);
-                  try {
-                    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://neuroviabot.xyz';
-                    await fetch(`${API_URL}/api/audit/${guildId}/sync`, {
-                      method: 'POST',
-                      credentials: 'include'
-                    });
-                    // Refresh current page
-                    await fetchLogs(page);
-                    showNotification('Eski kayıtlar senkronize edildi', 'success');
-                  } catch (error) {
-                    showNotification('Senkronizasyon başarısız', 'error');
-                  } finally {
-                    setLoadingMore(false);
-                  }
-                }}
-                disabled={loadingMore}
-                className="text-xs text-purple-400 hover:text-purple-300 underline disabled:opacity-50 cursor-pointer"
-              >
-                {loadingMore ? 'Senkronize ediliyor...' : 'Discord\'dan daha eski kayıtları getirmeyi dene'}
-              </button>
-            </div>
+
           </div>
         </div>
       )}

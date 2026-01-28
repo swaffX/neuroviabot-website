@@ -10,7 +10,7 @@ class AuditLogStorage {
 
   async init() {
     if (this.initialized) return;
-    
+
     try {
       await fs.mkdir(this.dataDir, { recursive: true });
       this.initialized = true;
@@ -53,10 +53,19 @@ class AuditLogStorage {
 
     // Read existing logs
     const guildData = await this.readGuildLogs(guildId);
-    
+
+    // Check for duplicates if ID exists
+    if (logData.id) {
+      const exists = guildData.logs.some(log => log.id === logData.id);
+      if (exists) {
+        // console.log(`[AuditLog] Skipping duplicate log: ${logData.id}`);
+        return null; // Skip if already exists
+      }
+    }
+
     // Create new log entry
     const logEntry = {
-      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: logData.id || `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       type: logData.type || 'OTHER',
       action: logData.action,
       userId: logData.userId || logData.executor?.id || 'unknown',
@@ -75,6 +84,9 @@ class AuditLogStorage {
 
     // Add to logs array
     guildData.logs.unshift(logEntry); // Add to beginning
+
+    // Sort by timestamp just in case
+    guildData.logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
     // Keep only the most recent logs
     if (guildData.logs.length > this.maxLogsPerGuild) {
@@ -116,7 +128,7 @@ class AuditLogStorage {
       logs = logs.filter(log => log.severity === severity);
     }
     if (userId) {
-      logs = logs.filter(log => 
+      logs = logs.filter(log =>
         log.userId === userId || log.executor?.id === userId
       );
     }
@@ -188,18 +200,18 @@ class AuditLogStorage {
 
     // Read all guild files
     const files = await fs.readdir(this.dataDir);
-    
+
     for (const file of files) {
       if (!file.endsWith('.json')) continue;
 
       const guildId = file.replace('.json', '');
       const guildData = await this.readGuildLogs(guildId);
-      
+
       const originalCount = guildData.logs.length;
-      guildData.logs = guildData.logs.filter(log => 
+      guildData.logs = guildData.logs.filter(log =>
         new Date(log.timestamp) >= cutoffDate
       );
-      
+
       const deletedCount = originalCount - guildData.logs.length;
       if (deletedCount > 0) {
         await this.writeGuildLogs(guildId, guildData.logs);
